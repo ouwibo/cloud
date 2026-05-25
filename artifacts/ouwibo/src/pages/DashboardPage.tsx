@@ -1,56 +1,51 @@
 import { useGetAnalyticsSummary, useGetProgressData, useGetTaskBreakdown, useListActivity } from "@workspace/api-client-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { FolderKanban, CheckSquare, Users, TrendingUp, Activity, Clock } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FolderKanban, CheckSquare, Users, TrendingUp, Clock } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
-function StatCard({
-  label,
-  value,
-  icon: Icon,
-  sub,
-  color,
-}: {
-  label: string;
-  value: number | string;
-  icon: typeof FolderKanban;
-  sub?: string;
-  color: string;
-}) {
+/* Pastel card backgrounds — neobrutalism style */
+const PASTEL = {
+  mint:     "#b8e8c8",
+  peach:    "#f0c4a8",
+  lavender: "#d4c0f0",
+  sky:      "#b8d8f0",
+  yellow:   "#f0e0a0",
+  sage:     "#c8dcc0",
+};
+
+const STAT_CARDS = [
+  { label: "Total Projects",  valueKey: "totalProjects",  subKey: "activeProjects",  subLabel: "active",        icon: FolderKanban, bg: PASTEL.sky },
+  { label: "Tasks Completed", valueKey: "completedTasks", subKey: "totalTasks",      subLabel: "total",         icon: CheckSquare,  bg: PASTEL.mint },
+  { label: "Team Members",    valueKey: "teamSize",       subKey: null,              subLabel: "on workspace",  icon: Users,        bg: PASTEL.peach },
+  { label: "Completion Rate", valueKey: "completionRate", subKey: null,              subLabel: "tasks done",    icon: TrendingUp,   bg: PASTEL.lavender },
+];
+
+const PIE_COLORS = ["hsl(var(--chart-4))", "hsl(var(--chart-3))", "hsl(var(--chart-2))"];
+
+const ACTIVITY_TYPE_BADGE: Record<string, { bg: string; label: string }> = {
+  task_created:    { bg: PASTEL.sky,      label: "Created" },
+  task_completed:  { bg: PASTEL.mint,     label: "Done" },
+  project_created: { bg: PASTEL.lavender, label: "New Project" },
+  project_updated: { bg: PASTEL.yellow,   label: "Updated" },
+  member_joined:   { bg: PASTEL.peach,    label: "Joined" },
+};
+
+function PageHeader({ title, subtitle }: { title: string; subtitle: string }) {
   return (
-    <Card className="relative overflow-hidden transition-all duration-200 hover:shadow-md" data-testid={`stat-card-${label.toLowerCase().replace(/\s+/g, "-")}`}>
-      <CardContent className="p-5">
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground font-medium mb-1">{label}</p>
-            <p className="text-3xl font-bold text-foreground">{value}</p>
-            {sub && <p className="text-xs text-muted-foreground mt-1">{sub}</p>}
-          </div>
-          <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", color)}>
-            <Icon size={20} />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="mb-8">
+      <h1
+        className="text-foreground mb-1"
+        style={{ fontFamily: "'Unbounded', sans-serif", fontSize: "1.5rem", fontWeight: 700, lineHeight: 1.15 }}
+      >
+        {title}
+      </h1>
+      <p className="text-muted-foreground text-sm" style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.72rem" }}>
+        {subtitle}
+      </p>
+    </div>
   );
 }
-
-function ActivityBadge({ type }: { type: string }) {
-  const map: Record<string, { color: string; label: string }> = {
-    task_created: { color: "bg-blue-500/15 text-blue-600 dark:text-blue-400", label: "Created" },
-    task_completed: { color: "bg-green-500/15 text-green-600 dark:text-green-400", label: "Completed" },
-    project_created: { color: "bg-purple-500/15 text-purple-600 dark:text-purple-400", label: "New Project" },
-    project_updated: { color: "bg-amber-500/15 text-amber-600 dark:text-amber-400", label: "Updated" },
-    member_joined: { color: "bg-pink-500/15 text-pink-600 dark:text-pink-400", label: "Joined" },
-  };
-  const info = map[type] ?? { color: "bg-muted text-muted-foreground", label: type };
-  return (
-    <span className={cn("text-xs font-medium px-2 py-0.5 rounded-full", info.color)}>{info.label}</span>
-  );
-}
-
-const PIE_COLORS = ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))"];
 
 export default function DashboardPage() {
   const { data: summary, isLoading: summaryLoading } = useGetAnalyticsSummary();
@@ -60,165 +55,205 @@ export default function DashboardPage() {
 
   const pieData = breakdown
     ? [
-        { name: "To Do", value: breakdown.todo },
+        { name: "To Do",       value: breakdown.todo },
         { name: "In Progress", value: breakdown.inProgress },
-        { name: "Done", value: breakdown.done },
+        { name: "Done",        value: breakdown.done },
       ]
     : [];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">Welcome back. Here is what is happening.</p>
-      </div>
+    <div>
+      <PageHeader title="Dashboard" subtitle="Welcome back — here is what is happening." />
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {summaryLoading ? (
-          Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i}><CardContent className="p-5"><Skeleton className="h-20 w-full" /></CardContent></Card>
-          ))
-        ) : summary ? (
-          <>
-            <StatCard label="Total Projects" value={summary.totalProjects} icon={FolderKanban} sub={`${summary.activeProjects} active`} color="bg-primary/10 text-primary" />
-            <StatCard label="Completed Tasks" value={summary.completedTasks} icon={CheckSquare} sub={`of ${summary.totalTasks} total`} color="bg-green-500/10 text-green-600" />
-            <StatCard label="Team Members" value={summary.teamSize} icon={Users} sub="on this workspace" color="bg-blue-500/10 text-blue-600" />
-            <StatCard label="Completion Rate" value={`${summary.completionRate}%`} icon={TrendingUp} sub="tasks completed" color="bg-amber-500/10 text-amber-600" />
-          </>
-        ) : null}
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {STAT_CARDS.map((card, i) => {
+          const value = summary ? (summary as Record<string, number | string>)[card.valueKey] : null;
+          const sub   = summary && card.subKey ? (summary as Record<string, number>)[card.subKey] : null;
+          return (
+            <div
+              key={card.label}
+              className="neo-card p-5"
+              style={{ backgroundColor: card.bg }}
+              data-testid={`stat-card-${i}`}
+            >
+              {summaryLoading ? (
+                <Skeleton className="h-20 w-full rounded-xl" />
+              ) : (
+                <>
+                  <div className="flex items-start justify-between mb-3">
+                    <p
+                      className="text-foreground/70"
+                      style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.62rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em" }}
+                    >
+                      {card.label}
+                    </p>
+                    <div className="w-8 h-8 rounded-xl border-2 border-foreground/30 flex items-center justify-center bg-white/40">
+                      <card.icon size={14} className="text-foreground/70" />
+                    </div>
+                  </div>
+                  <p
+                    className="text-foreground mb-1"
+                    style={{ fontFamily: "'Unbounded', sans-serif", fontSize: "1.8rem", fontWeight: 700, lineHeight: 1 }}
+                  >
+                    {card.valueKey === "completionRate" ? `${value}%` : value}
+                  </p>
+                  <p className="text-foreground/60" style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.6rem" }}>
+                    {sub != null ? `${sub} ${card.subLabel}` : card.subLabel}
+                  </p>
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Charts row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         {/* Area chart */}
-        <Card className="lg:col-span-2">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold">Weekly Progress</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {progressLoading ? (
-              <Skeleton className="h-56 w-full" />
-            ) : progress ? (
-              <ResponsiveContainer width="100%" height={220}>
-                <AreaChart data={progress} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorCompleted" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--chart-1))" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="hsl(var(--chart-1))" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorCreated" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.5} />
-                  <XAxis dataKey="week" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+        <div className="neo-card p-5 lg:col-span-2">
+          <p
+            className="text-foreground mb-4"
+            style={{ fontFamily: "'Unbounded', sans-serif", fontSize: "0.85rem", fontWeight: 700 }}
+          >
+            Weekly Progress
+          </p>
+          {progressLoading ? (
+            <Skeleton className="h-52 w-full rounded-xl" />
+          ) : progress ? (
+            <ResponsiveContainer width="100%" height={210}>
+              <AreaChart data={progress} margin={{ top: 4, right: 4, left: -24, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="gCompleted" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%"  stopColor="hsl(var(--primary))" stopOpacity={0.35} />
+                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="gCreated" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%"  stopColor="hsl(var(--chart-3))" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="hsl(var(--chart-3))" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.3} />
+                <XAxis dataKey="week" tick={{ fontSize: 11, fontFamily: "'Space Mono', monospace", fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 11, fontFamily: "'Space Mono', monospace", fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--card))",
+                    border: "2px solid hsl(var(--border))",
+                    borderRadius: "12px",
+                    fontSize: "11px",
+                    fontFamily: "'Space Mono', monospace",
+                    boxShadow: "3px 3px 0 hsl(var(--border))",
+                  }}
+                />
+                <Area type="monotone" dataKey="completed" stroke="hsl(var(--primary))" fill="url(#gCompleted)" strokeWidth={2.5} name="Completed" />
+                <Area type="monotone" dataKey="created"   stroke="hsl(var(--chart-3))"  fill="url(#gCreated)"   strokeWidth={2.5} name="Created"   />
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : null}
+        </div>
+
+        {/* Pie chart */}
+        <div className="neo-card p-5">
+          <p
+            className="text-foreground mb-4"
+            style={{ fontFamily: "'Unbounded', sans-serif", fontSize: "0.85rem", fontWeight: 700 }}
+          >
+            Task Status
+          </p>
+          {breakdownLoading ? (
+            <Skeleton className="h-52 w-full rounded-xl" />
+          ) : (
+            <div className="flex flex-col items-center">
+              <ResponsiveContainer width="100%" height={150}>
+                <PieChart>
+                  <Pie data={pieData} cx="50%" cy="50%" innerRadius={42} outerRadius={60} paddingAngle={4} dataKey="value" strokeWidth={0}>
+                    {pieData.map((_, idx) => (
+                      <Cell key={idx} fill={PIE_COLORS[idx]} />
+                    ))}
+                  </Pie>
                   <Tooltip
                     contentStyle={{
                       backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                      fontSize: "12px",
+                      border: "2px solid hsl(var(--border))",
+                      borderRadius: "12px",
+                      fontSize: "11px",
+                      fontFamily: "'Space Mono', monospace",
+                      boxShadow: "3px 3px 0 hsl(var(--border))",
                     }}
                   />
-                  <Area type="monotone" dataKey="completed" stroke="hsl(var(--chart-1))" fill="url(#colorCompleted)" strokeWidth={2} name="Completed" />
-                  <Area type="monotone" dataKey="created" stroke="hsl(var(--chart-2))" fill="url(#colorCreated)" strokeWidth={2} name="Created" />
-                </AreaChart>
+                </PieChart>
               </ResponsiveContainer>
-            ) : null}
-          </CardContent>
-        </Card>
-
-        {/* Pie chart */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold">Task Status</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {breakdownLoading ? (
-              <Skeleton className="h-56 w-full" />
-            ) : (
-              <div className="flex flex-col items-center gap-4">
-                <ResponsiveContainer width="100%" height={150}>
-                  <PieChart>
-                    <Pie data={pieData} cx="50%" cy="50%" innerRadius={45} outerRadius={65} paddingAngle={3} dataKey="value">
-                      {pieData.map((_, index) => (
-                        <Cell key={index} fill={PIE_COLORS[index]} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "hsl(var(--card))",
-                        border: "1px solid hsl(var(--border))",
-                        borderRadius: "8px",
-                        fontSize: "12px",
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="w-full space-y-1.5">
-                  {pieData.map((item, i) => (
-                    <div key={item.name} className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: PIE_COLORS[i] }} />
-                        <span className="text-muted-foreground">{item.name}</span>
-                      </div>
-                      <span className="font-semibold">{item.value}</span>
+              <div className="w-full space-y-2 mt-2">
+                {pieData.map((item, i) => (
+                  <div key={item.name} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full border border-foreground/20" style={{ backgroundColor: PIE_COLORS[i] }} />
+                      <span className="text-muted-foreground" style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.65rem" }}>
+                        {item.name}
+                      </span>
                     </div>
-                  ))}
-                </div>
+                    <span className="font-bold" style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.75rem" }}>
+                      {item.value}
+                    </span>
+                  </div>
+                ))}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Activity feed */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold flex items-center gap-2">
-            <Activity size={16} />
-            Recent Activity
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {activityLoading ? (
-            <div className="space-y-3">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Skeleton key={i} className="h-10 w-full" />
-              ))}
-            </div>
-          ) : activity && activity.length > 0 ? (
-            <div className="space-y-0">
-              {activity.slice(0, 8).map((item, idx) => (
+      <div className="neo-card p-5">
+        <p
+          className="text-foreground mb-4"
+          style={{ fontFamily: "'Unbounded', sans-serif", fontSize: "0.85rem", fontWeight: 700 }}
+        >
+          Recent Activity
+        </p>
+        {activityLoading ? (
+          <div className="space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-10 w-full rounded-xl" />)}
+          </div>
+        ) : activity && activity.length > 0 ? (
+          <div className="space-y-0">
+            {activity.slice(0, 8).map((item, idx) => {
+              const badge = ACTIVITY_TYPE_BADGE[item.type] ?? { bg: PASTEL.sage, label: item.type };
+              return (
                 <div
                   key={item.id}
-                  className={cn(
-                    "flex items-start gap-3 py-3",
-                    idx < (activity.length - 1) && "border-b border-border/50"
-                  )}
+                  className={cn("flex items-center gap-3 py-3", idx < 7 && "border-b border-border/40")}
                   data-testid={`activity-item-${item.id}`}
                 >
-                  <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center shrink-0 mt-0.5">
-                    <Clock size={13} className="text-muted-foreground" />
+                  <div
+                    className="w-6 h-6 rounded-full border border-foreground/20 flex items-center justify-center shrink-0"
+                    style={{ backgroundColor: badge.bg }}
+                  >
+                    <Clock size={11} className="text-foreground/60" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-foreground">{item.message}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {new Date(item.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                    </p>
+                  <p className="flex-1 text-sm text-foreground/80">{item.message}</p>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="px-2 py-0.5 rounded-full border-2 border-foreground/20 text-foreground/70 shrink-0"
+                      style={{ backgroundColor: badge.bg, fontFamily: "'Space Mono', monospace", fontSize: "0.6rem", fontWeight: 700 }}
+                    >
+                      {badge.label}
+                    </span>
+                    <span className="text-muted-foreground shrink-0" style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.6rem" }}>
+                      {new Date(item.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                    </span>
                   </div>
-                  <ActivityBadge type={item.type} />
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="py-8 text-center text-muted-foreground text-sm">No activity yet</div>
-          )}
-        </CardContent>
-      </Card>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="py-8 text-center text-muted-foreground" style={{ fontFamily: "'Space Mono', monospace", fontSize: "0.75rem" }}>
+            No activity yet
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -60,6 +60,7 @@
   --font-sans: var(--app-font-sans);
   --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
+  --font-display: var(--app-font-display);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -67,62 +68,79 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* LIGHT MODE */
+/* LIGHT MODE — Neobrutalism warm palette */
 :root {
-  --button-outline: rgba(0,0,0, .10);
-  --badge-outline: rgba(0,0,0, .05);
+  --button-outline: rgba(0,0,0, .15);
+  --badge-outline: rgba(0,0,0, .08);
   --opaque-button-border-intensity: -8;
   --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
+  --elevate-2: rgba(0,0,0, .07);
 
-  --background: 240 10% 97%;
-  --foreground: 240 10% 8%;
-  --border: 240 8% 88%;
-  --card: 0 0% 100%;
-  --card-foreground: 240 10% 8%;
-  --card-border: 240 8% 90%;
+  /* Warm beige background — like rahmanhsim.github.io */
+  --background: 34 28% 93%;        /* #f2ece4 warm beige */
+  --foreground: 0 0% 10%;          /* #1a1a1a near black */
+  --border: 0 0% 10%;              /* #1a1a1a hard black border */
+
+  --card: 0 0% 100%;               /* pure white cards */
+  --card-foreground: 0 0% 10%;
+  --card-border: 0 0% 10%;
+
   --sidebar: 0 0% 100%;
-  --sidebar-foreground: 240 10% 8%;
-  --sidebar-border: 240 8% 90%;
-  --sidebar-primary: 258 90% 66%;
+  --sidebar-foreground: 0 0% 10%;
+  --sidebar-border: 0 0% 87%;      /* subtle sidebar border */
+  --sidebar-primary: 16 67% 52%;   /* orange-red accent */
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 240 8% 95%;
-  --sidebar-accent-foreground: 240 10% 8%;
-  --sidebar-ring: 258 90% 66%;
+  --sidebar-accent: 34 28% 90%;
+  --sidebar-accent-foreground: 0 0% 10%;
+  --sidebar-ring: 16 67% 52%;
+
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 8%;
-  --popover-border: 240 8% 88%;
-  --primary: 258 90% 66%;
+  --popover-foreground: 0 0% 10%;
+  --popover-border: 0 0% 10%;
+
+  --primary: 16 67% 52%;           /* #d95c38 orange-red accent */
   --primary-foreground: 0 0% 100%;
-  --secondary: 240 8% 94%;
-  --secondary-foreground: 240 10% 20%;
-  --muted: 240 8% 94%;
-  --muted-foreground: 240 5% 50%;
-  --accent: 258 90% 95%;
-  --accent-foreground: 258 90% 40%;
-  --destructive: 0 84% 60%;
+
+  --secondary: 34 28% 88%;
+  --secondary-foreground: 0 0% 10%;
+
+  --muted: 34 20% 88%;
+  --muted-foreground: 0 0% 40%;
+
+  --accent: 34 28% 86%;
+  --accent-foreground: 0 0% 10%;
+
+  --destructive: 0 84% 55%;
   --destructive-foreground: 0 0% 100%;
-  --input: 240 8% 88%;
-  --ring: 258 90% 66%;
-  --chart-1: 258 90% 66%;
-  --chart-2: 186 100% 38%;
-  --chart-3: 152 69% 40%;
-  --chart-4: 38 92% 50%;
-  --chart-5: 330 81% 60%;
+
+  --input: 0 0% 10%;
+  --ring: 16 67% 52%;
+
+  --chart-1: 16 67% 52%;           /* orange-red */
+  --chart-2: 152 40% 62%;          /* sage green */
+  --chart-3: 210 50% 68%;          /* sky blue */
+  --chart-4: 275 35% 72%;          /* lavender */
+  --chart-5: 38 75% 68%;           /* warm yellow */
 
   --app-font-sans: 'Inter', sans-serif;
+  --app-font-display: 'Unbounded', sans-serif;
   --app-font-serif: Georgia, serif;
-  --app-font-mono: Menlo, monospace;
-  --radius: .625rem;
+  --app-font-mono: 'Space Mono', monospace;
+  --radius: 1.125rem;              /* 18px — generous Apple-ish rounding */
 
-  --shadow-2xs: 0px 1px 2px 0px rgba(0,0,0,0.04);
-  --shadow-xs: 0px 1px 3px 0px rgba(0,0,0,0.06);
-  --shadow-sm: 0px 2px 6px -1px rgba(0,0,0,0.08);
-  --shadow: 0px 4px 12px -2px rgba(0,0,0,0.10);
-  --shadow-md: 0px 6px 16px -4px rgba(0,0,0,0.12);
-  --shadow-lg: 0px 10px 24px -6px rgba(0,0,0,0.14);
-  --shadow-xl: 0px 16px 32px -8px rgba(0,0,0,0.16);
-  --shadow-2xl: 0px 24px 48px -12px rgba(0,0,0,0.18);
+  /* Hard neobrutalist shadows — no blur, solid offset */
+  --neo-shadow-sm: 2px 2px 0 #1a1a1a;
+  --neo-shadow: 4px 4px 0 #1a1a1a;
+  --neo-shadow-lg: 6px 6px 0 #1a1a1a;
+  --shadow-2xs: var(--neo-shadow-sm);
+  --shadow-xs: var(--neo-shadow-sm);
+  --shadow-sm: var(--neo-shadow-sm);
+  --shadow: var(--neo-shadow);
+  --shadow-md: var(--neo-shadow);
+  --shadow-lg: var(--neo-shadow-lg);
+  --shadow-xl: var(--neo-shadow-lg);
+  --shadow-2xl: var(--neo-shadow-lg);
+
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 
@@ -135,56 +153,70 @@
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
+/* DARK MODE — neobrutalism dark */
 .dark {
-  --button-outline: rgba(255,255,255, .10);
-  --badge-outline: rgba(255,255,255, .05);
+  --button-outline: rgba(255,255,255, .12);
+  --badge-outline: rgba(255,255,255, .06);
   --opaque-button-border-intensity: 9;
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  --background: 240 12% 8%;
-  --foreground: 240 8% 92%;
-  --border: 240 8% 18%;
-  --card: 240 10% 11%;
-  --card-foreground: 240 8% 92%;
-  --card-border: 240 8% 16%;
-  --sidebar: 240 12% 9%;
-  --sidebar-foreground: 240 8% 88%;
-  --sidebar-border: 240 8% 15%;
-  --sidebar-primary: 258 90% 70%;
+  --background: 0 0% 9%;           /* #171717 very dark */
+  --foreground: 34 28% 90%;        /* warm off-white */
+  --border: 34 20% 75%;            /* warm gray border */
+
+  --card: 0 0% 12%;
+  --card-foreground: 34 28% 90%;
+  --card-border: 34 15% 22%;
+
+  --sidebar: 0 0% 10%;
+  --sidebar-foreground: 34 28% 88%;
+  --sidebar-border: 0 0% 18%;
+  --sidebar-primary: 16 67% 58%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 240 8% 16%;
-  --sidebar-accent-foreground: 240 8% 88%;
-  --sidebar-ring: 258 90% 70%;
-  --popover: 240 10% 12%;
-  --popover-foreground: 240 8% 92%;
-  --popover-border: 240 8% 18%;
-  --primary: 258 90% 70%;
+  --sidebar-accent: 0 0% 16%;
+  --sidebar-accent-foreground: 34 28% 88%;
+  --sidebar-ring: 16 67% 58%;
+
+  --popover: 0 0% 13%;
+  --popover-foreground: 34 28% 90%;
+  --popover-border: 34 15% 22%;
+
+  --primary: 16 67% 58%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 240 8% 16%;
-  --secondary-foreground: 240 8% 80%;
-  --muted: 240 8% 15%;
-  --muted-foreground: 240 5% 55%;
-  --accent: 258 50% 20%;
-  --accent-foreground: 258 90% 80%;
+
+  --secondary: 0 0% 18%;
+  --secondary-foreground: 34 28% 80%;
+
+  --muted: 0 0% 16%;
+  --muted-foreground: 34 10% 55%;
+
+  --accent: 16 30% 20%;
+  --accent-foreground: 16 67% 70%;
+
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --input: 240 8% 20%;
-  --ring: 258 90% 70%;
-  --chart-1: 258 90% 70%;
-  --chart-2: 186 80% 50%;
-  --chart-3: 152 60% 50%;
-  --chart-4: 38 90% 55%;
-  --chart-5: 330 75% 65%;
 
-  --shadow-2xs: 0px 1px 2px 0px rgba(0,0,0,0.3);
-  --shadow-xs: 0px 1px 3px 0px rgba(0,0,0,0.4);
-  --shadow-sm: 0px 2px 6px -1px rgba(0,0,0,0.5);
-  --shadow: 0px 4px 12px -2px rgba(0,0,0,0.5);
-  --shadow-md: 0px 6px 16px -4px rgba(0,0,0,0.5);
-  --shadow-lg: 0px 10px 24px -6px rgba(0,0,0,0.5);
-  --shadow-xl: 0px 16px 32px -8px rgba(0,0,0,0.5);
-  --shadow-2xl: 0px 24px 48px -12px rgba(0,0,0,0.6);
+  --input: 34 15% 22%;
+  --ring: 16 67% 58%;
+
+  --chart-1: 16 67% 60%;
+  --chart-2: 152 40% 55%;
+  --chart-3: 210 55% 62%;
+  --chart-4: 275 40% 65%;
+  --chart-5: 38 70% 60%;
+
+  --neo-shadow-sm: 2px 2px 0 rgba(242,236,228,0.3);
+  --neo-shadow: 4px 4px 0 rgba(242,236,228,0.25);
+  --neo-shadow-lg: 6px 6px 0 rgba(242,236,228,0.2);
+  --shadow-2xs: var(--neo-shadow-sm);
+  --shadow-xs: var(--neo-shadow-sm);
+  --shadow-sm: var(--neo-shadow-sm);
+  --shadow: var(--neo-shadow);
+  --shadow-md: var(--neo-shadow);
+  --shadow-lg: var(--neo-shadow-lg);
+  --shadow-xl: var(--neo-shadow-lg);
+  --shadow-2xl: var(--neo-shadow-lg);
 
   --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
   --sidebar-accent-border: hsl(from hsl(var(--sidebar-accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -221,6 +253,43 @@
     pointer-events: none;
   }
 
+  /* Neobrutalism card — hard border + offset shadow */
+  .neo-card {
+    border: 2px solid hsl(var(--border));
+    box-shadow: var(--neo-shadow);
+    border-radius: var(--radius);
+    background: hsl(var(--card));
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .neo-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--neo-shadow-lg);
+  }
+
+  /* Pill badge */
+  .neo-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    border: 2px solid hsl(var(--border));
+    border-radius: 999px;
+    padding: 0.2rem 0.65rem;
+    box-shadow: var(--neo-shadow-sm);
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+  }
+
+  /* Display font (Unbounded) */
+  .font-display {
+    font-family: 'Unbounded', sans-serif;
+  }
+
+  /* Mono font (Space Mono) */
+  .font-mono-custom {
+    font-family: 'Space Mono', monospace;
+  }
+
   .no-default-hover-elevate {}
   .no-default-active-elevate {}
 
@@ -238,9 +307,7 @@
     background-color: var(--elevate-2);
   }
 
-  .border.toggle-elevate::before {
-    inset: -1px;
-  }
+  .border.toggle-elevate::before { inset: -1px; }
 
   .hover-elevate:not(.no-default-hover-elevate),
   .active-elevate:not(.no-default-active-elevate),
@@ -275,23 +342,7 @@
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
   .border.active-elevate:not(.no-active-interaction-elevate)::after,
   .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
-  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
-  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after {
     inset: -1px;
-  }
-
-  .animate-enter {
-    animation: fadeSlideIn 0.3s ease forwards;
-  }
-
-  @keyframes fadeSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 }
