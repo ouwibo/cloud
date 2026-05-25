@@ -97,59 +97,94 @@ function getGreeting() {
   return "🌃 Good Night!";
 }
 
+const STAT_CARDS = (airdrops: any[], tasks: any[]) => [
+  {
+    label: "TOTAL AIRDROPS",
+    value: airdrops.length,
+    color: "#f97316",
+    bg: "rgba(249,115,22,0.12)",
+    border: "rgba(249,115,22,0.3)",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    ),
+  },
+  {
+    label: "ACTIVE",
+    value: airdrops.filter(a => a.status === "active").length,
+    color: "#8b5cf6",
+    bg: "rgba(139,92,246,0.12)",
+    border: "rgba(139,92,246,0.3)",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    ),
+  },
+  {
+    label: "UPCOMING",
+    value: airdrops.filter(a => a.status === "upcoming").length,
+    color: "#06b6d4",
+    bg: "rgba(6,182,212,0.12)",
+    border: "rgba(6,182,212,0.3)",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+    ),
+  },
+  {
+    label: "TASKS TRACKED",
+    value: tasks.length,
+    color: "#10b981",
+    bg: "rgba(16,185,129,0.12)",
+    border: "rgba(16,185,129,0.3)",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+    ),
+  },
+];
+
 export default function DashboardPage() {
   const active    = mockAirdrops.filter(a => a.status === "active");
   const upcoming  = mockAirdrops.filter(a => a.status === "upcoming");
   const featured  = mockAirdrops.filter(a => a.isFeatured);
   const totalTasks = mockAirdrops.reduce((s, a) => s + (a.taskCount ?? 0), 0);
 
-  const STATS = [
-    { label: "Total Airdrops", value: mockAirdrops.length, icon: <IconZap />,      bg: "#b8d8f0", },
-    { label: "Active",         value: active.length,       icon: <IconTrend />,    bg: "#b8e8c8", },
-    { label: "Upcoming",       value: upcoming.length,     icon: <IconClock />,    bg: "#f0e0a0", },
-    { label: "Tasks Tracked",  value: totalTasks,          icon: <IconActivity />, bg: "#d4c0f0", },
-  ];
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good Morning! ☀️" : hour < 18 ? "Good Afternoon! 🌤️" : "Good Evening! 🌙";
 
   return (
     <div>
-      {/* ── Hero header with wave ── */}
-      <div className="relative overflow-hidden rounded-3xl mb-8"
-        style={{ border: "2px solid hsl(var(--border))", boxShadow: "4px 4px 0 hsl(var(--border))" }}>
-        <div style={{
-          background: "linear-gradient(135deg, hsl(var(--primary)/0.15) 0%, hsl(var(--primary)/0.05) 100%)",
-          padding: "32px 28px 0",
-        }}>
-          <div style={{ fontFamily: MONO, fontSize: "0.7rem", opacity: 0.6, marginBottom: 6 }}>
-            {getGreeting()} · {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-          </div>
-          <h1 style={{ fontFamily: DISPLAY, fontSize: "1.6rem", fontWeight: 700, lineHeight: 1.2, marginBottom: 8 }}>
-            Ouwibo Dashboard
-          </h1>
-          <p style={{ fontFamily: MONO, fontSize: "0.68rem", opacity: 0.6, marginBottom: 4 }}>
-            Track airdrops · Complete tasks · Earn rewards
-          </p>
+      {/* Hero */}
+      <div className="relative rounded-3xl overflow-hidden mb-6 border-2 border-border"
+        style={{ background: "linear-gradient(135deg, #f97316 0%, #8b5cf6 50%, #06b6d4 100%)", boxShadow: "4px 4px 0 hsl(var(--border))" }}>
+        <div className="relative z-10 px-7 pt-7 pb-0">
+          <p style={{ fontFamily: MONO, fontSize: "0.65rem", fontWeight: 700, color: "rgba(255,255,255,0.85)" }}>{greeting} · {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}</p>
+          <h1 className="mt-1 text-white" style={{ fontFamily: DISPLAY, fontSize: "clamp(1.6rem,4vw,2.4rem)", fontWeight: 900, textShadow: "2px 2px 0 rgba(0,0,0,0.15)" }}>Ouwibo Dashboard</h1>
+          <p style={{ fontFamily: MONO, fontSize: "0.65rem", color: "rgba(255,255,255,0.75)", marginTop: "6px" }}>Track airdrops · Complete tasks · Earn rewards</p>
         </div>
-        <WaveSection />
+        {/* Multi-color waves */}
+        <svg viewBox="0 0 800 80" className="w-full" style={{ display: "block", marginTop: "-10px" }}>
+          <path d="M0,40 C100,70 200,10 400,40 C600,70 700,20 800,40 L800,80 L0,80 Z" fill="rgba(255,255,255,0.1)"/>
+          <path d="M0,55 C150,30 300,70 500,50 C650,35 750,60 800,55 L800,80 L0,80 Z" fill="rgba(255,255,255,0.15)"/>
+          <path d="M0,65 C200,45 400,75 600,60 C700,52 760,68 800,65 L800,80 L0,80 Z" fill="rgba(255,255,255,0.2)"/>
+        </svg>
       </div>
 
-      {/* ── Stat cards ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {STATS.map((s, i) => (
-          <div key={i} className="neo-card p-5 relative overflow-hidden"
-            style={{ backgroundColor: s.bg }}>
-            {/* Dot decoration (from Blogger template) */}
-            <div style={{
-              position: "absolute", bottom: -12, left: -12,
-              width: 60, height: 60, borderRadius: "50%",
-              background: "rgba(0,0,0,0.06)",
-            }}/>
-            <div style={{ color: "#08102b", opacity: 0.55, marginBottom: 8 }}>{s.icon}</div>
-            <div style={{ fontFamily: DISPLAY, fontSize: "1.6rem", fontWeight: 700, color: "#08102b", lineHeight: 1 }}>
-              {s.value}
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {STAT_CARDS(mockAirdrops, mockAirdrops).map(card => (
+          <div key={card.label} className="rounded-2xl p-5 border-2 transition-transform hover:-translate-y-0.5"
+            style={{ background: card.bg, borderColor: card.border, boxShadow: `3px 3px 0 ${card.border}` }}>
+            <div className="flex items-start justify-between mb-3">
+              <p style={{ fontFamily: MONO, fontSize: "0.55rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: card.color }}>{card.label}</p>
+              {card.icon}
             </div>
-            <div style={{ fontFamily: MONO, fontSize: "0.58rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "#08102b", opacity: 0.65, marginTop: 4 }}>
-              {s.label}
-            </div>
+            <p style={{ fontFamily: DISPLAY, fontSize: "2.2rem", fontWeight: 900, color: card.color, lineHeight: 1 }}>{card.value}</p>
           </div>
         ))}
       </div>

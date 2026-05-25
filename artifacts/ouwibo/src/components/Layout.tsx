@@ -90,188 +90,216 @@ const WaveDecoration = () => (
 );
 
 const navItems = [
-  { href: "/",         Icon: IconHome,     label: "Dashboard" },
-  { href: "/airdrops", Icon: IconZap,      label: "Airdrops"  },
-  { href: "/chat",     Icon: IconChat,     label: "AI Chat"   },
-  { href: "/settings", Icon: IconSettings, label: "Settings"  },
+  {
+    href: "/",
+    label: "Dashboard",
+    color: "#f97316",
+    colorMuted: "rgba(249,115,22,0.15)",
+    icon: (active: boolean) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={active ? "#f97316" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+    ),
+  },
+  {
+    href: "/airdrops",
+    label: "Airdrops",
+    color: "#8b5cf6",
+    colorMuted: "rgba(139,92,246,0.15)",
+    icon: (active: boolean) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={active ? "#8b5cf6" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    ),
+  },
+  {
+    href: "/chat",
+    label: "AI Chat",
+    color: "#06b6d4",
+    colorMuted: "rgba(6,182,212,0.15)",
+    icon: (active: boolean) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={active ? "#06b6d4" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        <circle cx="9" cy="10" r="1" fill={active ? "#06b6d4" : "currentColor"}/>
+        <circle cx="12" cy="10" r="1" fill={active ? "#06b6d4" : "currentColor"}/>
+        <circle cx="15" cy="10" r="1" fill={active ? "#06b6d4" : "currentColor"}/>
+      </svg>
+    ),
+  },
+  {
+    href: "/settings",
+    label: "Settings",
+    color: "#10b981",
+    colorMuted: "rgba(16,185,129,0.15)",
+    icon: (active: boolean) => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={active ? "#10b981" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    ),
+  },
 ];
 
-function NavItem({ href, Icon, label, onClick }: { href: string; Icon: () => JSX.Element; label: string; onClick?: () => void }) {
-  const [location] = useLocation();
-  const isActive = location === href || (href !== "/" && location.startsWith(href));
+function NavItem({ href, label, color, colorMuted, icon }: typeof navItems[0]) {
+  const [loc] = useLocation();
+  const active = href === "/" ? loc === "/" : loc.startsWith(href);
+
   return (
-    <Link href={href} onClick={onClick}
-      className={cn(
-        "flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-150 group relative",
-        isActive
-          ? "bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:text-foreground hover:bg-muted"
-      )}
-      style={{
-        fontFamily: MONO,
-        fontSize: "0.72rem",
-        fontWeight: 700,
-        boxShadow: isActive ? "3px 3px 0 hsl(var(--border))" : undefined,
-        border: isActive ? "2px solid hsl(var(--border))" : "2px solid transparent",
-      }}>
-      <Icon />
-      <span>{label}</span>
-      {isActive && (
-        <span style={{
-          position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
-          width: 6, height: 6, borderRadius: "50%",
-          background: "currentColor", opacity: 0.5,
-        }}/>
-      )}
+    <Link href={href}>
+      <div
+        className={cn(
+          "flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 cursor-pointer group",
+          active ? "shadow-sm" : "hover:bg-muted/60"
+        )}
+        style={active ? {
+          background: colorMuted,
+          border: `2px solid ${color}30`,
+          boxShadow: `0 2px 12px ${color}25`,
+        } : { border: "2px solid transparent" }}
+      >
+        <span className="transition-transform duration-200 group-hover:scale-110">
+          {icon(active)}
+        </span>
+        <span
+          style={{
+            fontFamily: MONO,
+            fontSize: "0.72rem",
+            fontWeight: 700,
+            color: active ? color : undefined,
+          }}
+          className={cn("transition-colors", !active && "text-muted-foreground group-hover:text-foreground")}
+        >
+          {label}
+        </span>
+        {active && (
+          <span className="ml-auto w-2 h-2 rounded-full animate-pulse" style={{ background: color }} />
+        )}
+      </div>
     </Link>
   );
 }
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark";
+  const [loc] = useLocation();
 
   return (
     <div className="flex min-h-screen bg-background">
 
-      {/* ── Desktop Sidebar ── */}
-      <aside className="hidden lg:flex flex-col w-56 fixed inset-y-0 left-0 z-30 bg-sidebar"
-        style={{ borderRight: "2px solid hsl(var(--border))" }}>
-
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-56 border-r-2 border-border bg-background z-40">
         {/* Logo */}
-        <div className="flex items-center gap-3 px-5 h-[64px]"
-          style={{ borderBottom: "2px solid hsl(var(--border))" }}>
-          <div style={{
-            width: 36, height: 36, borderRadius: 12,
-            background: "hsl(var(--primary))",
-            border: "2px solid hsl(var(--border))",
-            boxShadow: "3px 3px 0 hsl(var(--border))",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <IconZap />
+        <div className="p-5 pb-4">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0"
+              style={{ background: "linear-gradient(135deg, #f97316 0%, #8b5cf6 50%, #06b6d4 100%)", boxShadow: "3px 3px 0 hsl(var(--border))" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <div>
+              <div style={{ fontFamily: DISPLAY, fontSize: "0.85rem", fontWeight: 800 }}>Ouwibo</div>
+              <div style={{ fontFamily: MONO, fontSize: "0.55rem", fontWeight: 700 }} className="text-muted-foreground">Airdrop Tracker</div>
+            </div>
           </div>
-          <div>
-            <div style={{ fontFamily: DISPLAY, fontSize: "0.9rem", fontWeight: 700, lineHeight: 1 }}>Ouwibo</div>
-            <div style={{ fontFamily: MONO, fontSize: "0.55rem", opacity: 0.5, marginTop: 2 }}>Airdrop Tracker</div>
-          </div>
+
+          {/* Nav items */}
+          <nav className="flex flex-col gap-1">
+            {navItems.map(item => <NavItem key={item.href} {...item} />)}
+          </nav>
         </div>
 
-        {/* Nav items */}
-        <nav className="flex-1 px-3 py-5 space-y-1">
-          {navItems.map(item => <NavItem key={item.href} {...item} />)}
-        </nav>
+        {/* Spacer */}
+        <div className="flex-1" />
 
         {/* Wave decoration */}
-        <WaveDecoration />
+        <div className="overflow-hidden opacity-30 mb-0 -mb-1">
+          <svg viewBox="0 0 220 60" className="w-full">
+            <path d="M0,30 C40,50 80,10 120,30 C160,50 200,10 220,30 L220,60 L0,60 Z" fill="#f97316" opacity="0.3"/>
+            <path d="M0,40 C40,20 80,55 120,40 C160,20 200,55 220,40 L220,60 L0,60 Z" fill="#8b5cf6" opacity="0.3"/>
+            <path d="M0,50 C50,30 100,60 150,45 C180,36 210,50 220,55 L220,60 L0,60 Z" fill="#06b6d4" opacity="0.4"/>
+          </svg>
+        </div>
 
-        {/* Footer — theme toggle */}
-        <div className="px-3 pb-5">
-          <button onClick={toggleTheme}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-2xl transition-all"
-            style={{
-              fontFamily: MONO, fontSize: "0.65rem", fontWeight: 700,
-              border: "2px solid hsl(var(--border))",
-              boxShadow: "3px 3px 0 hsl(var(--border))",
-              background: "hsl(var(--muted))",
-              color: "hsl(var(--muted-foreground))",
-            }}>
-            {theme === "dark" ? <IconSun /> : <IconMoon />}
-            {theme === "dark" ? "Light Mode" : "Dark Mode"}
+        {/* Theme + footer */}
+        <div className="p-4 pt-0 border-t-2 border-border">
+          <button
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl border-2 border-border hover:bg-muted transition-all"
+            style={{ fontFamily: MONO, fontSize: "0.65rem", fontWeight: 700, boxShadow: "2px 2px 0 hsl(var(--border))" }}
+          >
+            <span style={{ color: isDark ? "#fbbf24" : "#6366f1" }}>
+              {isDark ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+              )}
+            </span>
+            {isDark ? "Light Mode" : "Dark Mode"}
           </button>
         </div>
       </aside>
 
-      {/* ── Mobile top bar ── */}
-      <div className="lg:hidden fixed top-0 inset-x-0 z-40 flex items-center justify-between px-4"
-        style={{ height: 56, background: "hsl(var(--sidebar))", borderBottom: "2px solid hsl(var(--border))" }}>
+      {/* Mobile Top Bar */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 h-14 border-b-2 border-border bg-background z-50 flex items-center justify-between px-5">
         <div className="flex items-center gap-2.5">
-          <div style={{
-            width: 30, height: 30, borderRadius: 10,
-            background: "hsl(var(--primary))",
-            border: "2px solid hsl(var(--border))",
-            boxShadow: "2px 2px 0 hsl(var(--border))",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <IconZap />
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, #f97316 0%, #8b5cf6 50%, #06b6d4 100%)" }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
           </div>
-          <span style={{ fontFamily: DISPLAY, fontSize: "0.85rem", fontWeight: 700 }}>Ouwibo</span>
+          <span style={{ fontFamily: DISPLAY, fontSize: "0.8rem", fontWeight: 800 }}>Ouwibo</span>
         </div>
-        <div className="flex gap-2">
-          <button onClick={toggleTheme}
-            className="flex items-center justify-center"
-            style={{
-              width: 34, height: 34, borderRadius: 10,
-              border: "2px solid hsl(var(--border))",
-              boxShadow: "2px 2px 0 hsl(var(--border))",
-              background: "hsl(var(--muted))",
-            }}>
-            {theme === "dark" ? <IconSun /> : <IconMoon />}
-          </button>
-          <button onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex items-center justify-center"
-            style={{
-              width: 34, height: 34, borderRadius: 10,
-              border: "2px solid hsl(var(--border))",
-              boxShadow: "2px 2px 0 hsl(var(--border))",
-              background: "hsl(var(--muted))",
-            }}>
-            {mobileOpen ? <IconClose /> : <IconHam />}
-          </button>
-        </div>
-      </div>
+        <button
+          onClick={() => setTheme(isDark ? "light" : "dark")}
+          className="p-2 rounded-xl border-2 border-border"
+          style={{ boxShadow: "2px 2px 0 hsl(var(--border))" }}
+        >
+          {isDark ? (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          ) : (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          )}
+        </button>
+      </header>
 
-      {/* ── Mobile drawer ── */}
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50" onClick={() => setMobileOpen(false)}>
-          <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}/>
-          <aside className="absolute left-0 top-0 bottom-0 w-60 flex flex-col"
-            style={{ background: "hsl(var(--sidebar))", borderRight: "2px solid hsl(var(--border))" }}
-            onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5"
-              style={{ height: 56, borderBottom: "2px solid hsl(var(--border))" }}>
-              <span style={{ fontFamily: DISPLAY, fontSize: "0.85rem", fontWeight: 700 }}>Ouwibo</span>
-              <button onClick={() => setMobileOpen(false)}><IconClose /></button>
-            </div>
-            <nav className="flex-1 px-3 py-5 space-y-1">
-              {navItems.map(item => (
-                <NavItem key={item.href} {...item} onClick={() => setMobileOpen(false)} />
-              ))}
-            </nav>
-            <WaveDecoration />
-          </aside>
-        </div>
-      )}
-
-      {/* ── Main content ── */}
+      {/* Main content */}
       <main className="flex-1 lg:ml-56 pt-14 lg:pt-0 min-h-screen pb-20 lg:pb-0">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6">
           {children}
         </div>
       </main>
 
-      {/* ── Mobile bottom nav (like Blogger template) ── */}
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 flex items-center"
-        style={{
-          height: 60,
-          background: "hsl(var(--sidebar))",
-          borderTop: "2px solid hsl(var(--border))",
-          boxShadow: "0 -4px 20px rgba(0,0,0,0.1)",
-        }}>
-        {navItems.map(({ href, Icon, label }) => {
-          const [location] = useLocation();
-          const isActive = location === href || (href !== "/" && location.startsWith(href));
+      {/* Mobile Bottom Nav */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 border-t-2 border-border bg-background z-50 flex">
+        {navItems.map(({ href, label, color, colorMuted, icon }) => {
+          const active = href === "/" ? loc === "/" : loc.startsWith(href);
           return (
-            <Link key={href} href={href}
-              className="flex-1 flex flex-col items-center justify-center gap-0.5 transition-all"
-              style={{
-                color: isActive ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
-                fontFamily: MONO, fontSize: "0.52rem", fontWeight: 700,
-              }}>
-              <Icon />
-              <span>{label}</span>
-              {isActive && (
-                <span style={{ width: 4, height: 4, borderRadius: "50%", background: "hsl(var(--primary))", marginTop: 1 }}/>
-              )}
+            <Link key={href} href={href} className="flex-1">
+              <div className="flex flex-col items-center gap-1 py-2.5 transition-all"
+                style={active ? { background: colorMuted, borderTop: `2px solid ${color}` } : {}}>
+                <span className="transition-transform duration-200" style={{ transform: active ? "scale(1.15)" : "scale(1)" }}>
+                  {icon(active)}
+                </span>
+                <span style={{ fontFamily: MONO, fontSize: "0.5rem", fontWeight: 700, color: active ? color : undefined }}
+                  className={cn(!active && "text-muted-foreground")}>
+                  {label}
+                </span>
+              </div>
             </Link>
           );
         })}
