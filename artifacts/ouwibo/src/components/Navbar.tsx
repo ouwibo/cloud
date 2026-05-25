@@ -19,15 +19,11 @@ export default function Navbar() {
   const curHex = ACCENT_LIST.find(a => a.id === accent)?.hex ?? "#d0612a";
 
   return (
-    <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
-      <div className="max-w-5xl mx-auto px-4 h-11 flex items-center gap-3">
+    <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"><div className="max-w-5xl mx-auto px-4 h-11 flex items-center gap-3">
 
         {/* Logo */}
-        <Link href="/" className="flex-shrink-0 flex items-center gap-1">
-          <span className="text-[15px] font-bold tracking-tight text-foreground">
-            Ouwibo<span className="text-primary">Cloud</span>
-          </span>
-        </Link>
+        <Link href="/" className="flex-shrink-0 flex items-center gap-1"><span className="text-[15px] font-bold tracking-tight text-foreground">
+            Ouwibo<span className="text-primary">Cloud</span></span></Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-0.5 ml-2">
@@ -41,15 +37,11 @@ export default function Navbar() {
               )}
             >{label}</Link>
           ))}
-        </nav>
-
-        <div className="flex-1" />
+        </nav><div className="flex-1" />
 
         {/* Search */}
         <button onClick={() => setSrch(v => !v)}
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-          <Search className="w-[15px] h-[15px]" />
-        </button>
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"><Search className="w-[15px] h-[15px]" /></button>
 
         {/* Dark / Light */}
         <button onClick={() => setMode(mode === "dark" ? "light" : "dark")}
@@ -58,12 +50,9 @@ export default function Navbar() {
         </button>
 
         {/* Accent picker */}
-        <div className="relative hidden md:block">
-          <button onClick={() => setPalette(v => !v)}
-            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors">
-            <span className="w-3 h-3 rounded-full block ring-[1.5px] ring-offset-[2px] ring-offset-background"
-              style={{ background: curHex, ringColor: curHex }} />
-          </button>
+        <div className="relative hidden md:block"><button onClick={() => setPalette(v => !v)}
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors"><span className="w-3 h-3 rounded-full block ring-[1.5px] ring-offset-[2px] ring-offset-background"
+              style={{ background: curHex, ringColor: curHex }} /></button>
           {palette && (
             <div className="absolute right-0 top-[38px] bg-card border border-border rounded-xl p-2.5 flex gap-2 shadow-md z-50">
               {ACCENT_LIST.map(a => (
@@ -91,15 +80,12 @@ export default function Navbar() {
         <button onClick={() => setMob(v => !v)}
           className="md:hidden w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:bg-muted">
           {mob ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-        </button>
-      </div>
+        </button></div>
 
       {/* Inline search bar */}
       {srch && (
-        <div className="border-t border-border bg-background/95 px-4 py-2.5">
-          <input autoFocus type="search" placeholder="Search airdrops, news…"
-            className="w-full max-w-5xl mx-auto block text-[13px] bg-transparent outline-none placeholder:text-muted-foreground" />
-        </div>
+        <div className="border-t border-border bg-background/95 px-4 py-2.5"><input autoFocus type="search" placeholder="Search airdrops, news…"
+            className="w-full max-w-5xl mx-auto block text-[13px] bg-transparent outline-none placeholder:text-muted-foreground" /></div>
       )}
 
       {/* Mobile menu */}
@@ -120,12 +106,10 @@ export default function Navbar() {
                   outline: accent === a.id ? `2px solid ${a.hex}` : "none", outlineOffset: 2 }}
               />
             ))}
-          </div>
-          <Link href="/admin" onClick={() => setMob(false)}
+          </div><Link href="/admin" onClick={() => setMob(false)}
             className="mx-3 mt-1 flex items-center justify-center h-8 rounded-md bg-primary text-primary-foreground text-[13px] font-medium">
             Write Article
-          </Link>
-        </div>
+          </Link></div>
       )}
     </header>
   );

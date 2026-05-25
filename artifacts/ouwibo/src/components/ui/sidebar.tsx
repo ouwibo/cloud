@@ -127,9 +127,7 @@ function SidebarProvider({
   )
 
   return (
-    <SidebarContext.Provider value={contextValue}>
-      <TooltipProvider delayDuration={0}>
-        <div
+    <SidebarContext.Provider value={contextValue}><TooltipProvider delayDuration={0}><div
           data-slot="sidebar-wrapper"
           style={
             {
@@ -145,9 +143,7 @@ function SidebarProvider({
           {...props}
         >
           {children}
-        </div>
-      </TooltipProvider>
-    </SidebarContext.Provider>
+        </div></TooltipProvider></SidebarContext.Provider>
   )
 }
 
@@ -182,8 +178,7 @@ function Sidebar({
 
   if (isMobile) {
     return (
-      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
-        <SheetContent
+      <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}><SheetContent
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
@@ -194,14 +189,7 @@ function Sidebar({
             } as React.CSSProperties
           }
           side={side}
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
-          </SheetHeader>
-          <div className="flex h-full w-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
+        ><SheetHeader className="sr-only"><SheetTitle>Sidebar</SheetTitle><SheetDescription>Displays the mobile sidebar.</SheetDescription></SheetHeader><div className="flex h-full w-full flex-col">{children}</div></SheetContent></Sheet>
     )
   }
 
@@ -225,8 +213,7 @@ function Sidebar({
             ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+var(--spacing-4))]"
             : "group-data-[collapsible=icon]:w-[var(--sidebar-width-icon)]"
         )}
-      />
-      <div
+      /><div
         data-slot="sidebar-container"
         className={cn(
           "fixed inset-y-0 z-10 hidden h-svh w-[var(--sidebar-width)] transition-[left,right,width] duration-200 ease-linear md:flex",
@@ -240,16 +227,13 @@ function Sidebar({
           className
         )}
         {...props}
-      >
-        <div
+      ><div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
           className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
         >
           {children}
-        </div>
-      </div>
-    </div>
+        </div></div></div>
   )
 }
 
@@ -272,10 +256,7 @@ function SidebarTrigger({
         toggleSidebar()
       }}
       {...props}
-    >
-      <PanelLeftIcon />
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    ><PanelLeftIcon /><span className="sr-only">Toggle Sidebar</span></Button>
   )
 }
 
@@ -534,15 +515,12 @@ function SidebarMenuButton({
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent
+    <Tooltip><TooltipTrigger asChild>{button}</TooltipTrigger><TooltipContent
         side="right"
         align="center"
         hidden={state !== "collapsed" || isMobile}
         {...tooltip}
-      />
-    </Tooltip>
+      /></Tooltip>
   )
 }
 
@@ -633,8 +611,7 @@ function SidebarMenuSkeleton({
             "--skeleton-width": width,
           } as React.CSSProperties
         }
-      />
-    </div>
+      /></div>
   )
 }
 

@@ -44,23 +44,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r bg-card transition-transform duration-200 ease-in-out md:relative md:translate-x-0 ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-      >
-        <div className="flex h-16 items-center justify-between px-6 border-b">
-          <div className="flex items-center gap-2 font-bold text-lg tracking-tight">
-            <Target className="h-6 w-6 text-primary" />
-            <span>Ouwibo</span>
-          </div>
-          <Button 
+      ><div className="flex h-16 items-center justify-between px-6 border-b"><div className="flex items-center gap-2 font-bold text-lg tracking-tight"><Target className="h-6 w-6 text-primary" /><span>Ouwibo</span></div><Button 
             variant="ghost" 
             size="icon" 
             className="md:hidden"
             onClick={() => setMobileMenuOpen(false)}
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-
-        <nav className="flex flex-col gap-2 p-4 h-[calc(100vh-8rem)]">
+          ><X className="h-5 w-5" /></Button></div><nav className="flex flex-col gap-2 p-4 h-[calc(100vh-8rem)]">
           {navItems.map((item) => {
             const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
             return (
@@ -89,10 +78,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             );
           })}
-        </nav>
-
-        <div className="absolute bottom-0 w-full p-4 border-t border-border/50">
-          <Button
+        </nav><div className="absolute bottom-0 w-full p-4 border-t border-border/50"><Button
             variant="outline"
             className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -100,34 +86,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             {theme === "dark" ? "Light Mode" : "Dark Mode"}
-          </Button>
-        </div>
-      </aside>
+          </Button></div></aside>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile Header */}
-        <header className="flex h-16 items-center justify-between px-4 border-b bg-card md:hidden">
-          <div className="flex items-center gap-2 font-bold">
-            <Target className="h-5 w-5 text-primary" />
-            <span>Ouwibo</span>
-          </div>
-          <Button 
+        <header className="flex h-16 items-center justify-between px-4 border-b bg-card md:hidden"><div className="flex items-center gap-2 font-bold"><Target className="h-5 w-5 text-primary" /><span>Ouwibo</span></div><Button 
             variant="ghost" 
             size="icon"
             onClick={() => setMobileMenuOpen(true)}
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-        </header>
+          ><Menu className="h-5 w-5" /></Button></header>
 
         {/* Scrollable Area */}
-        <div className="flex-1 overflow-auto bg-background/50">
-          <div className="mx-auto max-w-6xl p-4 md:p-8 w-full h-full">
+        <div className="flex-1 overflow-auto bg-background/50"><div className="mx-auto max-w-6xl p-4 md:p-8 w-full h-full">
             {children}
-          </div>
-        </div>
-      </main>
-    </div>
+          </div></div></main></div>
   );
 }

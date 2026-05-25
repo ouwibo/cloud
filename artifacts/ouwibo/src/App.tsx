@@ -19,36 +19,12 @@ const qc = new QueryClient();
 
 function App() {
   return (
-    <WouterRouter>
-      <QueryClientProvider client={qc}>
-        <TooltipProvider>
-          <ThemeProvider>
-            <Switch>
+    <WouterRouter><QueryClientProvider client={qc}><TooltipProvider><ThemeProvider><Switch>
               {/* Admin — no sidebar */}
               <Route path="/admin/login" component={AdminLoginPage} />
 
               {/* All other routes — inside sidebar Layout */}
-              <Route>
-                <Layout>
-                  <Switch>
-                    <Route path="/"                component={DashboardPage}    />
-                    <Route path="/airdrops"         component={AirdropsPage}     />
-                    <Route path="/airdrops/:slug"   component={AirdropDetailPage}/>
-                    <Route path="/news"             component={NewsPage}         />
-                    <Route path="/article/:slug"    component={ArticlePage}      />
-                    <Route path="/chat"             component={ChatPage}         />
-                    <Route path="/admin"            component={AdminPage}        />
-                    <Route path="/settings"         component={SettingsPage}     />
-                    <Route component={NotFound} />
-                  </Switch>
-                </Layout>
-              </Route>
-            </Switch>
-            <Toaster />
-          </ThemeProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </WouterRouter>
+              <Route><Layout><Switch><Route path="/"                component={DashboardPage}    /><Route path="/airdrops"         component={AirdropsPage}     /><Route path="/airdrops/:slug"   component={AirdropDetailPage}/><Route path="/news"             component={NewsPage}         /><Route path="/article/:slug"    component={ArticlePage}      /><Route path="/chat"             component={ChatPage}         /><Route path="/admin"            component={AdminPage}        /><Route path="/settings"         component={SettingsPage}     /><Route component={NotFound} /></Switch></Layout></Route></Switch><Toaster /></ThemeProvider></TooltipProvider></QueryClientProvider></WouterRouter>
   );
 }
 

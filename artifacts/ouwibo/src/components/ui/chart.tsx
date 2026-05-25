@@ -45,8 +45,7 @@ const ChartContainer = React.forwardRef<
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
 
   return (
-    <ChartContext.Provider value={{ config }}>
-      <div
+    <ChartContext.Provider value={{ config }}><div
         data-chart={chartId}
         ref={ref}
         className={cn(
@@ -54,13 +53,9 @@ const ChartContainer = React.forwardRef<
           className
         )}
         {...props}
-      >
-        <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer>
+      ><ChartStyle id={chartId} config={config} /><RechartsPrimitive.ResponsiveContainer>
           {children}
-        </RechartsPrimitive.ResponsiveContainer>
-      </div>
-    </ChartContext.Provider>
+        </RechartsPrimitive.ResponsiveContainer></div></ChartContext.Provider>
   )
 })
 ChartContainer.displayName = "Chart"
@@ -231,26 +226,22 @@ const ChartTooltipContent = React.forwardRef<
                           "flex flex-1 justify-between leading-none",
                           nestLabel ? "items-end" : "items-center"
                         )}
-                      >
-                        <div className="grid gap-1.5">
+                      ><div className="grid gap-1.5">
                           {nestLabel ? tooltipLabel : null}
                           <span className="text-muted-foreground">
                             {itemConfig?.label || item.name}
-                          </span>
-                        </div>
+                          </span></div>
                         {item.value && (
                           <span className="font-mono font-medium tabular-nums text-foreground">
                             {item.value.toLocaleString()}
                           </span>
                         )}
-                      </div>
-                    </>
+                      </div></>
                   )}
                 </div>
               )
             })}
-        </div>
-      </div>
+        </div></div>
     )
   }
 )

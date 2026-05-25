@@ -18,19 +18,15 @@ export default function AnimatedBackground() {
   const [c1, c2] = ORB[accent];
 
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden>
-      <div className="absolute orb-1" style={{
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden><div className="absolute orb-1" style={{
         width: "52vw", height: "52vw", top: "-18vw", left: "-14vw",
         borderRadius: "50%", background: c1, filter: "blur(100px)", opacity: 0.12,
-      }} />
-      <div className="absolute orb-2" style={{
+      }} /><div className="absolute orb-2" style={{
         width: "44vw", height: "44vw", bottom: "-14vw", right: "-10vw",
         borderRadius: "50%", background: c2, filter: "blur(90px)", opacity: 0.10,
-      }} />
-      <div className="absolute orb-3" style={{
+      }} /><div className="absolute orb-3" style={{
         width: "24vw", height: "24vw", top: "42%", left: "44%",
         borderRadius: "50%", background: c1, filter: "blur(70px)", opacity: 0.06,
-      }} />
-    </div>
+      }} /></div>
   );
 }

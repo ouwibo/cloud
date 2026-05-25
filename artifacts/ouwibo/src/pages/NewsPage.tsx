@@ -20,18 +20,9 @@ export default function NewsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-[18px] font-bold">News & Analysis</h1>
-          <p className="text-[12px] text-muted-foreground mt-0.5">Crypto airdrops, DeFi, and Web3 coverage</p>
-        </div>
-        <div className="relative w-full sm:w-56">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-          <input value={q} onChange={e => setQ(e.target.value)}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"><div><h1 className="text-[18px] font-bold">News & Analysis</h1><p className="text-[12px] text-muted-foreground mt-0.5">Crypto airdrops, DeFi, and Web3 coverage</p></div><div className="relative w-full sm:w-56"><Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" /><input value={q} onChange={e => setQ(e.target.value)}
             type="search" placeholder="Search articles…"
-            className="w-full h-8 pl-8 pr-3 rounded-lg border border-border bg-card text-[12px] outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition" />
-        </div>
-      </div>
+            className="w-full h-8 pl-8 pr-3 rounded-lg border border-border bg-card text-[12px] outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition" /></div></div>
 
       {/* Category tabs */}
       <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
@@ -51,11 +42,7 @@ export default function NewsPage() {
       <AdSlot slot="leaderboard" className="hidden md:flex mx-auto" />
 
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center py-16 text-center gap-3">
-          <p className="text-4xl">🔍</p>
-          <p className="text-[14px] font-semibold">No articles found</p>
-          <p className="text-[12px] text-muted-foreground">Try a different category or search term.</p>
-        </div>
+        <div className="flex flex-col items-center py-16 text-center gap-3"><p className="text-4xl"></p><p className="text-[14px] font-semibold">No articles found</p><p className="text-[12px] text-muted-foreground">Try a different category or search term.</p></div>
       ) : (
         <div className="space-y-6">
           {hero && <HeroArticleCard article={hero} />}
@@ -67,7 +54,6 @@ export default function NewsPage() {
         </div>
       )}
 
-      <AdSlot slot="responsive" className="mx-auto mt-4" />
-    </div>
+      <AdSlot slot="responsive" className="mx-auto mt-4" /></div>
   );
 }

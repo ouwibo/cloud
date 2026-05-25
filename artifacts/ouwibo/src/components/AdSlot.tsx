@@ -22,14 +22,12 @@ export default function AdSlot({ slot, className = "" }: AdSlotProps) {
   if (publisherId) {
     /* Real AdSense — uncomment when approved:
     return (
-      <div className={className}>
-        <ins className="adsbygoogle"
+      <div className={className}><ins className="adsbygoogle"
           style={{ display: "block", width: w || "100%", height: h }}
           data-ad-client={publisherId}
           data-ad-slot="AUTO"
           data-ad-format={slot === "responsive" ? "auto" : undefined}
-        />
-      </div>
+        /></div>
     );
     */
   }
