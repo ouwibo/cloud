@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd artifacts/ouwibo && pnpm run build",
+  "outputDirectory": "artifacts/ouwibo/dist/public",
+  "installCommand": "pnpm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/((?!assets|favicon|opengraph|robots).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
