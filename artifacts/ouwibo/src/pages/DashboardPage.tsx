@@ -1,317 +1,330 @@
+import { useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { cn } from "@/lib/utils";
 import { mockAirdrops, mockActivity, mockTasks } from "@/lib/mockData";
 
 const MONO    = "'Space Mono', monospace";
 const DISPLAY = "'Unbounded', sans-serif";
 
-const STATUS_COLOR: Record<string, { bg: string; text: string; label: string }> = {
-  active:    { bg: "#b8e8c8", text: "#0a5c2e", label: "Active"    },
-  upcoming:  { bg: "#f0e0a0", text: "#5c3d0a", label: "Upcoming"  },
-  ended:     { bg: "#c8dcc0", text: "#2d3d2a", label: "Ended"     },
-  potential: { bg: "#d4c0f0", text: "#3c1a7a", label: "Potential" },
-};
-
-const DIFF_BG: Record<string, string> = {
-  easy:   "#b8e8c8",
-  medium: "#f0e0a0",
-  hard:   "#f0c4a8",
-};
-
-/* Wave SVG - simple without xlinkHref */
-const WaveDecor = () => (
-  <svg viewBox="0 0 400 30" preserveAspectRatio="none" className="w-full h-6">
-    <path d="M0,15 C80,0 160,28 240,14 C300,3 350,22 400,14 L400,30 L0,30 Z" fill="hsl(var(--background))" />
-  </svg>
-);
-
-/* Inline SVG icons */
-const IconZap = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-  </svg>
-);
-
-const IconActivity = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-  </svg>
-);
-
-const IconStar = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-  </svg>
-);
-
-const IconCheck = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 6L9 17l-5-5"/>
-  </svg>
-);
-
-const IconClock = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/>
-    <polyline points="12 6 12 12 16 14"/>
-  </svg>
-);
-
-const IconTrend = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-    <polyline points="17 6 23 6 23 12"/>
-  </svg>
-);
-
-const IconLink = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-  </svg>
-);
-
-/* Greeting based on time */
-function getGreeting() {
-  const h = new Date().getHours();
-  if (h < 4)  return "🌙 Sweet Dreams!";
-  if (h < 12) return "☀️ Good Morning!";
-  if (h < 17) return "🌤 Good Afternoon!";
-  if (h < 22) return "🌆 Good Evening!";
-  return "🌃 Good Night!";
+/* ── Scroll animation hook ── */
+function useAnim(cls = "anim-up", delay = 0) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.classList.add("anim");
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        setTimeout(() => el.classList.add(cls), delay);
+        obs.disconnect();
+      }
+    }, { threshold: 0.1 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [cls, delay]);
+  return ref;
 }
 
-const STAT_CARDS = (airdrops: any[], tasks: any[]) => [
-  {
-    label: "TOTAL AIRDROPS",
-    value: airdrops.length,
-    color: "#f97316",
-    bg: "rgba(249,115,22,0.12)",
-    border: "rgba(249,115,22,0.3)",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-      </svg>
-    ),
-  },
-  {
-    label: "ACTIVE",
-    value: airdrops.filter(a => a.status === "active").length,
-    color: "#8b5cf6",
-    bg: "rgba(139,92,246,0.12)",
-    border: "rgba(139,92,246,0.3)",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-      </svg>
-    ),
-  },
-  {
-    label: "UPCOMING",
-    value: airdrops.filter(a => a.status === "upcoming").length,
-    color: "#06b6d4",
-    bg: "rgba(6,182,212,0.12)",
-    border: "rgba(6,182,212,0.3)",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-      </svg>
-    ),
-  },
-  {
-    label: "TASKS TRACKED",
-    value: tasks.length,
-    color: "#10b981",
-    bg: "rgba(16,185,129,0.12)",
-    border: "rgba(16,185,129,0.3)",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-      </svg>
-    ),
-  },
-];
+/* ── Status & Difficulty colors ── */
+const STATUS: Record<string, { bg: string; text: string; label: string }> = {
+  active:    { bg: "#dcfce7", text: "#166534", label: "Active"    },
+  upcoming:  { bg: "#fef9c3", text: "#854d0e", label: "Upcoming"  },
+  ended:     { bg: "#f3f4f6", text: "#374151", label: "Ended"     },
+  potential: { bg: "#ede9fe", text: "#5b21b6", label: "Potential" },
+};
+const DIFF_COLOR: Record<string, string> = {
+  easy: "#10b981", medium: "#f59e0b", hard: "#ef4444",
+};
+const CARD_COLORS = ["#f97316","#8b5cf6","#06b6d4","#10b981","#f43f5e","#eab308","#3b82f6","#a855f7","#14b8a6","#f97316"];
 
-export default function DashboardPage() {
-  const airdrops = mockAirdrops;
-  const activity = mockActivity;
-  const stats = STAT_CARDS(airdrops, mockTasks);
-  const featured = airdrops.filter(a => a.isFeatured).slice(0, 3);
-  const active = airdrops.filter(a => a.status === "active").slice(0, 6);
-
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good Morning! ☀️" : hour < 18 ? "Good Afternoon! 🌤️" : "Good Evening! 🌙";
-
+/* ── Section Header (Whendrops style) ── */
+function SectionHeader({ title, href }: { title: string; href?: string }) {
+  const ref = useAnim("anim-left");
   return (
-    <div>
-      {/* ── Hero Header ── */}
-      <div className="relative rounded-2xl overflow-hidden mb-6 border-2 border-border"
-        style={{ boxShadow: "4px 4px 0 hsl(var(--border))" }}>
-        <div className="absolute inset-0"
-          style={{ background: "linear-gradient(135deg, #f97316 0%, #8b5cf6 50%, #06b6d4 100%)", opacity: 0.9 }} />
-        <div className="relative px-6 py-8 text-white">
-          <p style={{ fontFamily: MONO, fontSize: "0.7rem", fontWeight: 700, opacity: 0.85 }}>
-            {getGreeting()} · {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-          </p>
-          <h1 style={{ fontFamily: DISPLAY, fontSize: "clamp(1.6rem,4vw,2.5rem)", fontWeight: 900, lineHeight: 1.1 }}
-            className="mt-1 mb-2">
-            Ouwibo Dashboard
-          </h1>
-          <p style={{ fontFamily: MONO, fontSize: "0.72rem", opacity: 0.8 }}>
-            Track airdrops · Complete tasks · Earn rewards
-          </p>
-        </div>
-        <svg viewBox="0 0 400 40" preserveAspectRatio="none" className="w-full h-8">
-          <path d="M0,20 C80,5 160,35 240,18 C300,5 350,28 400,20 L400,40 L0,40 Z" fill="hsl(var(--background))" />
-        </svg>
+    <div ref={ref} className="anim flex items-center justify-between mb-5">
+      <div className="flex items-center gap-3">
+        <h2 className="font-black text-lg text-foreground" style={{ fontFamily: DISPLAY }}>{title}</h2>
+        <div className="flex-1 h-px w-12 bg-border" />
+      </div>
+      {href && (
+        <Link href={href}>
+          <span className="text-xs font-bold text-primary hover:underline cursor-pointer" style={{ fontFamily: MONO }}>
+            See all →
+          </span>
+        </Link>
+      )}
+      <span className="text-muted-foreground/30 text-xl font-bold ml-2 select-none">···</span>
+    </div>
+  );
+}
+
+/* ── Stat Card ── */
+const STAT_DEFS = [
+  { label: "TOTAL AIRDROPS", color: "#f97316", icon: "⚡" },
+  { label: "ACTIVE",         color: "#8b5cf6", icon: "🟢" },
+  { label: "UPCOMING",       color: "#06b6d4", icon: "🕐" },
+  { label: "TASKS TRACKED",  color: "#10b981", icon: "✅" },
+];
+function StatCard({ def, value, delay }: { def: typeof STAT_DEFS[0]; value: number; delay: number }) {
+  const ref = useAnim("anim-scale", delay);
+  return (
+    <div ref={ref} className="anim rounded-2xl border-2 border-border bg-card p-5 relative overflow-hidden"
+      style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
+      <div className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-10 -translate-y-6 translate-x-6"
+        style={{ backgroundColor: def.color }} />
+      <p className="text-xs font-bold text-muted-foreground mb-2" style={{ fontFamily: MONO }}>{def.label}</p>
+      <p className="text-4xl font-black mb-1" style={{ fontFamily: DISPLAY, color: def.color }}>{value}</p>
+      <div className="w-8 h-1 rounded-full" style={{ backgroundColor: def.color }} />
+    </div>
+  );
+}
+
+/* ── Airdrop Card (Whendrops post-card style) ── */
+function AirdropCard({ airdrop, index }: { airdrop: any; index: number }) {
+  const ref = useAnim("anim-up", index * 80);
+  const color = CARD_COLORS[index % CARD_COLORS.length];
+  const st = STATUS[airdrop.status] ?? STATUS.potential;
+  return (
+    <div ref={ref} className="anim rounded-2xl border-2 border-border bg-card overflow-hidden hover:-translate-y-1 transition-transform duration-200"
+      style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
+      {/* Thumbnail area */}
+      <div className="relative h-36 flex items-center justify-center"
+        style={{ background: `linear-gradient(135deg, ${color}cc, ${color}44)` }}>
+        <span className="text-5xl font-black text-white select-none drop-shadow-lg" style={{ fontFamily: DISPLAY }}>
+          {airdrop.logoInitial}
+        </span>
+        {/* Status badge */}
+        <span className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full border"
+          style={{ backgroundColor: st.bg, color: st.text, fontFamily: MONO, borderColor: st.text + "33" }}>
+          {st.label}
+        </span>
+        {/* Verified badge */}
+        {airdrop.isVerified && (
+          <span className="absolute top-3 right-3 w-6 h-6 rounded-full bg-white/90 flex items-center justify-center text-xs">
+            ✓
+          </span>
+        )}
       </div>
 
-      {/* ── Stat Cards ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {stats.map(card => (
-          <div key={card.label} className="rounded-2xl border-2 border-border p-4 bg-card"
-            style={{ boxShadow: `3px 3px 0 ${card.color}40`, borderColor: `${card.color}50` }}>
-            <div className="flex items-start justify-between mb-3">
-              <p className="text-muted-foreground" style={{ fontFamily: MONO, fontSize: "0.55rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                {card.label}
-              </p>
-              <span style={{ color: card.color }}>{card.icon}</span>
+      {/* Content */}
+      <div className="p-4">
+        <p className="text-[10px] text-muted-foreground mb-1" style={{ fontFamily: MONO }}>
+          {airdrop.category} · {airdrop.chain}
+        </p>
+        <h3 className="font-black text-sm text-foreground mb-1 leading-tight" style={{ fontFamily: DISPLAY }}>
+          {airdrop.name}
+        </h3>
+        <p className="text-xs text-muted-foreground line-clamp-2 mb-3" style={{ fontFamily: MONO }}>
+          {airdrop.description}
+        </p>
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-bold" style={{ color, fontFamily: MONO }}>
+            {airdrop.rewardEstimate ?? "TBD"}
+          </span>
+          <a href={airdrop.referralUrl || airdrop.websiteUrl} target="_blank" rel="noopener noreferrer"
+            className="text-[10px] font-bold px-3 py-1.5 rounded-full text-white transition-opacity hover:opacity-80"
+            style={{ backgroundColor: color, fontFamily: MONO }}>
+            Join →
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Featured Card (pinned post style) ── */
+function FeaturedCard({ airdrop }: { airdrop: any }) {
+  const ref = useAnim("anim-up", 0);
+  const color = CARD_COLORS[0];
+  const st = STATUS[airdrop.status] ?? STATUS.potential;
+  return (
+    <div ref={ref} className="anim rounded-2xl border-2 border-border bg-card overflow-hidden mb-8"
+      style={{ boxShadow: "4px 4px 0 hsl(var(--border))" }}>
+      <div className="flex flex-col sm:flex-row">
+        {/* Thumbnail */}
+        <div className="sm:w-72 h-48 sm:h-auto flex-shrink-0 flex items-center justify-center relative"
+          style={{ background: `linear-gradient(135deg, ${color}cc, ${color}55)` }}>
+          <span className="text-7xl font-black text-white select-none drop-shadow-xl" style={{ fontFamily: DISPLAY }}>
+            {airdrop.logoInitial}
+          </span>
+          <span className="absolute bottom-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full bg-white/90"
+            style={{ color, fontFamily: MONO }}>
+            Featured ★
+          </span>
+        </div>
+        {/* Content */}
+        <div className="p-6 flex flex-col justify-center flex-1">
+          <p className="text-[10px] text-muted-foreground mb-2" style={{ fontFamily: MONO }}>
+            {airdrop.category} · {airdrop.chain}
+          </p>
+          <h3 className="font-black text-2xl text-foreground mb-2 leading-tight" style={{ fontFamily: DISPLAY }}>
+            {airdrop.name}
+          </h3>
+          <p className="text-sm text-muted-foreground mb-4" style={{ fontFamily: MONO }}>
+            {airdrop.description}
+          </p>
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-xs font-bold px-3 py-1 rounded-full border"
+              style={{ backgroundColor: st.bg, color: st.text, fontFamily: MONO, borderColor: st.text + "33" }}>
+              {st.label}
+            </span>
+            <span className="text-xs font-bold" style={{ color, fontFamily: MONO }}>
+              Est. {airdrop.rewardEstimate ?? "TBD"}
+            </span>
+            <a href={airdrop.referralUrl || airdrop.websiteUrl} target="_blank" rel="noopener noreferrer"
+              className="ml-auto text-xs font-bold px-4 py-2 rounded-full text-white"
+              style={{ backgroundColor: color, fontFamily: MONO }}>
+              Join Airdrop →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Crypto Ticker ── */
+const TICKERS = [
+  { sym: "ETH",  name: "Ethereum",  price: "$2,112",  chg: "-0.20%", up: false },
+  { sym: "BNB",  name: "BNB",       price: "$667",    chg: "+1.28%", up: true  },
+  { sym: "SOL",  name: "Solana",    price: "$168",    chg: "+2.10%", up: true  },
+  { sym: "ARB",  name: "Arbitrum",  price: "$0.78",   chg: "-0.50%", up: false },
+  { sym: "OP",   name: "Optimism",  price: "$1.52",   chg: "+3.10%", up: true  },
+  { sym: "MATIC","name": "Polygon", price: "$0.55",   chg: "-1.20%", up: false },
+  { sym: "AVAX", name: "Avalanche", price: "$34.50",  chg: "+0.90%", up: true  },
+  { sym: "LINK", name: "Chainlink", price: "$14.20",  chg: "+1.80%", up: true  },
+];
+
+function CryptoTicker() {
+  const items = [...TICKERS, ...TICKERS];
+  return (
+    <div className="rounded-2xl border-2 border-border bg-card overflow-hidden mt-8"
+      style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
+      <div className="overflow-hidden">
+        <div className="flex ticker-track" style={{ width: "max-content" }}>
+          {items.map((t, i) => (
+            <div key={i} className="flex items-center gap-3 px-6 py-3 border-r border-border/40 shrink-0">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[10px] font-black"
+                style={{ background: `linear-gradient(135deg,${CARD_COLORS[i % CARD_COLORS.length]},${CARD_COLORS[(i+2) % CARD_COLORS.length]})` }}>
+                {t.sym.charAt(0)}
+              </div>
+              <div>
+                <p className="text-xs font-bold text-foreground" style={{ fontFamily: MONO }}>{t.sym}</p>
+                <p className="text-[10px] text-muted-foreground" style={{ fontFamily: MONO }}>{t.price}</p>
+              </div>
+              <span className="text-[10px] font-bold" style={{ fontFamily: MONO, color: t.up ? "#10b981" : "#ef4444" }}>
+                {t.chg}
+              </span>
             </div>
-            <p style={{ fontFamily: DISPLAY, fontSize: "2rem", fontWeight: 900, color: card.color, lineHeight: 1 }}>
-              {card.value}
-            </p>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Activity Feed ── */
+function ActivityFeed() {
+  const ref = useAnim("anim-left", 100);
+  if (!mockActivity.length) return null;
+  return (
+    <div ref={ref} className="anim">
+      <SectionHeader title="Recent Activity" />
+      <div className="rounded-2xl border-2 border-border bg-card overflow-hidden" style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
+        {mockActivity.map((act, i) => (
+          <div key={act.id} className="flex items-center gap-4 px-5 py-3.5 border-b border-border/40 last:border-0">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-white text-xs"
+              style={{ backgroundColor: CARD_COLORS[i % CARD_COLORS.length] }}>
+              {act.type === "airdrop_added" ? "+" : "↺"}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-foreground truncate" style={{ fontFamily: MONO }}>{act.message}</p>
+              <p className="text-[10px] text-muted-foreground" style={{ fontFamily: MONO }}>
+                {new Date(act.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+              </p>
+            </div>
           </div>
         ))}
       </div>
+    </div>
+  );
+}
 
-      {/* ── Featured + Activity ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Featured */}
-        <div className="lg:col-span-2 rounded-2xl border-2 border-border bg-card p-5"
-          style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
-          <div className="flex items-center justify-between mb-4">
-            <p style={{ fontFamily: DISPLAY, fontSize: "0.85rem", fontWeight: 700 }}>⭐ Featured Airdrops</p>
-            <Link href="/airdrops" className="text-primary hover:underline" style={{ fontFamily: MONO, fontSize: "0.62rem", fontWeight: 700 }}>
-              View all →
-            </Link>
-          </div>
-          {featured.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mb-2 opacity-40">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-              </svg>
-              <p style={{ fontFamily: MONO, fontSize: "0.65rem" }}>No featured airdrops yet</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {featured.map((airdrop, idx) => {
-                const st = STATUS_COLOR[airdrop.status] ?? STATUS_COLOR.potential;
-                return (
-                  <Link href={`/airdrops/${airdrop.id}`} key={airdrop.id}>
-                    <div className={cn("flex items-center gap-3 p-3 rounded-xl border-2 border-border hover:bg-muted transition-all cursor-pointer",
-                      idx % 2 === 0 ? "bg-muted/30" : "bg-background")}
-                      style={{ boxShadow: "2px 2px 0 hsl(var(--border))" }}>
-                      <div className="w-9 h-9 rounded-xl border-2 border-border flex items-center justify-center text-white font-bold shrink-0"
-                        style={{ backgroundColor: airdrop.logoColor, fontFamily: DISPLAY, fontSize: "0.8rem" }}>
-                        {airdrop.logoInitial}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold truncate" style={{ fontFamily: DISPLAY, fontSize: "0.78rem" }}>{airdrop.name}</p>
-                        <p className="text-muted-foreground truncate" style={{ fontFamily: MONO, fontSize: "0.58rem" }}>{airdrop.chain}</p>
-                      </div>
-                      <span className="px-2 py-0.5 rounded-full text-white shrink-0" style={{ backgroundColor: st.bg, fontFamily: MONO, fontSize: "0.55rem", fontWeight: 700 }}>
-                        {st.label}
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </div>
+/* ── Main Page ── */
+export default function DashboardPage() {
+  const airdrops   = mockAirdrops;
+  const tasks      = mockTasks ?? [];
+  const featured   = airdrops.filter(a => a.isFeatured);
+  const rest        = airdrops.filter(a => !a.isFeatured);
 
-        {/* Activity */}
-        <div className="rounded-2xl border-2 border-border bg-card p-5"
-          style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
-          <p style={{ fontFamily: DISPLAY, fontSize: "0.85rem", fontWeight: 700 }} className="mb-4">⚡ Recent Activity</p>
-          {activity.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mb-2 opacity-40">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-              </svg>
-              <p style={{ fontFamily: MONO, fontSize: "0.65rem" }}>No activity yet</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {activity.slice(0, 5).map((act, idx) => (
-                <div key={act.id} className={cn("flex items-start gap-2 pb-3", idx < activity.length - 1 && "border-b border-border")}>
-                  <div className="w-6 h-6 rounded-lg border-2 border-border flex items-center justify-center shrink-0 mt-0.5 bg-muted">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                    </svg>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p style={{ fontFamily: MONO, fontSize: "0.6rem" }} className="leading-relaxed">{act.message}</p>
-                    <p className="text-muted-foreground" style={{ fontFamily: MONO, fontSize: "0.55rem" }}>
-                      {new Date(act.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+  const statValues = [
+    airdrops.length,
+    airdrops.filter(a => a.status === "active").length,
+    airdrops.filter(a => a.status === "upcoming").length,
+    tasks.length,
+  ];
+
+  const greetRef = useAnim("anim-up", 0);
+
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
+
+  return (
+    <div>
+      {/* Greeting */}
+      <div ref={greetRef} className="anim mb-8">
+        <p className="text-xs text-muted-foreground mb-1" style={{ fontFamily: MONO }}>
+          {greeting} 👋
+        </p>
+        <h1 className="text-3xl font-black text-foreground" style={{ fontFamily: DISPLAY }}>
+          Ouwibo <span style={{ WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+            backgroundImage: "linear-gradient(135deg,#f97316,#8b5cf6,#06b6d4)", backgroundClip: "text" }}>Dashboard</span>
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1" style={{ fontFamily: MONO }}>
+          Track and join the best crypto airdrops
+        </p>
       </div>
 
-      {/* ── Active Airdrops ── */}
-      {active.length > 0 && (
-        <div className="rounded-2xl border-2 border-border bg-card p-5 mt-4"
-          style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
-          <div className="flex items-center justify-between mb-4">
-            <p style={{ fontFamily: DISPLAY, fontSize: "0.85rem", fontWeight: 700 }}>🔥 Active Right Now</p>
-            <Link href="/airdrops?status=active" className="text-primary hover:underline" style={{ fontFamily: MONO, fontSize: "0.62rem", fontWeight: 700 }}>
-              See all →
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {active.map(airdrop => {
-              const diff = DIFF_STYLE[airdrop.difficulty] ?? "#c8dcc0";
-              return (
-                <Link href={`/airdrops/${airdrop.id}`} key={airdrop.id}>
-                  <div className="p-3.5 rounded-2xl border-2 border-border bg-background hover:bg-muted transition-all cursor-pointer"
-                    style={{ boxShadow: "2px 2px 0 hsl(var(--border))" }}>
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-xl border-2 border-border flex items-center justify-center text-white font-bold shrink-0"
-                        style={{ backgroundColor: airdrop.logoColor, fontFamily: DISPLAY, fontSize: "0.75rem" }}>
-                        {airdrop.logoInitial}
-                      </div>
-                      <p className="font-bold truncate flex-1" style={{ fontFamily: DISPLAY, fontSize: "0.75rem" }}>{airdrop.name}</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="px-2 py-0.5 rounded-full text-foreground" style={{ backgroundColor: diff, fontFamily: MONO, fontSize: "0.55rem", fontWeight: 700 }}>
-                        {airdrop.difficulty}
-                      </span>
-                      <span className="text-primary font-bold" style={{ fontFamily: MONO, fontSize: "0.65rem" }}>
-                        {airdrop.rewardEstimate ?? "TBD"}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 mt-2 text-muted-foreground" style={{ fontFamily: MONO, fontSize: "0.58rem" }}>
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 6L9 17l-5-5" /></svg>
-                      {airdrop.taskCount} tasks · {airdrop.chain}
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+      {/* Stat Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        {STAT_DEFS.map((def, i) => (
+          <StatCard key={def.label} def={def} value={statValues[i]} delay={i * 80} />
+        ))}
+      </div>
+
+      {/* Featured / Pinned Airdrop */}
+      {featured.length > 0 && (
+        <div>
+          <SectionHeader title="Pinned Airdrop" />
+          <FeaturedCard airdrop={featured[0]} />
+        </div>
+      )}
+
+      {/* Airdrop Grid */}
+      {rest.length > 0 && (
+        <div className="mb-8">
+          <SectionHeader title="Latest Airdrops" href="/airdrops" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {rest.slice(0, 6).map((a, i) => (
+              <AirdropCard key={a.id} airdrop={a} index={i} />
+            ))}
           </div>
         </div>
       )}
+
+      {/* Empty state */}
+      {airdrops.length === 0 && (
+        <div className="text-center py-20 text-muted-foreground">
+          <p className="text-5xl mb-4">🪂</p>
+          <p className="font-black text-xl mb-2" style={{ fontFamily: DISPLAY }}>No Airdrops Yet</p>
+          <p className="text-sm" style={{ fontFamily: MONO }}>Add airdrops in mockData.ts to get started</p>
+        </div>
+      )}
+
+      {/* Activity Feed */}
+      <ActivityFeed />
+
+      {/* Crypto Ticker */}
+      <CryptoTicker />
     </div>
   );
 }
