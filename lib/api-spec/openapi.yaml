@@ -3,20 +3,30 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Ouwibo Dashboard API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: projects
+    description: Project operations
+  - name: tasks
+    description: Task operations
+  - name: members
+    description: Team member operations
+  - name: analytics
+    description: Analytics and stats
+  - name: activity
+    description: Activity feed
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +34,541 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /projects:
+    get:
+      operationId: listProjects
+      tags: [projects]
+      summary: List all projects
+      responses:
+        "200":
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      operationId: createProject
+      tags: [projects]
+      summary: Create a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+
+  /projects/{id}:
+    get:
+      operationId: getProject
+      tags: [projects]
+      summary: Get a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateProject
+      tags: [projects]
+      summary: Update a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+    delete:
+      operationId: deleteProject
+      tags: [projects]
+      summary: Delete a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /tasks:
+    get:
+      operationId: listTasks
+      tags: [tasks]
+      summary: List tasks
+      parameters:
+        - name: projectId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [todo, in_progress, done]
+      responses:
+        "200":
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+    post:
+      operationId: createTask
+      tags: [tasks]
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+
+  /tasks/{id}:
+    patch:
+      operationId: updateTask
+      tags: [tasks]
+      summary: Update a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+    delete:
+      operationId: deleteTask
+      tags: [tasks]
+      summary: Delete a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /members:
+    get:
+      operationId: listMembers
+      tags: [members]
+      summary: List team members
+      responses:
+        "200":
+          description: List of members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Member"
+    post:
+      operationId: createMember
+      tags: [members]
+      summary: Add a team member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MemberInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+
+  /members/{id}:
+    patch:
+      operationId: updateMember
+      tags: [members]
+      summary: Update a team member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MemberUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Member"
+    delete:
+      operationId: deleteMember
+      tags: [members]
+      summary: Remove a team member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /analytics/summary:
+    get:
+      operationId: getAnalyticsSummary
+      tags: [analytics]
+      summary: Get dashboard summary stats
+      responses:
+        "200":
+          description: Summary stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsSummary"
+
+  /analytics/progress:
+    get:
+      operationId: getProgressData
+      tags: [analytics]
+      summary: Get weekly progress data for chart
+      responses:
+        "200":
+          description: Weekly progress
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProgressPoint"
+
+  /analytics/task-breakdown:
+    get:
+      operationId: getTaskBreakdown
+      tags: [analytics]
+      summary: Get task status breakdown
+      responses:
+        "200":
+          description: Task breakdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskBreakdown"
+
+  /activity:
+    get:
+      operationId: listActivity
+      tags: [activity]
+      summary: Get recent activity feed
+      responses:
+        "200":
+          description: Activity feed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    Project:
+      type: object
+      required: [id, name, status, progress, color, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [active, completed, on_hold, archived]
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        color:
+          type: string
+        dueDate:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    ProjectInput:
+      type: object
+      required: [name, status, color]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        status:
+          type: string
+          enum: [active, completed, on_hold, archived]
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        color:
+          type: string
+        dueDate:
+          type: string
+
+    ProjectUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        status:
+          type: string
+          enum: [active, completed, on_hold, archived]
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        color:
+          type: string
+        dueDate:
+          type: string
+
+    Task:
+      type: object
+      required: [id, title, status, priority, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [todo, in_progress, done]
+        priority:
+          type: string
+          enum: [low, medium, high]
+        projectId:
+          type: ["integer", "null"]
+        assigneeId:
+          type: ["integer", "null"]
+        dueDate:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    TaskInput:
+      type: object
+      required: [title, status, priority]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        status:
+          type: string
+          enum: [todo, in_progress, done]
+        priority:
+          type: string
+          enum: [low, medium, high]
+        projectId:
+          type: integer
+        assigneeId:
+          type: integer
+        dueDate:
+          type: string
+
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        status:
+          type: string
+          enum: [todo, in_progress, done]
+        priority:
+          type: string
+          enum: [low, medium, high]
+        projectId:
+          type: integer
+        assigneeId:
+          type: integer
+        dueDate:
+          type: string
+
+    Member:
+      type: object
+      required: [id, name, role, email, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        email:
+          type: string
+        avatarColor:
+          type: string
+        createdAt:
+          type: string
+
+    MemberInput:
+      type: object
+      required: [name, role, email]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        role:
+          type: string
+        email:
+          type: string
+        avatarColor:
+          type: string
+
+    MemberUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        role:
+          type: string
+        email:
+          type: string
+        avatarColor:
+          type: string
+
+    AnalyticsSummary:
+      type: object
+      required: [totalProjects, activeProjects, completedTasks, totalTasks, teamSize, completionRate]
+      properties:
+        totalProjects:
+          type: integer
+        activeProjects:
+          type: integer
+        completedTasks:
+          type: integer
+        totalTasks:
+          type: integer
+        teamSize:
+          type: integer
+        completionRate:
+          type: number
+
+    ProgressPoint:
+      type: object
+      required: [week, completed, created]
+      properties:
+        week:
+          type: string
+        completed:
+          type: integer
+        created:
+          type: integer
+
+    TaskBreakdown:
+      type: object
+      required: [todo, inProgress, done]
+      properties:
+        todo:
+          type: integer
+        inProgress:
+          type: integer
+        done:
+          type: integer
+
+    ActivityItem:
+      type: object
+      required: [id, type, message, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [task_created, task_completed, project_created, project_updated, member_joined]
+        message:
+          type: string
+        actorName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
