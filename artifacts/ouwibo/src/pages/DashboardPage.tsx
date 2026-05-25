@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
-import { mockAirdrops, mockActivity } from "@/lib/mockData";
+import { mockAirdrops, mockActivity, mockTasks } from "@/lib/mockData";
 
 const MONO    = "'Space Mono', monospace";
 const DISPLAY = "'Unbounded', sans-serif";
@@ -18,21 +18,11 @@ const DIFF_BG: Record<string, string> = {
   hard:   "#f0c4a8",
 };
 
-/* Wave SVG decoration for cards/sections */
-const WaveSection = ({ color = "hsl(var(--primary)/0.12)" }: { color?: string }) => (
-  <div style={{ position: "relative", height: 60, overflow: "hidden", marginTop: -2 }}>
-    <svg preserveAspectRatio="none" viewBox="0 24 150 28"
-      style={{ position: "absolute", bottom: 0, width: "100%", height: "100%" }}>
-      <defs>
-        <path id="wv" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
-      </defs>
-      <g>
-        <use xlinkHref="#wv" x="48" y="0" fill={color}/>
-        <use xlinkHref="#wv" x="48" y="3" fill={color} style={{ opacity: 0.7 }}/>
-        <use xlinkHref="#wv" x="48" y="5" fill={color} style={{ opacity: 0.5 }}/>
-      </g>
-    </svg>
-  </div>
+/* Wave SVG - simple without xlinkHref */
+const WaveDecor = () => (
+  <svg viewBox="0 0 400 30" preserveAspectRatio="none" className="w-full h-6">
+    <path d="M0,15 C80,0 160,28 240,14 C300,3 350,22 400,14 L400,30 L0,30 Z" fill="hsl(var(--background))" />
+  </svg>
 );
 
 /* Inline SVG icons */
@@ -151,7 +141,7 @@ const STAT_CARDS = (airdrops: any[], tasks: any[]) => [
 export default function DashboardPage() {
   const airdrops = mockAirdrops;
   const activity = mockActivity;
-  const stats = STAT_CARDS(airdrops, mockTasks ?? []);
+  const stats = STAT_CARDS(airdrops, mockTasks);
   const featured = airdrops.filter(a => a.isFeatured).slice(0, 3);
   const active = airdrops.filter(a => a.status === "active").slice(0, 6);
 
@@ -167,7 +157,7 @@ export default function DashboardPage() {
           style={{ background: "linear-gradient(135deg, #f97316 0%, #8b5cf6 50%, #06b6d4 100%)", opacity: 0.9 }} />
         <div className="relative px-6 py-8 text-white">
           <p style={{ fontFamily: MONO, fontSize: "0.7rem", fontWeight: 700, opacity: 0.85 }}>
-            {greeting()} · {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+            {getGreeting()} · {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
           </p>
           <h1 style={{ fontFamily: DISPLAY, fontSize: "clamp(1.6rem,4vw,2.5rem)", fontWeight: 900, lineHeight: 1.1 }}
             className="mt-1 mb-2">
