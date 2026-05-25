@@ -1,202 +1,164 @@
 import { useParams, Link } from "wouter";
-import { ArrowLeft, CheckCircle, Globe, Twitter, Send, Plus, Trash2, ExternalLink, Zap, Star } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { mockAirdrops } from "@/lib/mockData";
+import { ArrowLeft, ExternalLink, Star, Clock, DollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { mockAirdrops, mockTasks } from "@/lib/mockData";
 
-
-const PASTEL = { sky: "#b8d8f0", mint: "#b8e8c8", peach: "#f0c4a8", lavender: "#d4c0f0", yellow: "#f0e0a0", sage: "#c8dcc0" };
-const STATUS_STYLE: Record<string, { bg: string; label: string }> = {
-  active:    { bg: PASTEL.mint,     label: "Active"    },
-  upcoming:  { bg: PASTEL.yellow,   label: "Upcoming"  },
-  ended:     { bg: PASTEL.sage,     label: "Ended"     },
-  potential: { bg: PASTEL.lavender, label: "Potential" },
+const STATUS_EMOJI = { "Confirmed": "👌", "Potential": "🤔", "Reward Available": "🤑" } as const;
+const TYPE_CLS: Record<string, string> = {
+  "Fill The Form":  "bg-blue-500/15 text-blue-400",
+  "Trading":        "bg-green-500/15 text-green-400",
+  "Testnet":        "bg-purple-500/15 text-purple-400",
+  "Social":         "bg-pink-500/15 text-pink-400",
+  "Liquidity":      "bg-amber-500/15 text-amber-400",
+  "Staking":        "bg-indigo-500/15 text-indigo-400",
+  "Mainnet":        "bg-emerald-500/15 text-emerald-400",
+  "Hold":           "bg-orange-500/15 text-orange-400",
+  "Referral":       "bg-cyan-500/15 text-cyan-400",
+  "Community":      "bg-rose-500/15 text-rose-400",
 };
-const DIFF_STYLE: Record<string, string> = { easy: PASTEL.mint, medium: PASTEL.yellow, hard: PASTEL.peach };
+
+function MoniBar({ score }: { score: number }) {
+  const pct = Math.min(100, (score / 8000) * 100);
+  const dotColor = pct > 66 ? "#4ade80" : pct > 33 ? "#facc15" : "#f87171";
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-[22px] font-bold">{score.toLocaleString()}</span>
+      <div className="relative flex-1 h-2 rounded-full"
+        style={{ background: "linear-gradient(to right,#ef4444,#f97316,#eab308,#22c55e)" }}>
+        <span className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-background"
+          style={{ left: `calc(${pct}% - 7px)`, background: dotColor }} />
+      </div>
+    </div>
+  );
+}
 
 export default function AirdropDetailPage() {
-  const params = useParams<{ id: string }>();
-  const id = parseInt(params.id, 10);
-  const { toast } = useToast();
-  
-  const [tasks, setTasks] = useState(mockTasks.filter(t => t.airdropId === id));
-  
-  const airdrop = mockAirdrops.find(a => a.id === id);
+  const { slug } = useParams<{ slug: string }>();
+  const a = mockAirdrops.find(x => x.slug === slug);
 
-  if (!airdrop) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-4">
-          <Zap size={32} className="text-muted-foreground" />
-        </div>
-        <h2 className="text-xl font-bold mb-2">Airdrop not found</h2>
-        <p className="text-muted-foreground mb-4" style={{ fontSize: "0.75rem" }}>
-          This airdrop doesn't exist or has been removed.
-        </p>
-        <Link href="/airdrops">
-          <button className="px-4 py-2 rounded-xl bg-primary text-white">
-            ← Back to Airdrops
-          </button>
-        </Link>
-      </div>
-    );
-  }
-
-  const st = STATUS_STYLE[airdrop.status] ?? { bg: PASTEL.sage, label: airdrop.status };
-  const diff = DIFF_STYLE[airdrop.difficulty] ?? PASTEL.sage;
-
-  function toggleTask(taskId: number) {
-    setTasks(tasks.map(t => t.id === taskId ? { ...t, isCompleted: !t.isCompleted } : t));
-    toast({ title: "Task updated!" });
-  }
-
-  const completedCount = tasks.filter(t => t.isCompleted).length;
-  const progress = tasks.length > 0 ? (completedCount / tasks.length) * 100 : 0;
+  if (!a) return (
+    <div className="flex flex-col items-center justify-center min-h-[40vh] gap-3 text-center">
+      <p className="text-5xl">🔍</p>
+      <p className="text-[16px] font-semibold">Airdrop not found</p>
+      <Link href="/airdrops" className="text-[13px] text-primary hover:underline">← Back to list</Link>
+    </div>
+  );
 
   return (
-    <div className="space-y-6">
-      {/* Back link */}
-      <Link href="/airdrops">
-        <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" style={{ fontSize: "0.75rem" }}>
-          <ArrowLeft size={16} /> Back to Airdrops
-        </button>
+    <div className="max-w-3xl mx-auto space-y-5">
+      <Link href="/airdrops" className="inline-flex items-center gap-1.5 text-[12px] text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="w-3.5 h-3.5" /> Back to Airdrops
       </Link>
 
       {/* Header */}
-      <div className="flex items-start gap-4">
-        <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold shrink-0"
-          style={{ backgroundColor: airdrop.logoColor, fontSize: "1.5rem", border: "3px solid hsl(var(--border))", boxShadow: "4px 4px 0 hsl(var(--border))" }}
-        >
-          {airdrop.logoInitial}
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <h1 style={{ fontSize: "1.8rem", fontWeight: 800 }}>{airdrop.name}</h1>
-            {airdrop.isVerified && <CheckCircle size={20} className="text-primary" />}
-            {airdrop.isFeatured && <Star size={18} className="text-yellow-500 fill-yellow-500" />}
+      <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+        <div className="flex items-start gap-4">
+          <div className="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0 overflow-hidden"
+            style={{ background: a.logoColor }}>
+            {a.logoUrl ? <img src={a.logoUrl} className="w-full h-full object-cover" alt={a.name} /> : a.logoInitial}
           </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <h1 className="text-[20px] font-bold">{a.name}</h1>
+              {a.ticker && <span className="text-[13px] text-muted-foreground">{a.ticker}</span>}
+              {a.isNew && <span className="text-[10px] font-bold bg-blue-500 text-white px-1.5 py-0.5 rounded">New</span>}
+            </div>
+            <div className="flex items-center gap-2 text-[12px] flex-wrap">
+              <span className="flex items-center gap-1">
+                {STATUS_EMOJI[a.status]}
+                <span className={a.status === "Reward Available" ? "text-blue-400 font-semibold" : ""}>{a.status}</span>
+              </span>
+              <span className="text-muted-foreground">· {a.statusDate}</span>
+              <span className="text-muted-foreground">· {a.rewardType}</span>
+              {a.raiseFunds && <span className="text-muted-foreground">· {a.raiseFunds} raised</span>}
+            </div>
+          </div>
+        </div>
+        <MoniBar score={a.moniScore} />
+      </div>
+
+      {/* Stats row */}
+      <div className="grid grid-cols-3 gap-3">
+        {[
+          { label: "Total Tasks",  value: a.tasks.length.toString(),                                  icon: "✅" },
+          { label: "Min Cost",     value: a.tasks.length ? `$${Math.min(...a.tasks.map(t => t.cost))}` : "—", icon: "💰" },
+          { label: "Fastest Task", value: a.tasks.length ? `${Math.min(...a.tasks.map(t => t.timeMin))} min` : "—", icon: "⚡" },
+        ].map(({ label, value, icon }) => (
+          <div key={label} className="bg-card border border-border rounded-xl p-4 flex items-center gap-3">
+            <span className="text-2xl">{icon}</span>
+            <div>
+              <p className="text-[16px] font-bold">{value}</p>
+              <p className="text-[11px] text-muted-foreground">{label}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tasks list */}
+      <div className="bg-card border border-border rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+          <h2 className="text-[14px] font-semibold">All Tasks ({a.tasks.length})</h2>
+          {a.tasks.length === 0 && <span className="text-[12px] text-orange-400">No active tasks</span>}
+        </div>
+        {a.tasks.length > 0 && (
+          <table className="w-full">
+            <thead>
+              <tr className="bg-muted/30 border-b border-border/50">
+                <th className="px-4 py-2 text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Task</th>
+                <th className="px-4 py-2 text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wide w-28">Type</th>
+                <th className="px-4 py-2 text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wide w-20">Cost</th>
+                <th className="px-4 py-2 text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wide w-20">Time</th>
+                <th className="px-4 py-2 w-20" />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/40">
+              {a.tasks.map((t, i) => (
+                <tr key={i} className="hover:bg-muted/20 transition-colors">
+                  <td className="px-4 py-3 text-[13px] font-medium">{t.name}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap gap-1">
+                      {t.types.map(tp => (
+                        <span key={tp} className={cn("text-[10px] font-medium px-2 py-0.5 rounded-full", TYPE_CLS[tp] ?? "bg-muted text-muted-foreground")}>
+                          {tp}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-[12px]">
+                    <span className={t.cost === 0 ? "text-emerald-400 font-semibold" : "text-amber-400 font-semibold"}>
+                      {t.cost === 0 ? "Free" : `$${t.cost}`}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-[12px] text-muted-foreground">{t.timeMin} min</td>
+                  <td className="px-4 py-3 text-right">
+                    <a href={t.url} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-medium px-3 py-1.5 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity">
+                      Go <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* Backers */}
+      {a.backers?.length ? (
+        <div className="bg-card border border-border rounded-xl p-4">
+          <h2 className="text-[13px] font-semibold mb-3">Backers / Investors</h2>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="px-3 py-1 rounded-full font-bold" style={{ backgroundColor: st.bg, fontSize: "0.7rem" }}>
-              {st.label}
-            </span>
-            <span className="px-3 py-1 rounded-full border-2 border-border font-bold" style={{ backgroundColor: diff, fontSize: "0.7rem" }}>
-              {airdrop.difficulty}
-            </span>
-            <span className="text-muted-foreground" style={{ fontSize: "0.72rem" }}>
-              {airdrop.chain} · {airdrop.category}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Description */}
-      {airdrop.description && (
-        <p className="text-foreground/80 leading-relaxed" style={{ fontSize: "0.78rem" }}>
-          {airdrop.description}
-        </p>
-      )}
-
-      {/* Reward & Links */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="neo-card p-5" style={{ backgroundColor: PASTEL.sky }}>
-          <p className="text-muted-foreground mb-2" style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>Estimated Reward</p>
-          <p className="text-primary font-bold" style={{ fontSize: "1.5rem" }}>{airdrop.rewardEstimate || "TBD"}</p>
-        </div>
-        <div className="neo-card p-5" style={{ backgroundColor: PASTEL.mint }}>
-          <p className="text-muted-foreground mb-2" style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>Participants</p>
-          <p className="font-bold" style={{ fontSize: "1.5rem" }}>{(airdrop.participantsCount / 1000).toFixed(0)}K+</p>
-        </div>
-      </div>
-
-      {/* Social Links */}
-      <div className="flex gap-3 flex-wrap">
-        <a
-          href={airdrop.referralUrl || airdrop.websiteUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:bg-primary/90 transition-colors"
-          style={{ fontSize: "0.85rem", boxShadow: "3px 3px 0 hsl(var(--border))" }}
-        >
-          <Zap size={16} /> Join Airdrop
-        </a>
-        {airdrop.websiteUrl && (
-          <a href={airdrop.websiteUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontSize: "0.72rem" }}>
-            <Globe size={14} /> Website
-          </a>
-        )}
-        {airdrop.twitterUrl && (
-          <a href={airdrop.twitterUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontSize: "0.72rem" }}>
-            <Twitter size={14} /> Twitter
-          </a>
-        )}
-        {airdrop.telegramUrl && (
-          <a href={airdrop.telegramUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontSize: "0.72rem" }}>
-            <Send size={14} /> Telegram
-          </a>
-        )}
-      </div>
-
-      {/* Tasks */}
-      <div className="neo-card p-5">
-        <div className="flex items-center justify-between mb-4">
-          <p style={{ fontSize: "0.95rem", fontWeight: 700 }}>Tasks Checklist</p>
-          <span className="text-muted-foreground" style={{ fontSize: "0.68rem" }}>
-            {completedCount}/{tasks.length} completed
-          </span>
-        </div>
-        
-        {/* Progress bar */}
-        <div className="h-2 bg-muted rounded-full mb-4 overflow-hidden">
-          <div className="h-full bg-primary transition-all" style={{ width: `${progress}%` }} />
-        </div>
-
-        {tasks.length > 0 ? (
-          <div className="space-y-2">
-            {tasks.map(task => (
-              <div
-                key={task.id}
-                className={cn(
-                  "flex items-center gap-3 p-3 rounded-xl border-2 border-border transition-all cursor-pointer hover:border-primary/50",
-                  task.isCompleted && "bg-primary/10"
-                )}
-                onClick={() => toggleTask(task.id)}
-                style={{ boxShadow: "2px 2px 0 hsl(var(--border))" }}
-              >
-                <div className={cn(
-                  "w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0",
-                  task.isCompleted ? "bg-primary border-primary" : "border-border"
-                )}>
-                  {task.isCompleted && <CheckCircle size={14} className="text-white" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className={cn("font-medium", task.isCompleted && "line-through text-muted-foreground")} style={{ fontSize: "0.78rem" }}>
-                    {task.title}
-                  </p>
-                  <p className="text-muted-foreground" style={{ fontSize: "0.62rem" }}>{task.type}</p>
-                </div>
-                {task.url && (
-                  <a
-                    href={task.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={e => e.stopPropagation()}
-                    className="px-3 py-1.5 rounded-lg bg-primary text-white font-bold"
-                    style={{ fontSize: "0.65rem" }}
-                  >
-                    Go →
-                  </a>
-                )}
+            {a.backers.map((b, i) => (
+              <div key={i} className="flex items-center gap-1.5">
+                <span className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+                  style={{ background: b.color }}>{b.initial}</span>
               </div>
             ))}
+            {a.backersExtra ? <span className="text-[12px] text-muted-foreground">+{a.backersExtra} more</span> : null}
+            {a.raiseFunds && <span className="ml-auto text-[13px] font-semibold">{a.raiseFunds} total raised</span>}
           </div>
-        ) : (
-          <p className="text-center text-muted-foreground py-8" style={{ fontSize: "0.75rem" }}>
-            No tasks available for this airdrop yet.
-          </p>
-        )}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 }
