@@ -1,296 +1,247 @@
-import { useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { mockAirdrops, mockActivity, mockTasks } from "@/lib/mockData";
+import { mockAirdrops } from "@/lib/mockData";
+import type { Airdrop } from "@/lib/mockData";
+import { TrendingUp, Zap, Clock, CheckCircle2, ChevronRight, ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const MONO    = "'Space Mono', monospace";
-const DISPLAY = "'Unbounded', sans-serif";
-
-/* ── Scroll animation hook ── */
-function useAnim(cls = "anim-up", delay = 0) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    el.classList.add("anim");
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) {
-        setTimeout(() => el.classList.add(cls), delay);
-        obs.disconnect();
-      }
-    }, { threshold: 0.1 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [cls, delay]);
-  return ref;
-}
-
-/* ── Status & Difficulty colors ── */
-const STATUS: Record<string, { bg: string; text: string; label: string }> = {
-  active:    { bg: "#dcfce7", text: "#166534", label: "Active"    },
-  upcoming:  { bg: "#fef9c3", text: "#854d0e", label: "Upcoming"  },
-  ended:     { bg: "#f3f4f6", text: "#374151", label: "Ended"     },
-  potential: { bg: "#ede9fe", text: "#5b21b6", label: "Potential" },
+/* ── Tier badge ── */
+const TIER_CLS: Record<string, string> = {
+  S: "bg-amber-500 text-white",
+  A: "bg-blue-500 text-white",
+  B: "bg-slate-500 text-white",
+  C: "bg-slate-400 text-white",
 };
-const DIFF_COLOR: Record<string, string> = {
-  easy: "#10b981", medium: "#f59e0b", hard: "#ef4444",
-};
-const CARD_COLORS = ["#f97316","#8b5cf6","#06b6d4","#10b981","#f43f5e","#eab308","#3b82f6","#a855f7","#14b8a6","#f97316"];
-
-/* ── Section Header (Whendrops style) ── */
-function SectionHeader({ title, href }: { title: string; href?: string }) {
-  const ref = useAnim("anim-left");
-  return (
-    <div ref={ref} className="anim flex items-center justify-between mb-5">
-      <div className="flex items-center gap-3">
-        <h2 className="font-black text-lg text-foreground" style={{ fontFamily: DISPLAY }}>{title}</h2>
-        <div className="flex-1 h-px w-12 bg-border" />
-      </div>
-      {href && (
-        <Link href={href}>
-          <span className="text-xs font-bold text-primary hover:underline cursor-pointer" style={{ fontFamily: MONO }}>
-            See all →
-          </span>
-        </Link>
-      )}
-      <span className="text-muted-foreground/30 text-xl font-bold ml-2 select-none">···</span>
-    </div>
-  );
+function Tier({ t }: { t: string }) {
+  return <span className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded", TIER_CLS[t] ?? "bg-muted text-muted-foreground")}>{t}</span>;
 }
 
-/* ── Stat Card ── */
-const STAT_DEFS = [
-  { label: "TOTAL AIRDROPS", icon: "⚡" },
-  { label: "ACTIVE",         icon: "🟢" },
-  { label: "UPCOMING",       icon: "🕐" },
-  { label: "TASKS TRACKED",  icon: "✅" },
-];
-function StatCard({ def, value, delay }: { def: typeof STAT_DEFS[0]; value: number; delay: number }) {
-  const ref = useAnim("anim-scale", delay);
-  return (
-    <div ref={ref} className="anim rounded-xl border border-border bg-card p-3.5 relative overflow-hidden"
-      style={{ boxShadow: "2px 2px 0 hsl(var(--border))" }}>
-      <p className="text-[10px] font-bold text-muted-foreground mb-1.5" style={{ fontFamily: MONO }}>{def.label}</p>
-      <p className="text-2xl font-black text-primary" style={{ fontFamily: DISPLAY }}>{value}</p>
-    </div>
-  );
+/* ── Score dot ── */
+function Dot({ v }: { v: number }) {
+  return <span className={cn("text-[10px] font-bold tabular-nums",
+    v >= 9 ? "text-emerald-500" : v >= 7 ? "text-amber-500" : "text-red-400")}>{v}</span>;
 }
 
-/* ── Airdrop Card ── */
-function AirdropCard({ airdrop, index }: { airdrop: any; index: number }) {
-  const ref = useAnim("anim-up", index * 70);
-  const color = CARD_COLORS[index % CARD_COLORS.length];
-  const st = STATUS[airdrop.status] ?? STATUS.potential;
+/* ── Compact landscape airdrop row ── */
+function AirdropRow({ a, rank }: { a: Airdrop; rank: number }) {
+  const topTask = a.tasks[0];
   return (
-    <div ref={ref} className="anim rounded-xl border border-border bg-card overflow-hidden hover:-translate-y-0.5 transition-transform duration-200"
-      style={{ boxShadow: "2px 2px 0 hsl(var(--border))" }}>
-      <div className="relative h-24 flex items-center justify-center"
-        style={{ background: `linear-gradient(135deg, ${color}bb, ${color}33)` }}>
-        <span className="text-3xl font-black text-white select-none drop-shadow-md" style={{ fontFamily: DISPLAY }}>
-          {airdrop.logoInitial}
+    <Link href={`/airdrops/${a.slug}`}>
+      <div className="flex items-center gap-3 px-3 py-2.5 border-b border-border/40 hover:bg-muted/30 transition-colors cursor-pointer group">
+        {/* Rank */}
+        <span className="w-5 text-[10px] text-muted-foreground text-center tabular-nums shrink-0">
+          {rank}
         </span>
-        <span className="absolute top-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full border"
-          style={{ backgroundColor: st.bg, color: st.text, fontFamily: MONO, borderColor: st.text + "22" }}>
-          {st.label}
-        </span>
-        {airdrop.isVerified && (
-          <span className="absolute top-2 right-2 w-5 h-5 rounded-full bg-white/90 flex items-center justify-center text-[10px] text-green-600">✓</span>
-        )}
-      </div>
-      <div className="p-3">
-        <p className="text-[9px] text-muted-foreground mb-0.5" style={{ fontFamily: MONO }}>{airdrop.category} · {airdrop.chain}</p>
-        <h3 className="font-black text-[12px] text-foreground mb-1 leading-tight" style={{ fontFamily: DISPLAY }}>{airdrop.name}</h3>
-        <p className="text-[10px] text-muted-foreground line-clamp-2 mb-2.5" style={{ fontFamily: MONO }}>{airdrop.description}</p>
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] font-bold text-primary" style={{ fontFamily: MONO }}>{airdrop.rewardEstimate ?? "TBD"}</span>
-          <a href={airdrop.referralUrl || airdrop.websiteUrl} target="_blank" rel="noopener noreferrer"
-            className="text-[9px] font-bold px-2.5 py-1 rounded-full text-primary-foreground bg-primary hover:opacity-85 transition-opacity"
-            style={{ fontFamily: MONO }}>
-            Join →
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
 
-/* ── Featured Card ── */
-function FeaturedCard({ airdrop }: { airdrop: any }) {
-  const ref = useAnim("anim-up", 0);
-  const color = CARD_COLORS[0];
-  const st = STATUS[airdrop.status] ?? STATUS.potential;
-  return (
-    <div ref={ref} className="anim rounded-xl border border-border bg-card overflow-hidden mb-6"
-      style={{ boxShadow: "2px 2px 0 hsl(var(--border))" }}>
-      <div className="flex flex-col sm:flex-row">
-        <div className="sm:w-52 h-36 sm:h-auto flex-shrink-0 flex items-center justify-center relative"
-          style={{ background: `linear-gradient(135deg, ${color}bb, ${color}44)` }}>
-          <span className="text-4xl font-black text-white select-none drop-shadow-lg" style={{ fontFamily: DISPLAY }}>
-            {airdrop.logoInitial}
-          </span>
-          <span className="absolute bottom-2 left-2 text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/90"
-            style={{ color, fontFamily: MONO }}>
-            Featured ★
-          </span>
+        {/* Logo */}
+        <div
+          className="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center text-white text-[10px] font-bold overflow-hidden"
+          style={{ background: a.logoColor }}
+        >
+          {a.logoUrl
+            ? <img src={a.logoUrl} alt={a.name} className="w-full h-full object-cover rounded-lg" onError={e => { (e.target as HTMLImageElement).style.display="none"; }} />
+            : a.logoInitial}
         </div>
-        <div className="p-4 flex flex-col justify-center flex-1">
-          <p className="text-[9px] text-muted-foreground mb-1" style={{ fontFamily: MONO }}>{airdrop.category} · {airdrop.chain}</p>
-          <h3 className="font-black text-lg text-foreground mb-1.5 leading-tight" style={{ fontFamily: DISPLAY }}>{airdrop.name}</h3>
-          <p className="text-xs text-muted-foreground mb-3" style={{ fontFamily: MONO }}>{airdrop.description}</p>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full border"
-              style={{ backgroundColor: st.bg, color: st.text, fontFamily: MONO, borderColor: st.text + "22" }}>
-              {st.label}
-            </span>
-            <span className="text-[10px] font-bold text-primary" style={{ fontFamily: MONO }}>
-              Est. {airdrop.rewardEstimate ?? "TBD"}
-            </span>
-            <a href={airdrop.referralUrl || airdrop.websiteUrl} target="_blank" rel="noopener noreferrer"
-              className="ml-auto text-[10px] font-bold px-3 py-1.5 rounded-full text-primary-foreground bg-primary hover:opacity-85 transition-opacity"
-              style={{ fontFamily: MONO }}>
-              Join Airdrop →
-            </a>
+
+        {/* Name + tier */}
+        <div className="w-36 shrink-0 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[13px] font-semibold truncate">{a.name}</span>
+            <Tier t={a.tier} />
           </div>
+          {a.ticker && <span className="text-[10px] text-muted-foreground">${a.ticker}</span>}
         </div>
-      </div>
-    </div>
-  );
-}
 
-/* ── Crypto Ticker ── */
-const TICKERS = [
-  { sym: "ETH",  name: "Ethereum",  price: "$2,112",  chg: "-0.20%", up: false },
-  { sym: "BNB",  name: "BNB",       price: "$667",    chg: "+1.28%", up: true  },
-  { sym: "SOL",  name: "Solana",    price: "$168",    chg: "+2.10%", up: true  },
-  { sym: "ARB",  name: "Arbitrum",  price: "$0.78",   chg: "-0.50%", up: false },
-  { sym: "OP",   name: "Optimism",  price: "$1.52",   chg: "+3.10%", up: true  },
-  { sym: "MATIC","name": "Polygon", price: "$0.55",   chg: "-1.20%", up: false },
-  { sym: "AVAX", name: "Avalanche", price: "$34.50",  chg: "+0.90%", up: true  },
-  { sym: "LINK", name: "Chainlink", price: "$14.20",  chg: "+1.80%", up: true  },
-];
+        {/* Funding + heat */}
+        <div className="hidden sm:flex items-center gap-4 text-[11px] text-muted-foreground w-44 shrink-0">
+          <span>Funding <strong className="text-foreground">{a.funding}</strong></span>
+          <span>Heat <strong className="text-foreground">{a.heat.toLocaleString()}</strong></span>
+        </div>
 
-function CryptoTicker() {
-  const items = [...TICKERS, ...TICKERS];
-  return (
-    <div className="rounded-2xl border-2 border-border bg-card overflow-hidden mt-8"
-      style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
-      <div className="overflow-hidden">
-        <div className="flex ticker-track" style={{ width: "max-content" }}>
-          {items.map((t, i) => (
-            <div key={i} className="flex items-center gap-3 px-6 py-3 border-r border-border/40 shrink-0">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[10px] font-black"
-                style={{ background: `linear-gradient(135deg,${CARD_COLORS[i % CARD_COLORS.length]},${CARD_COLORS[(i+2) % CARD_COLORS.length]})` }}>
-                {t.sym.charAt(0)}
-              </div>
-              <div>
-                <p className="text-xs font-bold text-foreground" style={{ fontFamily: MONO }}>{t.sym}</p>
-                <p className="text-[10px] text-muted-foreground" style={{ fontFamily: MONO }}>{t.price}</p>
-              </div>
-              <span className="text-[10px] font-bold" style={{ fontFamily: MONO, color: t.up ? "#10b981" : "#ef4444" }}>
-                {t.chg}
+        {/* Top task */}
+        <div className="flex-1 min-w-0 hidden md:block">
+          {topTask && (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] text-muted-foreground truncate">{topTask.name}</span>
+              <span className={cn("text-[9px] font-medium shrink-0",
+                topTask.cost === "Free" ? "text-emerald-500" : "text-amber-500")}>
+                {topTask.cost}
               </span>
             </div>
-          ))}
+          )}
         </div>
+
+        {/* Scores */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex flex-col items-center w-7">
+            <Dot v={a.scores.token} />
+            <span className="text-[8px] text-muted-foreground leading-none">Tok</span>
+          </div>
+          <div className="flex flex-col items-center w-7">
+            <Dot v={a.scores.value} />
+            <span className="text-[8px] text-muted-foreground leading-none">Val</span>
+          </div>
+          <div className="flex flex-col items-center w-7">
+            <Dot v={a.scores.heat} />
+            <span className="text-[8px] text-muted-foreground leading-none">Heat</span>
+          </div>
+          <span className="text-[11px] font-bold text-primary ml-1 w-12 text-right">
+            {a.score}/100
+          </span>
+        </div>
+
+        {/* Go button */}
+        {topTask && (
+          <a
+            href={topTask.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}
+            className="shrink-0 text-[10px] px-2 py-1 bg-primary text-primary-foreground rounded-md font-medium hover:opacity-90 transition-opacity"
+          >
+            Go →
+          </a>
+        )}
+
+        <ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0 group-hover:text-foreground transition-colors" />
       </div>
-    </div>
+    </Link>
   );
 }
 
-/* ── Activity Feed ── */
-function ActivityFeed() {
-  const ref = useAnim("anim-left", 100);
-  if (!mockActivity.length) return null;
+/* ── Stat strip ── */
+const STATS = [
+  { label: "Total",      icon: Zap,          color: "text-primary"        },
+  { label: "Active",     icon: TrendingUp,   color: "text-emerald-500"    },
+  { label: "Not Listed", icon: Clock,        color: "text-amber-500"      },
+  { label: "Tasks",      icon: CheckCircle2, color: "text-blue-500"       },
+];
+
+export default function DashboardPage() {
+  const airdrops   = mockAirdrops;
+  const active     = airdrops.filter(a => a.badges.includes("Active")).length;
+  const notListed  = airdrops.filter(a => !a.isListed).length;
+  const totalTasks = airdrops.reduce((s, a) => s + a.tasksTotal, 0);
+  const statValues = [airdrops.length, active, notListed, totalTasks];
+
+  const hour    = new Date().getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+
+  const top      = [...airdrops].sort((a, b) => b.score - a.score).slice(0, 5);
+  const newest   = [...airdrops].slice(0, 6);
+
   return (
-    <div ref={ref} className="anim">
-      <SectionHeader title="Recent Activity" />
-      <div className="rounded-2xl border-2 border-border bg-card overflow-hidden" style={{ boxShadow: "3px 3px 0 hsl(var(--border))" }}>
-        {mockActivity.map((act, i) => (
-          <div key={act.id} className="flex items-center gap-4 px-5 py-3.5 border-b border-border/40 last:border-0">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-white text-xs"
-              style={{ backgroundColor: CARD_COLORS[i % CARD_COLORS.length] }}>
-              {act.type === "airdrop_added" ? "+" : "↺"}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-foreground truncate" style={{ fontFamily: MONO }}>{act.message}</p>
-              <p className="text-[10px] text-muted-foreground" style={{ fontFamily: MONO }}>
-                {new Date(act.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-              </p>
+    <div className="space-y-5">
+      {/* ── Header ── */}
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-[11px] text-muted-foreground">{greeting} 👋</p>
+          <h1 className="text-[22px] font-bold tracking-tight leading-tight">
+            Ouwibo <span className="text-primary">Cloud</span>
+          </h1>
+          <p className="text-[12px] text-muted-foreground mt-0.5">
+            Track and join the best crypto airdrops
+          </p>
+        </div>
+        <Link href="/airdrops">
+          <span className="text-[12px] text-primary font-medium hover:underline">
+            View all →
+          </span>
+        </Link>
+      </div>
+
+      {/* ── Stat strip ── */}
+      <div className="grid grid-cols-4 gap-2.5">
+        {STATS.map((s, i) => (
+          <div key={s.label} className="rounded-xl border border-border bg-card px-3.5 py-3 flex items-center gap-2.5">
+            <s.icon className={cn("w-4 h-4 shrink-0", s.color)} />
+            <div>
+              <p className="text-[18px] font-bold leading-none">{statValues[i]}</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">{s.label}</p>
             </div>
           </div>
         ))}
       </div>
-    </div>
-  );
-}
 
-/* ── Main Page ── */
-export default function DashboardPage() {
-  const airdrops   = mockAirdrops;
-  const tasks      = mockTasks ?? [];
-  const featured   = airdrops.filter(a => a.isFeatured);
-  const rest        = airdrops.filter(a => !a.isFeatured);
+      {/* ── Main two-column layout ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-4">
+        {/* Left: airdrop list */}
+        <div className="rounded-xl border border-border bg-card overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+            <h2 className="text-[13px] font-semibold">Latest Airdrops</h2>
+            <Link href="/airdrops">
+              <span className="text-[11px] text-primary hover:underline">See all →</span>
+            </Link>
+          </div>
 
-  const statValues = [
-    airdrops.length,
-    airdrops.filter(a => a.status === "active").length,
-    airdrops.filter(a => a.status === "upcoming").length,
-    tasks.length,
-  ];
-
-  const greetRef = useAnim("anim-up", 0);
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
-
-  return (
-    <div>
-      {/* Greeting */}
-      <div ref={greetRef} className="anim mb-5">
-        <p className="text-[10px] text-muted-foreground mb-1" style={{ fontFamily: MONO }}>{greeting} 👋</p>
-        <h1 className="text-2xl font-black text-foreground" style={{ fontFamily: DISPLAY }}>
-          Ouwibo <span className="text-primary">Cloud</span>
-        </h1>
-        <p className="text-xs text-muted-foreground mt-0.5" style={{ fontFamily: MONO }}>
-          Track and join the best crypto airdrops
-        </p>
-      </div>
-
-      {/* Stat Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-        {STAT_DEFS.map((def, i) => (
-          <StatCard key={def.label} def={def} value={statValues[i]} delay={i * 70} />
-        ))}
-      </div>
-
-      {/* Featured */}
-      {featured.length > 0 && (
-        <div>
-          <SectionHeader title="Pinned Airdrop" />
-          <FeaturedCard airdrop={featured[0]} />
+          {airdrops.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <span className="text-3xl mb-3">🪂</span>
+              <p className="text-[14px] font-semibold">No airdrops yet</p>
+              <p className="text-[12px] text-muted-foreground mt-1">Add data in mockData.ts to get started</p>
+            </div>
+          ) : (
+            newest.map((a, i) => <AirdropRow key={a.id} a={a} rank={i + 1} />)
+          )}
         </div>
-      )}
 
-      {/* Grid */}
-      {rest.length > 0 && (
-        <div className="mb-6">
-          <SectionHeader title="Latest Airdrops" href="/airdrops" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {rest.slice(0, 6).map((a, i) => (
-              <AirdropCard key={a.id} airdrop={a} index={i} />
+        {/* Right: top ranked + quick links */}
+        <div className="space-y-3">
+          {/* Top by score */}
+          <div className="rounded-xl border border-border bg-card overflow-hidden">
+            <div className="px-4 py-3 border-b border-border">
+              <h2 className="text-[13px] font-semibold">🏆 Top Ranked</h2>
+            </div>
+            {top.length === 0 ? (
+              <p className="text-[12px] text-muted-foreground px-4 py-4">No data yet</p>
+            ) : top.map((a, i) => (
+              <Link href={`/airdrops/${a.slug}`} key={a.id}>
+                <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border/40 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer">
+                  <span className="text-[10px] text-muted-foreground w-4 tabular-nums">{i + 1}</span>
+                  <div className="w-7 h-7 rounded-lg shrink-0 flex items-center justify-center text-white text-[9px] font-bold overflow-hidden"
+                    style={{ background: a.logoColor }}>
+                    {a.logoUrl
+                      ? <img src={a.logoUrl} alt={a.name} className="w-full h-full object-cover rounded-lg" onError={e => { (e.target as HTMLImageElement).style.display="none"; }} />
+                      : a.logoInitial}
+                  </div>
+                  <span className="flex-1 text-[12px] font-medium truncate">{a.name}</span>
+                  <Tier t={a.tier} />
+                  <span className="text-[11px] font-bold text-primary">{a.score}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Free / low cost picks */}
+          <div className="rounded-xl border border-border bg-card overflow-hidden">
+            <div className="px-4 py-3 border-b border-border">
+              <h2 className="text-[13px] font-semibold">🆓 Free Picks</h2>
+            </div>
+            {airdrops.filter(a => a.suitableFor.includes("Free")).length === 0 ? (
+              <p className="text-[12px] text-muted-foreground px-4 py-4">No free airdrops yet</p>
+            ) : airdrops.filter(a => a.suitableFor.includes("Free")).slice(0, 4).map(a => (
+              <Link href={`/airdrops/${a.slug}`} key={a.id}>
+                <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border/40 last:border-0 hover:bg-muted/30 transition-colors cursor-pointer">
+                  <div className="w-6 h-6 rounded-md shrink-0 flex items-center justify-center text-white text-[8px] font-bold overflow-hidden"
+                    style={{ background: a.logoColor }}>
+                    {a.logoInitial}
+                  </div>
+                  <span className="flex-1 text-[12px] font-medium truncate">{a.name}</span>
+                  <span className="text-[9px] text-emerald-500 font-medium border border-emerald-200 dark:border-emerald-800 rounded-full px-1.5 py-0.5">
+                    Free
+                  </span>
+                  {a.tasks[0] && (
+                    <a href={a.tasks[0].url} target="_blank" rel="noopener noreferrer"
+                      onClick={e => e.stopPropagation()}
+                      className="text-[9px] px-1.5 py-0.5 bg-primary text-primary-foreground rounded font-medium hover:opacity-90">
+                      Go
+                    </a>
+                  )}
+                </div>
+              </Link>
             ))}
           </div>
         </div>
-      )}
-
-      {airdrops.length === 0 && (
-        <div className="text-center py-16 text-muted-foreground">
-          <p className="text-4xl mb-3">🪂</p>
-          <p className="font-black text-base mb-1" style={{ fontFamily: DISPLAY }}>No Airdrops Yet</p>
-          <p className="text-xs" style={{ fontFamily: MONO }}>Add airdrops in mockData.ts to get started</p>
-        </div>
-      )}
-
-      <ActivityFeed />
-      <CryptoTicker />
+      </div>
     </div>
   );
 }

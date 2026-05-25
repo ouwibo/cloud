@@ -2,8 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Bot, User, Zap, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const MONO    = "'Space Mono', monospace";
-const DISPLAY = "'Unbounded', sans-serif";
 const PASTEL  = { sky: "#b8d8f0", mint: "#b8e8c8", peach: "#f0c4a8", lavender: "#d4c0f0" };
 
 interface Message { id: string; role: "user" | "assistant"; content: string; }
@@ -98,10 +96,10 @@ export default function ChatPage() {
           <Bot size={18} color="white" />
         </div>
         <div>
-          <h1 style={{ fontFamily: DISPLAY, fontSize: "1.2rem", fontWeight: 700 }}>AI Airdrop Assistant</h1>
-          <p className="text-muted-foreground" style={{ fontFamily: MONO, fontSize: "0.65rem" }}>Ask anything about crypto airdrops</p>
+          <h1 style={{ fontSize: "1.2rem", fontWeight: 700 }}>AI Airdrop Assistant</h1>
+          <p className="text-muted-foreground" style={{ fontSize: "0.65rem" }}>Ask anything about crypto airdrops</p>
         </div>
-        <span className="ml-auto px-2.5 py-1 rounded-full border-2 border-foreground/20 flex items-center gap-1" style={{ backgroundColor: PASTEL.mint, fontFamily: MONO, fontSize: "0.6rem", fontWeight: 700 }}>
+        <span className="ml-auto px-2.5 py-1 rounded-full border-2 border-foreground/20 flex items-center gap-1" style={{ backgroundColor: PASTEL.mint, fontSize: "0.6rem", fontWeight: 700 }}>
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           Online
         </span>
@@ -143,7 +141,7 @@ export default function ChatPage() {
             </div>
             <div className="px-4 py-3 rounded-2xl border-2 border-foreground/15 flex items-center gap-2" style={{ backgroundColor: PASTEL.sky, boxShadow: "3px 3px 0 hsl(var(--border))" }}>
               <Loader2 size={14} className="animate-spin text-muted-foreground" />
-              <span className="text-muted-foreground text-xs" style={{ fontFamily: MONO }}>Thinking…</span>
+              <span className="text-muted-foreground text-xs">Thinking…</span>
             </div>
           </div>
         )}
@@ -158,7 +156,7 @@ export default function ChatPage() {
               key={s}
               onClick={() => handleSend(s)}
               className="text-left p-3 rounded-2xl border-2 border-foreground/20 text-foreground/70 hover:text-foreground hover:border-foreground/50 transition-all hover:-translate-y-0.5"
-              style={{ fontFamily: MONO, fontSize: "0.62rem", boxShadow: "2px 2px 0 hsl(var(--border))" }}
+              style={{ fontSize: "0.62rem", boxShadow: "2px 2px 0 hsl(var(--border))" }}
             >
               {s}
             </button>
@@ -175,7 +173,7 @@ export default function ChatPage() {
           placeholder="Ask about airdrops…"
           disabled={isLoading}
           className="flex-1 px-4 py-3 rounded-2xl border-2 border-border bg-background focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
-          style={{ fontFamily: MONO, fontSize: "0.75rem", boxShadow: "3px 3px 0 hsl(var(--border))" }}
+          style={{ fontSize: "0.75rem", boxShadow: "3px 3px 0 hsl(var(--border))" }}
         />
         <button
           onClick={() => handleSend()}
@@ -187,7 +185,7 @@ export default function ChatPage() {
         </button>
       </div>
       
-      <p className="text-center text-muted-foreground mt-2" style={{ fontFamily: MONO, fontSize: "0.58rem" }}>
+      <p className="text-center text-muted-foreground mt-2" style={{ fontSize: "0.58rem" }}>
         Connect your LLM API in settings to unlock full AI capabilities
       </p>
     </div>

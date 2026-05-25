@@ -5,8 +5,6 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { mockAirdrops, mockTasks } from "@/lib/mockData";
 
-const MONO    = "'Space Mono', monospace";
-const DISPLAY = "'Unbounded', sans-serif";
 
 const PASTEL = { sky: "#b8d8f0", mint: "#b8e8c8", peach: "#f0c4a8", lavender: "#d4c0f0", yellow: "#f0e0a0", sage: "#c8dcc0" };
 const STATUS_STYLE: Record<string, { bg: string; label: string }> = {
@@ -33,11 +31,11 @@ export default function AirdropDetailPage() {
           <Zap size={32} className="text-muted-foreground" />
         </div>
         <h2 className="text-xl font-bold mb-2">Airdrop not found</h2>
-        <p className="text-muted-foreground mb-4" style={{ fontFamily: MONO, fontSize: "0.75rem" }}>
+        <p className="text-muted-foreground mb-4" style={{ fontSize: "0.75rem" }}>
           This airdrop doesn't exist or has been removed.
         </p>
         <Link href="/airdrops">
-          <button className="px-4 py-2 rounded-xl bg-primary text-white" style={{ fontFamily: MONO }}>
+          <button className="px-4 py-2 rounded-xl bg-primary text-white">
             ← Back to Airdrops
           </button>
         </Link>
@@ -60,7 +58,7 @@ export default function AirdropDetailPage() {
     <div className="space-y-6">
       {/* Back link */}
       <Link href="/airdrops">
-        <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" style={{ fontFamily: MONO, fontSize: "0.75rem" }}>
+        <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors" style={{ fontSize: "0.75rem" }}>
           <ArrowLeft size={16} /> Back to Airdrops
         </button>
       </Link>
@@ -69,24 +67,24 @@ export default function AirdropDetailPage() {
       <div className="flex items-start gap-4">
         <div
           className="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold shrink-0"
-          style={{ backgroundColor: airdrop.logoColor, fontFamily: DISPLAY, fontSize: "1.5rem", border: "3px solid hsl(var(--border))", boxShadow: "4px 4px 0 hsl(var(--border))" }}
+          style={{ backgroundColor: airdrop.logoColor, fontSize: "1.5rem", border: "3px solid hsl(var(--border))", boxShadow: "4px 4px 0 hsl(var(--border))" }}
         >
           {airdrop.logoInitial}
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h1 style={{ fontFamily: DISPLAY, fontSize: "1.8rem", fontWeight: 800 }}>{airdrop.name}</h1>
+            <h1 style={{ fontSize: "1.8rem", fontWeight: 800 }}>{airdrop.name}</h1>
             {airdrop.isVerified && <CheckCircle size={20} className="text-primary" />}
             {airdrop.isFeatured && <Star size={18} className="text-yellow-500 fill-yellow-500" />}
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="px-3 py-1 rounded-full font-bold" style={{ backgroundColor: st.bg, fontFamily: MONO, fontSize: "0.7rem" }}>
+            <span className="px-3 py-1 rounded-full font-bold" style={{ backgroundColor: st.bg, fontSize: "0.7rem" }}>
               {st.label}
             </span>
-            <span className="px-3 py-1 rounded-full border-2 border-border font-bold" style={{ backgroundColor: diff, fontFamily: MONO, fontSize: "0.7rem" }}>
+            <span className="px-3 py-1 rounded-full border-2 border-border font-bold" style={{ backgroundColor: diff, fontSize: "0.7rem" }}>
               {airdrop.difficulty}
             </span>
-            <span className="text-muted-foreground" style={{ fontFamily: MONO, fontSize: "0.72rem" }}>
+            <span className="text-muted-foreground" style={{ fontSize: "0.72rem" }}>
               {airdrop.chain} · {airdrop.category}
             </span>
           </div>
@@ -95,7 +93,7 @@ export default function AirdropDetailPage() {
 
       {/* Description */}
       {airdrop.description && (
-        <p className="text-foreground/80 leading-relaxed" style={{ fontFamily: MONO, fontSize: "0.78rem" }}>
+        <p className="text-foreground/80 leading-relaxed" style={{ fontSize: "0.78rem" }}>
           {airdrop.description}
         </p>
       )}
@@ -103,12 +101,12 @@ export default function AirdropDetailPage() {
       {/* Reward & Links */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="neo-card p-5" style={{ backgroundColor: PASTEL.sky }}>
-          <p className="text-muted-foreground mb-2" style={{ fontFamily: MONO, fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>Estimated Reward</p>
-          <p className="text-primary font-bold" style={{ fontFamily: DISPLAY, fontSize: "1.5rem" }}>{airdrop.rewardEstimate || "TBD"}</p>
+          <p className="text-muted-foreground mb-2" style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>Estimated Reward</p>
+          <p className="text-primary font-bold" style={{ fontSize: "1.5rem" }}>{airdrop.rewardEstimate || "TBD"}</p>
         </div>
         <div className="neo-card p-5" style={{ backgroundColor: PASTEL.mint }}>
-          <p className="text-muted-foreground mb-2" style={{ fontFamily: MONO, fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>Participants</p>
-          <p className="font-bold" style={{ fontFamily: DISPLAY, fontSize: "1.5rem" }}>{(airdrop.participantsCount / 1000).toFixed(0)}K+</p>
+          <p className="text-muted-foreground mb-2" style={{ fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase" }}>Participants</p>
+          <p className="font-bold" style={{ fontSize: "1.5rem" }}>{(airdrop.participantsCount / 1000).toFixed(0)}K+</p>
         </div>
       </div>
 
@@ -119,22 +117,22 @@ export default function AirdropDetailPage() {
           target="_blank"
           rel="noopener noreferrer"
           className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-bold flex items-center gap-2 hover:bg-primary/90 transition-colors"
-          style={{ fontFamily: MONO, fontSize: "0.85rem", boxShadow: "3px 3px 0 hsl(var(--border))" }}
+          style={{ fontSize: "0.85rem", boxShadow: "3px 3px 0 hsl(var(--border))" }}
         >
           <Zap size={16} /> Join Airdrop
         </a>
         {airdrop.websiteUrl && (
-          <a href={airdrop.websiteUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontFamily: MONO, fontSize: "0.72rem" }}>
+          <a href={airdrop.websiteUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontSize: "0.72rem" }}>
             <Globe size={14} /> Website
           </a>
         )}
         {airdrop.twitterUrl && (
-          <a href={airdrop.twitterUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontFamily: MONO, fontSize: "0.72rem" }}>
+          <a href={airdrop.twitterUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontSize: "0.72rem" }}>
             <Twitter size={14} /> Twitter
           </a>
         )}
         {airdrop.telegramUrl && (
-          <a href={airdrop.telegramUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontFamily: MONO, fontSize: "0.72rem" }}>
+          <a href={airdrop.telegramUrl} target="_blank" rel="noopener noreferrer" className="neo-button px-4 py-2 rounded-xl flex items-center gap-2 bg-background border-2 border-border" style={{ boxShadow: "3px 3px 0 hsl(var(--border))", fontSize: "0.72rem" }}>
             <Send size={14} /> Telegram
           </a>
         )}
@@ -143,8 +141,8 @@ export default function AirdropDetailPage() {
       {/* Tasks */}
       <div className="neo-card p-5">
         <div className="flex items-center justify-between mb-4">
-          <p style={{ fontFamily: DISPLAY, fontSize: "0.95rem", fontWeight: 700 }}>Tasks Checklist</p>
-          <span className="text-muted-foreground" style={{ fontFamily: MONO, fontSize: "0.68rem" }}>
+          <p style={{ fontSize: "0.95rem", fontWeight: 700 }}>Tasks Checklist</p>
+          <span className="text-muted-foreground" style={{ fontSize: "0.68rem" }}>
             {completedCount}/{tasks.length} completed
           </span>
         </div>
@@ -173,10 +171,10 @@ export default function AirdropDetailPage() {
                   {task.isCompleted && <CheckCircle size={14} className="text-white" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className={cn("font-medium", task.isCompleted && "line-through text-muted-foreground")} style={{ fontFamily: MONO, fontSize: "0.78rem" }}>
+                  <p className={cn("font-medium", task.isCompleted && "line-through text-muted-foreground")} style={{ fontSize: "0.78rem" }}>
                     {task.title}
                   </p>
-                  <p className="text-muted-foreground" style={{ fontFamily: MONO, fontSize: "0.62rem" }}>{task.type}</p>
+                  <p className="text-muted-foreground" style={{ fontSize: "0.62rem" }}>{task.type}</p>
                 </div>
                 {task.url && (
                   <a
@@ -185,7 +183,7 @@ export default function AirdropDetailPage() {
                     rel="noopener noreferrer"
                     onClick={e => e.stopPropagation()}
                     className="px-3 py-1.5 rounded-lg bg-primary text-white font-bold"
-                    style={{ fontFamily: MONO, fontSize: "0.65rem" }}
+                    style={{ fontSize: "0.65rem" }}
                   >
                     Go →
                   </a>
@@ -194,7 +192,7 @@ export default function AirdropDetailPage() {
             ))}
           </div>
         ) : (
-          <p className="text-center text-muted-foreground py-8" style={{ fontFamily: MONO, fontSize: "0.75rem" }}>
+          <p className="text-center text-muted-foreground py-8" style={{ fontSize: "0.75rem" }}>
             No tasks available for this airdrop yet.
           </p>
         )}
