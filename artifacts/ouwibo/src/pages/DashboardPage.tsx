@@ -49,7 +49,7 @@ function AirdropRow({ a, rank }: { a: Airdrop; rank: number }) {
             </span></div><div className="text-[10px] text-muted-foreground">{a.statusDate}</div></div>
 
         {/* score */}
-        <div className="shrink-0 w-20 hidden md:block"><div className="text-[12px] font-bold text-right">{a.moniScore.toLocaleString()}</div><MiniBar score={a.moniScore} /></div><ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" /></div></Link>
+        <div className="shrink-0 w-20 hidden md:block"><div className="text-[12px] font-bold text-right">{(a.moniScore ?? 0).toLocaleString()}</div><MiniBar score={a.moniScore ?? 0} /></div><ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" /></div></Link>
   );
 }
 
@@ -65,7 +65,7 @@ export default function DashboardPage() {
   const rewards   = airdrops.filter(a => a.status === "Reward Available").length;
   const free      = airdrops.filter(a => a.tasks.some(t => t.cost === 0)).length;
 
-  const top     = [...airdrops].sort((a, b) => b.moniScore - a.moniScore).slice(0, 6);
+  const top     = [...airdrops].sort((a, b) => (b.moniScore ?? 0) - (a.moniScore ?? 0)).slice(0, 6);
   const newest  = airdrops.filter(a => a.isNew).slice(0, 4);
   const rewardA = airdrops.filter(a => a.status === "Reward Available");
 

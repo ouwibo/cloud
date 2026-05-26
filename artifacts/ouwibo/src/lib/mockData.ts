@@ -22,6 +22,7 @@ export interface Airdrop {
   backers?: { color: string; initial: string }[];
   backersExtra?: number;
   tasks: AirdropTask[];
+  moniScore?: number;
 }
 
 export interface Backer {
@@ -63,6 +64,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Confirmed", statusDate: "May 25, 2026",
     rewardType: "Airdrop", raiseFunds: "$18.50M",
     backers: [VC.framework, VC.slow, VC.paradigm], backersExtra: 4,
+    moniScore: 8800,
     tasks: [
       { name: "Provide Liquidity to Swap Pools",   types: ["Liquidity"],   cost: 50,  timeMin: 15, url: "https://strato.nexus/app" },
       { name: "Mint USDST via CDP",                types: ["Mainnet"],     cost: 100, timeMin: 10, url: "https://strato.nexus/app" },
@@ -78,6 +80,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Potential", statusDate: "May 25, 2026",
     rewardType: "Airdrop", raiseFunds: undefined,
     backers: [VC.dragonfly, VC.multicoin], backersExtra: 2,
+    moniScore: 6500,
     tasks: [
       { name: "Apply & Join Testnet",         types: ["Testnet"], cost: 0, timeMin: 5,  url: "https://join.netrun.xyz" },
       { name: "Create Token on Testnet",      types: ["Testnet"], cost: 0, timeMin: 10, url: "https://app.netrun.xyz" },
@@ -93,6 +96,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Confirmed", statusDate: "May 25, 2026",
     rewardType: "Whitelist/Waitlist", raiseFunds: "$21.60M",
     backers: [VC.framework, VC.slow, VC.paradigm, VC.coinbase], backersExtra: 10,
+    moniScore: 8200,
     tasks: [
       { name: "Fill Waitlist Form", types: ["Fill The Form"], cost: 0, timeMin: 3, url: "https://www.rabbithole.gg" },
     ],
@@ -105,6 +109,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Potential", statusDate: "May 25, 2026",
     rewardType: "Airdrop", raiseFunds: undefined,
     backers: [VC.mirana, VC.wintermute], backersExtra: 3,
+    moniScore: 7600,
     tasks: [
       { name: "Trade Perpetuals (Points Program)", types: ["Trading"],   cost: 80,  timeMin: 60, url: "https://app.hotstuff.xyz" },
       { name: "Provide Liquidity to Vault",        types: ["Liquidity"], cost: 100, timeMin: 15, url: "https://app.hotstuff.xyz" },
@@ -122,6 +127,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Potential", statusDate: "May 25, 2026",
     rewardType: "Airdrop", raiseFunds: "$30.00M",
     backers: [VC.paradigm, VC.coinbase, VC.pantera], backersExtra: 5,
+    moniScore: 6200,
     tasks: [
       { name: "Complete Social Missions",     types: ["Social"],        cost: 0, timeMin: 10, url: "https://popdex.io" },
       { name: "Provide Liquidity",            types: ["Liquidity"],     cost: 50, timeMin: 15, url: "https://popdex.io/app" },
@@ -136,6 +142,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Confirmed", statusDate: "May 25, 2026",
     rewardType: "Airdrop", raiseFunds: undefined,
     backers: [VC.robot, VC.mirana, VC.wintermute], backersExtra: 5,
+    moniScore: 5800,
     tasks: [
       { name: "Trade on Beep", types: ["Trading"], cost: 78, timeMin: 70, url: "https://beep.fi" },
     ],
@@ -148,6 +155,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Reward Available", statusDate: "May 25, 2026",
     rewardType: "Airdrop", raiseFunds: "$371.04K",
     backers: [VC.binance, VC.coinbase], backersExtra: 2,
+    moniScore: 7100,
     tasks: [],
   },
   {
@@ -158,6 +166,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Confirmed", statusDate: "May 22, 2026",
     rewardType: "Airdrop", raiseFunds: undefined,
     backers: [VC.dragonfly, VC.coinbase, VC.jump], backersExtra: 3,
+    moniScore: 4500,
     tasks: [
       { name: "Trade Perpetuals (Farm Points)",  types: ["Trading"],   cost: 50, timeMin: 30, url: "https://nado.xyz/trade" },
       { name: "Provide Liquidity to NLP Vault",  types: ["Liquidity"], cost: 50, timeMin: 15, url: "https://nado.xyz/earn" },
@@ -172,6 +181,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Confirmed", statusDate: "May 22, 2026",
     rewardType: "Whitelist/Waitlist", raiseFunds: "$2.00M",
     backers: [VC.g500, VC.selini], backersExtra: 0,
+    moniScore: 3800,
     tasks: [
       { name: "Register Waitlist", types: ["Fill The Form"], cost: 0, timeMin: 2, url: "https://k25.ai" },
     ],
@@ -184,6 +194,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Confirmed", statusDate: "May 21, 2026",
     rewardType: "Points", raiseFunds: undefined,
     backers: [VC.slow, VC.coinbase], backersExtra: 1,
+    moniScore: 5500,
     tasks: [
       { name: "Hold Assets to Earn Points", types: ["Hold"], cost: 100, timeMin: 5, url: "https://grove.fi" },
     ],
@@ -196,6 +207,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Confirmed", statusDate: "May 21, 2026",
     rewardType: "Airdrop", raiseFunds: "$15.00M",
     backers: [VC.dragonfly, VC.pantera, VC.a16z, VC.coinbase], backersExtra: 2,
+    moniScore: 4900,
     tasks: [
       { name: "Complete Social Missions",   types: ["Social"],    cost: 0, timeMin: 15, url: "https://konnex.world" },
       { name: "Complete Daily Tasks",       types: ["Social"],    cost: 0, timeMin: 10, url: "https://konnex.world/tasks" },
@@ -211,6 +223,7 @@ export const mockAirdrops: Airdrop[] = [
     status: "Potential", statusDate: "May 21, 2026",
     rewardType: "Airdrop", raiseFunds: "$405.37M",
     backers: [VC.a16z, VC.jump, VC.binance, VC.coinbase], backersExtra: 8,
+    moniScore: 9500,
     tasks: [
       { name: "Fill Ecosystem Airdrop Form", types: ["Fill The Form"], cost: 0, timeMin: 15, url: "https://sui.io/ecosystem" },
       { name: "Trade on Sui DEX",            types: ["Trading"],       cost: 0, timeMin: 20, url: "https://app.cetus.zone" },
