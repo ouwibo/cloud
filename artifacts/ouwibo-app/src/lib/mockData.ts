@@ -23,6 +23,13 @@ export interface Airdrop {
   backersExtra?: number;
   tasks: AirdropTask[];
   moniScore?: number;
+  description?: string;
+  website?: string;
+  twitter?: string;
+  telegram?: string;
+  discord?: string;
+  chain?: string;
+  network?: "Testnet" | "Mainnet" | "Both";
 }
 
 export interface Backer {
@@ -65,6 +72,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Airdrop", raiseFunds: "$18.50M",
     backers: [VC.framework, VC.slow, VC.paradigm], backersExtra: 4,
     moniScore: 8800,
+    description: "DeFi protocol with liquidity pools, CDP stablecoin minting, staking, and lending — all on Ethereum mainnet.",
+    website: "https://strato.nexus", twitter: "strato_net",
+    telegram: "https://t.me/strato_official", discord: "https://discord.gg/strato",
+    chain: "Ethereum", network: "Mainnet",
     tasks: [
       { name: "Provide Liquidity to Swap Pools",   types: ["Liquidity"],   cost: 50,  timeMin: 15, url: "https://strato.nexus/app" },
       { name: "Mint USDST via CDP",                types: ["Mainnet"],     cost: 100, timeMin: 10, url: "https://strato.nexus/app" },
@@ -81,6 +92,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Airdrop", raiseFunds: undefined,
     backers: [VC.dragonfly, VC.multicoin], backersExtra: 2,
     moniScore: 6500,
+    description: "Permissionless token launchpad with built-in DEX, NFT engine, and custom domains — currently live on testnet.",
+    website: "https://netrun.xyz", twitter: "netrun_xyz",
+    telegram: "https://t.me/netrun_xyz", discord: "https://discord.gg/netrun",
+    chain: "Ethereum", network: "Testnet",
     tasks: [
       { name: "Apply & Join Testnet",         types: ["Testnet"], cost: 0, timeMin: 5,  url: "https://join.netrun.xyz" },
       { name: "Create Token on Testnet",      types: ["Testnet"], cost: 0, timeMin: 10, url: "https://app.netrun.xyz" },
@@ -97,6 +112,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Whitelist/Waitlist", raiseFunds: "$21.60M",
     backers: [VC.framework, VC.slow, VC.paradigm, VC.coinbase], backersExtra: 10,
     moniScore: 8200,
+    description: "On-chain quest platform that rewards users for completing DeFi and Web3 tasks across multiple chains.",
+    website: "https://rabbithole.gg", twitter: "rabbithole_gg",
+    telegram: "https://t.me/rabbithole_gg", discord: "https://discord.gg/rabbithole",
+    chain: "Multi-chain", network: "Mainnet",
     tasks: [
       { name: "Fill Waitlist Form", types: ["Fill The Form"], cost: 0, timeMin: 3, url: "https://www.rabbithole.gg" },
     ],
@@ -110,6 +129,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Airdrop", raiseFunds: undefined,
     backers: [VC.mirana, VC.wintermute], backersExtra: 3,
     moniScore: 7600,
+    description: "Perpetual futures DEX on Arbitrum with a points program, trading competitions, and liquidity vaults.",
+    website: "https://hotstuff.xyz", twitter: "HotstuffXYZ",
+    telegram: "https://t.me/hotstuff_xyz", discord: "https://discord.gg/hotstuff",
+    chain: "Arbitrum", network: "Mainnet",
     tasks: [
       { name: "Trade Perpetuals (Points Program)", types: ["Trading"],   cost: 80,  timeMin: 60, url: "https://app.hotstuff.xyz" },
       { name: "Provide Liquidity to Vault",        types: ["Liquidity"], cost: 100, timeMin: 15, url: "https://app.hotstuff.xyz" },
@@ -128,6 +151,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Airdrop", raiseFunds: "$30.00M",
     backers: [VC.paradigm, VC.coinbase, VC.pantera], backersExtra: 5,
     moniScore: 6200,
+    description: "Community-driven DEX on Arbitrum with liquidity incentives, social missions, and referral rewards.",
+    website: "https://popdex.io", twitter: "popdex_io",
+    telegram: "https://t.me/popdex_io", discord: "https://discord.gg/popdex",
+    chain: "Arbitrum", network: "Mainnet",
     tasks: [
       { name: "Complete Social Missions",     types: ["Social"],        cost: 0, timeMin: 10, url: "https://popdex.io" },
       { name: "Provide Liquidity",            types: ["Liquidity"],     cost: 50, timeMin: 15, url: "https://popdex.io/app" },
@@ -143,6 +170,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Airdrop", raiseFunds: undefined,
     backers: [VC.robot, VC.mirana, VC.wintermute], backersExtra: 5,
     moniScore: 5800,
+    description: "On-chain trading protocol built on Ethereum with a wallet-native UX for swapping ETH and stablecoins.",
+    website: "https://beep.fi", twitter: "beep_fi",
+    telegram: "https://t.me/beep_fi", discord: "https://discord.gg/beep",
+    chain: "Ethereum", network: "Mainnet",
     tasks: [
       { name: "Connect Wallet & Trade ETH/USDC", types: ["Trading", "On-Chain Activity"], cost: 0, timeMin: 10, url: "https://beep.fi" },
     ],
@@ -156,6 +187,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Airdrop", raiseFunds: undefined,
     backers: [VC.dragonfly, VC.coinbase, VC.jump], backersExtra: 3,
     moniScore: 4500,
+    description: "Arbitrum-native perpetuals DEX with liquidity vaults, lending markets, and a points-farming program.",
+    website: "https://nado.xyz", twitter: "nadodex",
+    telegram: "https://t.me/nadodex", discord: "https://discord.gg/nado",
+    chain: "Arbitrum", network: "Mainnet",
     tasks: [
       { name: "Trade Perpetuals (Farm Points)",  types: ["Trading"],   cost: 50, timeMin: 30, url: "https://nado.xyz/trade" },
       { name: "Provide Liquidity to NLP Vault",  types: ["Liquidity"], cost: 50, timeMin: 15, url: "https://nado.xyz/earn" },
@@ -171,6 +206,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Whitelist/Waitlist", raiseFunds: "$2.00M",
     backers: [VC.g500, VC.selini], backersExtra: 0,
     moniScore: 3800,
+    description: "AI-powered analytics layer for crypto traders on Solana, with an early access waitlist and token rewards.",
+    website: "https://k25.ai", twitter: "k25ai",
+    telegram: "https://t.me/k25ai", discord: "https://discord.gg/k25ai",
+    chain: "Solana", network: "Mainnet",
     tasks: [
       { name: "Register Waitlist", types: ["Fill The Form"], cost: 0, timeMin: 2, url: "https://k25.ai" },
     ],
@@ -184,6 +223,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Points", raiseFunds: undefined,
     backers: [VC.slow, VC.coinbase], backersExtra: 1,
     moniScore: 5500,
+    description: "Earn points by holding assets in Grove's smart vaults on Ethereum — points convert to tokens at TGE.",
+    website: "https://grove.fi", twitter: "groveprotocol",
+    telegram: "https://t.me/grove_fi", discord: "https://discord.gg/grove",
+    chain: "Ethereum", network: "Mainnet",
     tasks: [
       { name: "Hold Assets to Earn Points", types: ["Hold"], cost: 100, timeMin: 5, url: "https://grove.fi" },
     ],
@@ -197,6 +240,10 @@ export const mockAirdrops: Airdrop[] = [
     rewardType: "Airdrop", raiseFunds: "$15.00M",
     backers: [VC.dragonfly, VC.pantera, VC.a16z, VC.coinbase], backersExtra: 2,
     moniScore: 4900,
+    description: "Web3 social protocol connecting users across chains with daily tasks, leaderboards, and referral rewards.",
+    website: "https://konnex.world", twitter: "konnex_world",
+    telegram: "https://t.me/konnex_world", discord: "https://discord.gg/konnex",
+    chain: "Multi-chain", network: "Both",
     tasks: [
       { name: "Complete Social Missions",   types: ["Social"],    cost: 0, timeMin: 15, url: "https://konnex.world" },
       { name: "Complete Daily Tasks",       types: ["Social"],    cost: 0, timeMin: 10, url: "https://konnex.world/tasks" },
