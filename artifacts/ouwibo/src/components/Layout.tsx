@@ -122,7 +122,7 @@ function NavLink({
   const inner = (
     <div
       className={cn(
-        "flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all w-full",
+        "flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-[transform,box-shadow,opacity,border-color,background-color] w-full",
         active
           ? "bg-primary text-primary-foreground"
           : "text-muted-foreground hover:text-foreground hover:bg-muted/60",

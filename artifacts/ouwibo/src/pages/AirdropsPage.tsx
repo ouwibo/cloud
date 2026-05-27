@@ -100,15 +100,15 @@ function TableRow({ a, bookmarked, onToggle }: { a: Airdrop; bookmarked: boolean
 
   return (
     <Link href={`/airdrops/${a.slug}`} className="block">
-      <div className={cn(GRID, "group relative border-b border-border/40 last:border-0 cursor-pointer transition-all duration-300 ease-out hover:bg-gradient-to-r hover:from-primary/[0.04] hover:via-transparent hover:to-primary/[0.04] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] active:scale-[0.998]")}>
+      <div className={cn(GRID, "group relative border-b border-border/40 last:border-0 cursor-pointer transition-[transform,box-shadow,opacity,border-color,background-color] duration-300 ease-out hover:bg-gradient-to-r hover:from-primary/[0.04] hover:via-transparent hover:to-primary/[0.04] hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)] active:scale-[0.998]")}>
         {/* Left accent bar on hover */}
-        <span className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 h-0 w-[2px] bg-gradient-to-b from-primary via-primary/60 to-transparent transition-all duration-300 group-hover:h-[70%]" />
+        <span className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 h-0 w-[2px] bg-gradient-to-b from-primary via-primary/60 to-transparent transition-[transform,box-shadow,opacity,border-color,background-color] duration-300 group-hover:h-[70%]" />
 
         {/* Star */}
         <div className="flex items-center justify-center h-full px-2 py-3">
           <button
             onClick={e => { e.preventDefault(); e.stopPropagation(); onToggle(); }}
-            className={cn("transition-all duration-200 hover:scale-125", bookmarked ? "text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" : "text-muted-foreground/40 hover:text-amber-300")}
+            className={cn("transition-[transform,box-shadow,opacity,border-color,background-color] duration-200 hover:scale-125", bookmarked ? "text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" : "text-muted-foreground/40 hover:text-amber-300")}
           >
             <Star className="w-3.5 h-3.5" fill={bookmarked ? "currentColor" : "none"} />
           </button>
@@ -143,7 +143,7 @@ function TableRow({ a, bookmarked, onToggle }: { a: Airdrop; bookmarked: boolean
               <div className="flex items-center gap-1.5 flex-nowrap overflow-hidden">
                 <span className="text-[12px] font-semibold truncate flex-shrink">{topTask.name}</span>
                 {extra > 0 && <span className="text-[9px] text-cyan-400 font-black shrink-0">+{extra}</span>}
-                <span className="ml-auto shrink-0 inline-flex items-center gap-0.5 text-[10px] bg-primary text-primary-foreground px-2 py-1 rounded-md font-bold opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shadow-sm shadow-primary/30">
+                <span className="ml-auto shrink-0 inline-flex items-center gap-0.5 text-[10px] bg-primary text-primary-foreground px-2 py-1 rounded-md font-bold opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-[transform,box-shadow,opacity,border-color,background-color] duration-300 shadow-sm shadow-primary/30">
                   View <ChevronRight className="w-2.5 h-2.5" />
                 </span>
               </div>
@@ -196,10 +196,10 @@ function AirdropCard({ a, bookmarked, onToggle }: { a: Airdrop; bookmarked: bool
   const topTask = a.tasks[0];
   return (
     <Link href={`/airdrops/${a.slug}`} className="block group">
-      <div className="relative flex flex-col rounded-2xl bg-card overflow-hidden cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/20 active:translate-y-0 active:scale-[0.99] border border-border/60 hover:border-transparent">
+      <div className="relative flex flex-col rounded-2xl bg-card overflow-hidden cursor-pointer transition-[transform,box-shadow,opacity,border-color,background-color] duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/20 active:translate-y-0 active:scale-[0.99] border border-border/60 hover:border-transparent">
         {/* Gradient border ring on hover */}
         <span className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-primary/40 via-primary/10 to-cyan-400/30 -z-10 blur-sm" />
-        <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-primary/30 transition-all duration-300" />
+        <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-primary/30 transition-[transform,box-shadow,opacity,border-color,background-color] duration-300" />
 
         {/* Header */}
         <div className="p-4 pb-3 relative">
@@ -220,7 +220,7 @@ function AirdropCard({ a, bookmarked, onToggle }: { a: Airdrop; bookmarked: bool
               <div className="flex items-center gap-1">{STATUS_ICON[a.status]}</div>
               <button
                 onClick={e => { e.preventDefault(); e.stopPropagation(); onToggle(); }}
-                className={cn("transition-all duration-200 hover:scale-125", bookmarked ? "text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" : "text-muted-foreground/30 hover:text-amber-300")}
+                className={cn("transition-[transform,box-shadow,opacity,border-color,background-color] duration-200 hover:scale-125", bookmarked ? "text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)]" : "text-muted-foreground/30 hover:text-amber-300")}
               >
                 <Star className="w-3.5 h-3.5" fill={bookmarked ? "currentColor" : "none"} />
               </button>

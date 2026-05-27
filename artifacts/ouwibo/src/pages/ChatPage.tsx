@@ -133,7 +133,7 @@ export default function ChatPage() {
             <button
               key={s}
               onClick={() => handleSend(s)}
-              className="text-left p-3 rounded-2xl border-2 border-foreground/20 text-foreground/70 hover:text-foreground hover:border-foreground/50 transition-all hover:-translate-y-0.5"
+              className="text-left p-3 rounded-2xl border-2 border-foreground/20 text-foreground/70 hover:text-foreground hover:border-foreground/50 transition-[transform,box-shadow,opacity,border-color,background-color] hover:-translate-y-0.5"
               style={{ fontSize: "0.62rem", boxShadow: "2px 2px 0 hsl(var(--border))" }}
             >
               {s}
@@ -154,7 +154,7 @@ export default function ChatPage() {
         /><button
           onClick={() => handleSend()}
           disabled={!input.trim() || isLoading}
-          className="w-12 h-12 rounded-2xl bg-primary text-white border-2 border-foreground flex items-center justify-center hover:-translate-y-px transition-all disabled:opacity-50 shrink-0"
+          className="w-12 h-12 rounded-2xl bg-primary text-white border-2 border-foreground flex items-center justify-center hover:-translate-y-px transition-[transform,box-shadow,opacity,border-color,background-color] disabled:opacity-50 shrink-0"
           style={{ boxShadow: "3px 3px 0 hsl(var(--foreground))" }}
         >
           {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
