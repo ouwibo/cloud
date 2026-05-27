@@ -333,7 +333,7 @@ If you are tracking the energy-AI-crypto convergence as a thematic, **WULF is no
     slug: "bitcoin-100k-iran-war-etf-flows-deep-analysis",
     title: "Bitcoin Tests $100K Again — Iran War Volatility, ETF Flows, and Why the 'Boring Range' Is About to Break",
     excerpt: "BTC is grinding sideways inside the daily Ichimoku Cloud while geopolitical risk explodes around it. Here's why on-balance volume, the first TBO Close Long since October, and structural ETF demand are setting up the next directional move — and how to position for it.",
-    coverImage: "https://images.unsplash.com/photo-1518544866330-95a2bec01dd0?w=1200&q=80&auto=format&fit=crop",
+    coverImage: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=1200&q=80&auto=format&fit=crop",
     category: "Analysis",
     tags: ["Bitcoin", "BTC", "Macro", "ETF", "Technical Analysis", "Iran"],
     author: "Ouwibo Markets Desk",
