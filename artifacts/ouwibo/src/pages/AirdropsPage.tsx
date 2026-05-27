@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 import { mockAirdrops } from "@/lib/mockData";
@@ -294,6 +294,19 @@ export default function AirdropsPage() {
   const [search,      setSearch]      = useState("");
   const [view,        setView]        = useState<"table" | "cards">("table");
   const [bookmarks,   setBookmarks]   = useState<Set<number>>(new Set());
+  const [isMobile,    setIsMobile]    = useState(
+    typeof window !== "undefined" ? window.matchMedia("(max-width: 1023px)").matches : false
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const fn = (e: MediaQueryListEvent | MediaQueryList) => setIsMobile(e.matches);
+    fn(mq);
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
+
+  const effectiveView = isMobile ? "cards" : view;
 
   const toggle = (id: number) =>
     setBookmarks(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
@@ -316,8 +329,8 @@ export default function AirdropsPage() {
       {/* Page header */}
       <div className="flex items-center justify-between"><div><h1 className="text-[20px] font-bold tracking-tight">Airdrop Radar</h1><p className="text-[12px] text-muted-foreground mt-0.5"><span className="text-emerald-500 font-medium">{counts.confirmed} Confirmed</span><span className="mx-1.5 text-muted-foreground/40">·</span><span className="text-amber-400 font-medium">{counts.potential} Potential</span><span className="mx-1.5 text-muted-foreground/40">·</span><span className="text-blue-400 font-medium">{counts.reward} Reward Available</span></p></div>
 
-        {/* View toggle */}
-        <div className="flex items-center gap-1 bg-muted/40 rounded-lg p-0.5 border border-border/40"><button
+        {/* View toggle — desktop only */}
+        <div className="hidden lg:flex items-center gap-1 bg-muted/40 rounded-lg p-0.5 border border-border/40"><button
             onClick={() => setView("table")}
             className={cn("w-8 h-7 rounded-md flex items-center justify-center transition-colors",
               view === "table" ? "bg-card shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground")}
@@ -374,7 +387,7 @@ export default function AirdropsPage() {
         </div></div>
 
       {/* TABLE VIEW */}
-      {view === "table" && (
+      {effectiveView === "table" && (
         <div className="overflow-x-auto rounded-xl border border-border/60">
           {/* Header */}
           <div className={cn(GRID, "bg-muted/30 border-b border-border/60")}><div /><div className="py-2.5 pr-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Name</div><div className="py-2.5 pr-3 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Task Type</div><div className="py-2.5 pr-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Status</div><div className="py-2.5 pr-2 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Reward</div><div className="py-2.5 pr-3 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Raise / Backers</div></div>
@@ -392,7 +405,7 @@ export default function AirdropsPage() {
       )}
 
       {/* CARDS VIEW */}
-      {view === "cards" && (
+      {effectiveView === "cards" && (
         <>
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 gap-2 text-muted-foreground"><Search className="w-8 h-8 opacity-30" /><p className="text-[13px]">No airdrops match your filter</p></div>

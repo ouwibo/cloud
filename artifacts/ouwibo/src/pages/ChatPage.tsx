@@ -91,7 +91,7 @@ export default function ChatPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-7rem)]">
       {/* Header */}
-      <div className="mb-5 flex items-center gap-3"><div className="w-10 h-10 rounded-2xl bg-primary border-2 border-foreground flex items-center justify-center" style={{ boxShadow: "3px 3px 0 hsl(var(--foreground))" }}><Bot size={18} color="white" /></div><div><h1 style={{ fontSize: "1.2rem", fontWeight: 700 }}>AI Airdrop Assistant</h1><p className="text-muted-foreground" style={{ fontSize: "0.65rem" }}>Ask anything about crypto airdrops</p></div><span className="ml-auto px-2.5 py-1 rounded-full border-2 border-foreground/20 flex items-center gap-1" style={{ backgroundColor: PASTEL.mint, fontSize: "0.6rem", fontWeight: 700 }}><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+      <div className="mb-5 flex items-center gap-3"><div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-primary border-2 border-foreground flex items-center justify-center shrink-0" style={{ boxShadow: "3px 3px 0 hsl(var(--foreground))" }}><Bot size={18} color="white" /></div><div className="min-w-0 flex-1"><h1 className="text-[15px] sm:text-[1.2rem] font-bold truncate">AI Airdrop Assistant</h1><p className="text-muted-foreground text-[10px] sm:text-[0.65rem] truncate">Ask anything about crypto airdrops</p></div><span className="ml-auto px-2 sm:px-2.5 py-1 rounded-full border-2 border-foreground/20 flex items-center gap-1 shrink-0" style={{ backgroundColor: PASTEL.mint, fontSize: "0.6rem", fontWeight: 700 }}><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           Online
         </span></div>
 
