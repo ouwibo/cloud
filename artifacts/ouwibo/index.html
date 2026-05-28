@@ -70,23 +70,6 @@
       gtag('js', new Date());
       gtag('config', 'G-WR4Q7Q4KL4');
     </script>
-    <!-- Google AdSense (lazy, post-load) -->
-    <script>
-      (function () {
-        function loadAds() {
-          var s = document.createElement('script');
-          s.async = true;
-          s.crossOrigin = 'anonymous';
-          s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3476552781416548';
-          document.head.appendChild(s);
-        }
-        if (document.readyState === 'complete') {
-          setTimeout(loadAds, 1500);
-        } else {
-          window.addEventListener('load', function () { setTimeout(loadAds, 1500); });
-        }
-      })();
-    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -2,7 +2,6 @@ import { useParams, Link } from "wouter";
 import type { ReactNode } from "react";
 import { getAllArticles } from "@/lib/articleStore";
 import { ArticleCard } from "@/components/ArticleCard";
-import AdSlot from "@/components/AdSlot";
 import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
 
 /* Inline markdown — handles **bold**, *italic*, `code`, and [text](url). */
@@ -66,9 +65,6 @@ export default function ArticlePage() {
           <div className="rounded-xl overflow-hidden mb-6 border border-border"><img src={article.coverImage} alt={article.title} className="w-full h-auto object-cover max-h-[320px]" /></div>
         )}
 
-        {/* Ad below cover */}
-        <AdSlot slot="leaderboard" className="hidden md:flex mb-6 mx-auto" />
-
         {/* Content */}
         <div className="prose prose-sm dark:prose-invert max-w-none
           prose-headings:font-semibold prose-headings:tracking-tight
@@ -107,7 +103,7 @@ export default function ArticlePage() {
       </article>
 
       {/* ── Sidebar ── */}
-      <aside className="hidden lg:flex flex-col gap-4 sticky top-[52px]"><AdSlot slot="rectangle" /><div className="rounded-xl border border-border bg-card p-4"><h3 className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground mb-3">More in {article.category}</h3><div className="space-y-3">
+      <aside className="hidden lg:flex flex-col gap-4 sticky top-[52px]"><div className="rounded-xl border border-border bg-card p-4"><h3 className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground mb-3">More in {article.category}</h3><div className="space-y-3">
             {all.filter(a => a.category === article.category && a.slug !== slug).slice(0, 4).map(a => (
               <Link key={a.id} href={`/article/${a.slug}`} className="flex gap-2 group"><div className="w-14 h-10 rounded-md bg-muted flex-shrink-0 overflow-hidden">
                   {a.coverImage
@@ -116,6 +112,6 @@ export default function ArticlePage() {
                   }
                 </div><p className="text-[12px] font-medium text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">{a.title}</p></Link>
             ))}
-          </div></div><AdSlot slot="rectangle" /></aside></div>
+          </div></div></aside></div>
   );
 }

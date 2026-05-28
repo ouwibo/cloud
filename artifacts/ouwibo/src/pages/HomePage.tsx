@@ -1,7 +1,6 @@
 import { Link } from "wouter";
 import { getAllArticles } from "@/lib/articleStore";
 import { HeroArticleCard, ArticleCard } from "@/components/ArticleCard";
-import AdSlot from "@/components/AdSlot";
 import { mockAirdrops } from "@/lib/mockData";
 import { ArrowRight, Zap, TrendingUp } from "lucide-react";
 
@@ -35,13 +34,7 @@ export default function HomePage() {
                 {all.slice(0, 4).map((a, i) => (
                   <li key={a.id}><Link href={`/article/${a.slug}`} className="flex gap-2.5 group"><span className="text-[20px] font-bold text-border leading-none mt-0.5 flex-shrink-0 w-5">{i + 1}</span><div><p className="text-[12px] font-semibold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">{a.title}</p><p className="text-[11px] text-muted-foreground mt-0.5">{a.readTime}m · {a.category}</p></div></Link></li>
                 ))}
-              </ol></div>
-
-            {/* Ad slot */}
-            <AdSlot slot="rectangle" className="hidden lg:flex" /></div></div></section>
-
-      {/* ── Ad leaderboard ── */}
-      <AdSlot slot="leaderboard" className="hidden md:flex mx-auto" />
+              </ol></div></div></div></section>
 
       {/* ── Latest articles grid ── */}
       <section><div className="flex items-center justify-between mb-4"><h2 className="text-[15px] font-bold text-foreground">Latest Articles</h2><Link href="/news" className="flex items-center gap-1 text-[12px] text-primary font-medium hover:underline">
@@ -78,9 +71,6 @@ export default function HomePage() {
             className="flex-1 h-9 px-3 rounded-lg border border-border bg-background text-[13px] outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition" /><button type="submit"
             className="h-9 px-4 rounded-lg bg-primary text-primary-foreground text-[13px] font-semibold hover:opacity-90 transition-opacity">
             Subscribe
-          </button></form></section>
-
-      {/* ── Bottom Ad ── */}
-      <AdSlot slot="responsive" className="mx-auto" /></div>
+          </button></form></section></div>
   );
 }

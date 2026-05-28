@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { getAllArticles } from "@/lib/articleStore";
 import { ArticleCard, HeroArticleCard } from "@/components/ArticleCard";
-import AdSlot from "@/components/AdSlot";
 import { Search } from "lucide-react";
 
 const CATS = ["All", "News", "DeFi", "Layer 1", "Layer 2", "Infrastructure", "Gaming", "Guide", "Analysis"];
@@ -38,9 +37,6 @@ export default function NewsPage() {
         ))}
       </div>
 
-      {/* Ad */}
-      <AdSlot slot="leaderboard" className="hidden md:flex mx-auto" />
-
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center py-16 text-center gap-3"><p className="text-4xl"></p><p className="text-[14px] font-semibold">No articles found</p><p className="text-[12px] text-muted-foreground">Try a different category or search term.</p></div>
       ) : (
@@ -53,7 +49,6 @@ export default function NewsPage() {
           )}
         </div>
       )}
-
-      <AdSlot slot="responsive" className="mx-auto mt-4" /></div>
+    </div>
   );
 }
