@@ -27,7 +27,6 @@ export interface Airdrop {
   backers?: Backer[];
   backersExtra?: number;
   tasks: AirdropTask[];
-  moniScore?: number;
   description?: string;
   website?: string;
   twitter?: string;
@@ -183,7 +182,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: "$18.50M",
     backers: [VC.framework, VC.slow, VC.paradigm],
     backersExtra: 4,
-    moniScore: 8800,
     description:
       "DeFi protocol with liquidity pools, CDP stablecoin minting, staking, and lending — all on Ethereum mainnet.",
     website: "https://strato.nexus",
@@ -238,7 +236,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: undefined,
     backers: [VC.dragonfly, VC.multicoin],
     backersExtra: 2,
-    moniScore: 6500,
     description:
       "Permissionless token launchpad with built-in DEX, NFT engine, and custom domains — currently live on testnet.",
     website: "https://netrun.xyz",
@@ -293,7 +290,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: "$21.60M",
     backers: [VC.framework, VC.slow, VC.paradigm, VC.coinbase],
     backersExtra: 10,
-    moniScore: 8200,
     description:
       "On-chain quest platform that rewards users for completing DeFi and Web3 tasks across multiple chains.",
     website: "https://rabbithole.gg",
@@ -327,7 +323,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: undefined,
     backers: [VC.mirana, VC.wintermute],
     backersExtra: 3,
-    moniScore: 7600,
     description:
       "Perpetual futures DEX on Arbitrum with a points program, trading competitions, and liquidity vaults.",
     website: "https://hotstuff.xyz",
@@ -396,7 +391,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: "$30.00M",
     backers: [VC.paradigm, VC.coinbase, VC.pantera],
     backersExtra: 5,
-    moniScore: 6200,
     description:
       "Community-driven DEX on Arbitrum with liquidity incentives, social missions, and referral rewards.",
     website: "https://popdex.io",
@@ -444,7 +438,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: undefined,
     backers: [VC.robot, VC.mirana, VC.wintermute],
     backersExtra: 5,
-    moniScore: 5800,
     description:
       "On-chain trading protocol built on Ethereum with a wallet-native UX for swapping ETH and stablecoins.",
     website: "https://beep.fi",
@@ -478,7 +471,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: undefined,
     backers: [VC.dragonfly, VC.coinbase, VC.jump],
     backersExtra: 3,
-    moniScore: 4500,
     description:
       "Arbitrum-native perpetuals DEX with liquidity vaults, lending markets, and a points-farming program.",
     website: "https://nado.xyz",
@@ -526,7 +518,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: "$2.00M",
     backers: [VC.g500, VC.selini],
     backersExtra: 0,
-    moniScore: 3800,
     description:
       "AI-powered analytics layer for crypto traders on Solana, with an early access waitlist and token rewards.",
     website: "https://k25.ai",
@@ -560,7 +551,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: undefined,
     backers: [VC.slow, VC.coinbase],
     backersExtra: 1,
-    moniScore: 5500,
     description:
       "Earn points by holding assets in Grove's smart vaults on Ethereum — points convert to tokens at TGE.",
     website: "https://grove.fi",
@@ -594,7 +584,6 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: "$15.00M",
     backers: [VC.dragonfly, VC.pantera, VC.a16z, VC.coinbase],
     backersExtra: 2,
-    moniScore: 4900,
     description:
       "Web3 social protocol connecting users across chains with daily tasks, leaderboards, and referral rewards.",
     website: "https://konnex.world",

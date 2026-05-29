@@ -29,7 +29,7 @@ export function ArticleCard({ article, className }: { article: Article; classNam
   return (
     <Link href={`/article/${article.slug}`}
       className={cn(
-        "group flex flex-col rounded-xl border border-border bg-card overflow-hidden hover:border-primary/40 hover:shadow-md transition-all duration-200",
+        "group flex flex-col rounded-xl border border-border bg-card overflow-hidden hover:border-primary/40 hover:shadow-md transition-[transform,border-color,box-shadow,background-color] duration-200 hover:-translate-y-0.5",
         className
       )}>
       {/* Thumbnail */}
@@ -51,7 +51,7 @@ export function HeroArticleCard({ article }: { article: Article }) {
   const color = CAT_COLORS[article.category] ?? "hsl(var(--primary))";
   return (
     <Link href={`/article/${article.slug}`}
-      className="group block rounded-xl border border-border bg-card overflow-hidden hover:border-primary/40 hover:shadow-md transition-all duration-200">
+      className="group block rounded-xl border border-border bg-card overflow-hidden hover:border-primary/40 hover:shadow-md transition-[transform,border-color,box-shadow,background-color] duration-200 hover:-translate-y-0.5">
       {/* Large thumbnail */}
       <div className="h-[220px] sm:h-[260px] w-full overflow-hidden bg-muted relative">
         {article.coverImage

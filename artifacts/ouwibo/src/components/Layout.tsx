@@ -198,7 +198,7 @@ function SidebarContents({
       </div>
       <div className="border-t border-border/30 py-2">
         <NavLink
-          item={{ href: "/settings", label: "Settings", Icon: Settings }}
+          item={{ href: "/settings", label: "About", Icon: Settings }}
           active={location === "/settings"}
           expanded={expanded}
           onClick={onNav}
@@ -214,68 +214,60 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [expanded, setExpanded] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location] = useLocation();
-  const SIDEBAR_W = expanded ? 216 : 60;
-  const mobileNavItems = ALL_NAV.filter((i) => !("soon" in i) || !i.soon).slice(
-    0,
-    5,
-  );
+  const SIDEBAR_W = expanded ? 256 : 72;
+  const mobileNavItems = ALL_NAV.filter((i) => !("soon" in i) || !i.soon).slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
       <AnimatedBackdrop />
       {/* ── Premium background glows ── */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[55vw] h-[55vw] max-w-[700px] max-h-[700px] rounded-full bg-primary/[0.07] blur-[120px]" />
-        <div className="absolute top-[-10%] right-[-5%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] rounded-full bg-blue-500/[0.05] blur-[100px]" />
-        <div className="absolute top-[40%] left-[30%] w-[30vw] h-[30vw] max-w-[400px] max-h-[400px] rounded-full bg-primary/[0.03] blur-[130px]" />
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
+        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-primary/[0.07] blur-[120px]" />
+        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-blue-500/[0.05] blur-[100px]" />
+        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-primary/[0.03] blur-[130px]" />
       </div>
       {/* ── Navbar ── */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-13 bg-background/80 backdrop-blur-xl border-b border-border/60 flex items-center gap-2.5 px-3">
+      <header className="fixed left-0 right-0 top-0 z-50 flex h-14 items-center gap-2.5 border-b border-border/60 bg-background/82 px-3 backdrop-blur-xl">
         <button
           onClick={() =>
-            window.innerWidth >= 1024
-              ? setExpanded((o) => !o)
-              : setMobileOpen((o) => !o)
+            window.innerWidth >= 1024 ? setExpanded((o) => !o) : setMobileOpen((o) => !o)
           }
-          className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors shrink-0"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl hover:bg-muted transition-colors"
           aria-label={expanded ? "Collapse sidebar" : "Open menu"}
         >
           <Menu size={16} />
         </button>
         <Link href="/">
-          <div className="flex items-center gap-2 cursor-pointer select-none">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center text-primary-foreground shrink-0">
-              <Zap size={13} fill="currentColor" />
+          <div className="flex select-none items-center gap-2 cursor-pointer">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+              <Zap size={14} fill="currentColor" />
             </div>
-            <div className="hidden sm:flex flex-col leading-none">
-              <span className="font-black text-[11px]">Ouwibo</span>
+            <div className="hidden flex-col leading-none sm:flex">
+              <span className="text-[11px] font-black">Ouwibo</span>
               <span className="text-[8px] text-muted-foreground">Cloud</span>
             </div>
           </div>
         </Link>
-        <div className="flex-1 max-w-sm mx-auto">
-          <div className="flex items-center gap-2 bg-muted/40 rounded-lg px-3 py-1.5 text-muted-foreground border border-border/40">
+        <div className="mx-auto flex-1 max-w-xl px-2">
+          <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-muted/35 px-3 py-2 text-muted-foreground shadow-sm">
             <Search size={11} />
             <span className="text-[10px]">Search airdrops, news…</span>
-            <span className="ml-auto text-[9px] bg-background border border-border/40 rounded px-1 py-0.5 hidden md:block">
+            <span className="ml-auto hidden rounded-md border border-border/40 bg-background px-1.5 py-0.5 text-[9px] md:block">
               ⌘K
             </span>
           </div>
         </div>
         <div className="ml-auto flex items-center gap-1">
           <button
-            className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-muted transition-colors relative"
+            className="relative flex h-9 w-9 items-center justify-center rounded-xl hover:bg-muted transition-colors"
             aria-label="Alerts"
           >
             <Bell size={14} />
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary" />
+            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary" />
           </button>
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center text-primary-foreground text-[10px] font-black border border-border"
-            style={{
-              background:
-                "linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/0.6))",
-            }}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-[10px] font-black text-primary-foreground"
+            style={{ background: "linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/0.6))" }}
           >
             O
           </div>
@@ -284,7 +276,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* ── Desktop Sidebar ── */}
       <aside
-        className="fixed top-13 left-0 bottom-0 z-40 border-r border-border/50 bg-sidebar/90 backdrop-blur-xl hidden lg:flex flex-col transition-[width] duration-300 ease-out overflow-hidden"
+        className="fixed bottom-0 left-0 top-14 z-40 hidden flex-col overflow-hidden border-r border-border/60 bg-sidebar/92 backdrop-blur-xl shadow-[1px_0_0_rgba(255,255,255,0.03)] lg:flex"
         style={{ width: SIDEBAR_W }}
       >
         <SidebarContents expanded={expanded} />
@@ -292,20 +284,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* ── Mobile Drawer ── */}
       {mobileOpen && (
-        <div
-          className="fixed inset-0 z-50 lg:hidden"
-          onClick={() => setMobileOpen(false)}
-        >
-          <div className="absolute inset-0 bg-background/50 backdrop-blur-sm" />
+        <div className="fixed inset-0 z-50 lg:hidden" onClick={() => setMobileOpen(false)}>
+          <div className="absolute inset-0 bg-background/55 backdrop-blur-sm" />
           <aside
-            className="absolute top-0 left-0 bottom-0 w-60 bg-sidebar/95 backdrop-blur-xl border-r border-border/50 flex flex-col animate-slide-in-left"
+            className="absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-border/50 bg-sidebar/95 backdrop-blur-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-4 h-13 border-b border-border/40">
-              <span className="font-black text-sm">Ouwibo Cloud</span>
+            <div className="flex h-14 items-center justify-between border-b border-border/40 px-4">
+              <span className="text-sm font-black">Ouwibo Cloud</span>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="w-7 h-7 rounded-lg flex items-center justify-center hover:bg-muted"
+                className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-muted"
                 aria-label="Close menu"
               >
                 <Menu size={14} />
@@ -317,20 +306,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* ── Bottom mobile nav ── */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 h-14 bg-sidebar/90 backdrop-blur-xl border-t border-border/50 flex items-center justify-around px-2">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-border/50 bg-sidebar/90 px-2 backdrop-blur-xl lg:hidden">
         {mobileNavItems.map((item) => {
-          const active =
-            item.href === "/"
-              ? location === "/"
-              : location.startsWith(item.href);
+          const active = item.href === "/" ? location === "/" : location.startsWith(item.href);
           return (
             <Link key={item.href} href={item.href}>
-              <div
-                className={cn(
-                  "flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors",
-                  active ? "text-primary" : "text-muted-foreground",
-                )}
-              >
+              <div className={cn("flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-colors", active ? "text-primary" : "text-muted-foreground")}> 
                 <item.Icon size={18} />
                 <span className="text-[8px] font-bold">{item.label}</span>
               </div>
@@ -342,13 +323,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* ── Main content ── */}
       <main
         className={cn(
-          "flex flex-col min-h-screen transition-[padding] duration-300",
-          expanded ? "lg:pl-[216px]" : "lg:pl-[60px]",
+          "relative z-10 flex min-h-screen flex-col transition-[padding] duration-300",
+          expanded ? "lg:pl-[256px]" : "lg:pl-[72px]",
         )}
       >
-        <div className="hidden lg:block" style={{ height: 52 }} />
-        <div className="h-13 lg:hidden" />
-        <div className="flex-1 px-4 py-5 pb-20 lg:pb-6">{children}</div>
+        <div className="hidden lg:block" style={{ height: 56 }} />
+        <div className="h-14 lg:hidden" />
+        <div className="flex-1 px-3 py-5 pb-22 lg:px-6 xl:px-8 lg:py-6 lg:pb-8">{children}</div>
       </main>
       <ScrollTop />
     </div>

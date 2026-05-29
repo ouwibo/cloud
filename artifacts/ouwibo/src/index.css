@@ -529,3 +529,125 @@
     inset: -1px;
   }
 }
+
+/* ═══════════════════════════════════════════
+   AMBIENT BACKDROP SYSTEM
+═══════════════════════════════════════════ */
+.animated-network,
+.animated-mesh,
+.animated-vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.animated-network {
+  z-index: 1;
+  opacity: 0.8;
+  mix-blend-mode: screen;
+}
+
+.animated-mesh {
+  z-index: 0;
+  will-change: transform, opacity;
+  filter: blur(72px);
+  opacity: 0.4;
+  transform: translate3d(0, 0, 0);
+  border-radius: 9999px;
+}
+
+.animated-mesh-a {
+  top: 8%;
+  left: -8%;
+  width: 32vw;
+  height: 32vw;
+  max-width: 520px;
+  max-height: 520px;
+  background: radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.36), transparent 65%);
+  animation: meshFloatA 18s ease-in-out infinite;
+}
+
+.animated-mesh-b {
+  top: 28%;
+  right: -10%;
+  width: 28vw;
+  height: 28vw;
+  max-width: 460px;
+  max-height: 460px;
+  background: radial-gradient(circle at 35% 35%, color-mix(in oklab, hsl(var(--primary)) 58%, white 42%) / 0.22, transparent 68%);
+  animation: meshFloatB 22s ease-in-out infinite;
+}
+
+.animated-mesh-c {
+  bottom: -10%;
+  left: 28%;
+  width: 26vw;
+  height: 26vw;
+  max-width: 420px;
+  max-height: 420px;
+  background: radial-gradient(circle at 35% 35%, hsl(var(--foreground) / 0.08), transparent 68%);
+  animation: meshFloatC 26s ease-in-out infinite;
+}
+
+.animated-vignette {
+  z-index: 2;
+  background: radial-gradient(ellipse at center, transparent 45%, hsl(var(--background) / 0.12) 100%);
+}
+
+@keyframes meshFloatA {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(7%, 4%, 0) scale(1.08); }
+}
+
+@keyframes meshFloatB {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-6%, 5%, 0) scale(1.1); }
+}
+
+@keyframes meshFloatC {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(4%, -6%, 0) scale(1.06); }
+}
+
+.glow-soft {
+  position: relative;
+}
+.glow-soft::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 1px hsl(var(--primary) / 0.1), 0 0 24px hsl(var(--primary) / 0.13);
+  opacity: 0.75;
+  animation: glowPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce), (update: slow), (pointer: coarse) {
+  .animated-network,
+  .animated-mesh,
+  .animated-vignette {
+    display: none !important;
+    animation: none !important;
+  }
+  .glow-soft::after {
+    animation: none !important;
+    opacity: 0.35;
+  }
+  .anim,
+  .anim-up,
+  .anim-left,
+  .anim-scale,
+  .animate-fade-in,
+  .animate-slide-in-left,
+  .animate-slide-down,
+  .animate-pulse-soft,
+  .ticker-track {
+    animation: none !important;
+  }
+}
