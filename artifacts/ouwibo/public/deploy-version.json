@@ -1,0 +1,6 @@
+{
+  "app": "ouwibo",
+  "layout": "premium-full-width",
+  "version": "2026-05-30-layout-v2",
+  "note": "If https://ouwibo.bond/deploy-version.json does not show this version, production is still serving an older deployment."
+}
