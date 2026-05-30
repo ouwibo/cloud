@@ -12,14 +12,14 @@ export default function HomePage() {
   const featuredAirdrops = mockAirdrops.slice(0, 5);
 
   return (
-    <div className="space-y-8">
+    <div className="premium-page space-y-8">
       {/* ── Hero + sidebar ── */}
       <section>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-5">
           {hero && <HeroArticleCard article={hero} />}
 
           <div className="flex flex-col gap-4">
-            <div className="rounded-xl border border-border bg-card p-4">
+            <div className="premium-panel rounded-2xl border p-4">
               <div className="flex items-center gap-1.5 mb-3">
                 <TrendingUp className="w-3.5 h-3.5 text-primary" />
                 <h3 className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -29,7 +29,10 @@ export default function HomePage() {
               <ol className="space-y-3">
                 {all.slice(0, 4).map((a, i) => (
                   <li key={a.id}>
-                    <Link href={`/article/${a.slug}`} className="flex gap-2.5 group">
+                    <Link
+                      href={`/article/${a.slug}`}
+                      className="flex gap-2.5 group"
+                    >
                       <span className="text-[20px] font-bold text-border leading-none mt-0.5 flex-shrink-0 w-5">
                         {i + 1}
                       </span>
@@ -53,8 +56,13 @@ export default function HomePage() {
       {/* ── Latest articles grid ── */}
       <section>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-[15px] font-bold text-foreground">Latest Articles</h2>
-          <Link href="/news" className="flex items-center gap-1 text-[12px] text-primary font-medium hover:underline">
+          <h2 className="text-[15px] font-bold text-foreground">
+            Latest Articles
+          </h2>
+          <Link
+            href="/news"
+            className="flex items-center gap-1 text-[12px] text-primary font-medium hover:underline"
+          >
             See all <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
@@ -70,14 +78,19 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-1.5">
             <Zap className="w-4 h-4 text-primary" />
-            <h2 className="text-[15px] font-bold text-foreground">Featured Airdrops</h2>
+            <h2 className="text-[15px] font-bold text-foreground">
+              Featured Airdrops
+            </h2>
           </div>
-          <Link href="/airdrops" className="flex items-center gap-1 text-[12px] text-primary font-medium hover:underline">
+          <Link
+            href="/airdrops"
+            className="flex items-center gap-1 text-[12px] text-primary font-medium hover:underline"
+          >
             View all <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
 
-        <div className="rounded-xl border border-border bg-card divide-y divide-border overflow-hidden">
+        <div className="premium-panel overflow-hidden rounded-2xl border divide-y divide-border/60">
           {featuredAirdrops.map((drop) => (
             <Link
               key={drop.id}
@@ -110,7 +123,11 @@ export default function HomePage() {
 
               <div className="text-right flex-shrink-0">
                 <p className="text-[12px] font-semibold text-primary">
-                  {drop.tasks[0] ? (drop.tasks[0].cost === 0 ? "Free" : `$${drop.tasks[0].cost}`) : "—"}
+                  {drop.tasks[0]
+                    ? drop.tasks[0].cost === 0
+                      ? "Free"
+                      : `$${drop.tasks[0].cost}`
+                    : "—"}
                 </p>
                 <p className="text-[10px] text-muted-foreground capitalize">
                   {drop.status}
@@ -122,12 +139,17 @@ export default function HomePage() {
       </section>
 
       {/* ── Newsletter CTA ── */}
-      <section className="rounded-xl border border-border bg-card p-6 text-center">
-        <h2 className="text-[16px] font-bold mb-1">Stay ahead of the next big airdrop</h2>
+      <section className="premium-panel rounded-2xl border p-6 text-center">
+        <h2 className="text-[16px] font-bold mb-1">
+          Stay ahead of the next big airdrop
+        </h2>
         <p className="text-[13px] text-muted-foreground mb-4">
           Weekly digest of the best opportunities, analysis, and news.
         </p>
-        <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-2 max-w-sm mx-auto">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex flex-col sm:flex-row gap-2 max-w-sm mx-auto"
+        >
           <input
             type="email"
             placeholder="your@email.com"

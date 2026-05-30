@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Layout from "@/components/Layout";
+import PageErrorBoundary from "@/components/PageErrorBoundary";
 import DashboardPage from "@/pages/DashboardPage";
 import AirdropsPage from "@/pages/AirdropsPage";
 import AirdropDetailPage from "@/pages/AirdropDetailPage";
@@ -22,16 +23,18 @@ function App() {
         <TooltipProvider>
           <ThemeProvider>
             <Layout>
-              <Switch>
-                <Route path="/" component={DashboardPage} />
-                <Route path="/airdrops" component={AirdropsPage} />
-                <Route path="/airdrops/:slug" component={AirdropDetailPage} />
-                <Route path="/news" component={NewsPage} />
-                <Route path="/article/:slug" component={ArticlePage} />
-                <Route path="/chat" component={ChatPage} />
-                <Route path="/settings" component={SettingsPage} />
-                <Route component={NotFound} />
-              </Switch>
+              <PageErrorBoundary>
+                <Switch>
+                  <Route path="/" component={DashboardPage} />
+                  <Route path="/airdrops" component={AirdropsPage} />
+                  <Route path="/airdrops/:slug" component={AirdropDetailPage} />
+                  <Route path="/news" component={NewsPage} />
+                  <Route path="/article/:slug" component={ArticlePage} />
+                  <Route path="/chat" component={ChatPage} />
+                  <Route path="/settings" component={SettingsPage} />
+                  <Route component={NotFound} />
+                </Switch>
+              </PageErrorBoundary>
             </Layout>
             <Toaster />
           </ThemeProvider>

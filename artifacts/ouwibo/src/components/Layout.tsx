@@ -48,6 +48,7 @@ const NAV_GROUPS = [
 ];
 
 const ALL_NAV = NAV_GROUPS.flatMap((g) => g.items);
+type NavItem = (typeof ALL_NAV)[number];
 
 /* ── Scroll-to-top ── */
 function ScrollTop() {
@@ -114,12 +115,12 @@ function NavLink({
   expanded,
   onClick,
 }: {
-  item: (typeof ALL_NAV)[0];
+  item: NavItem;
   active: boolean;
   expanded: boolean;
   onClick?: () => void;
 }) {
-  const isStub = !!(item as any).soon;
+  const isStub = item.soon === true;
   const inner = (
     <div
       className={cn(
@@ -215,13 +216,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location] = useLocation();
   const SIDEBAR_W = expanded ? 256 : 72;
-  const mobileNavItems = ALL_NAV.filter((i) => !("soon" in i) || !i.soon).slice(0, 5);
+  const mobileNavItems = ALL_NAV.filter((i) => !("soon" in i) || !i.soon).slice(
+    0,
+    5,
+  );
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
       <AnimatedBackdrop />
       {/* ── Premium background glows ── */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
+      <div
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+        aria-hidden
+      >
         <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-primary/[0.07] blur-[120px]" />
         <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-blue-500/[0.05] blur-[100px]" />
         <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-primary/[0.03] blur-[130px]" />
@@ -230,7 +237,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="fixed left-0 right-0 top-0 z-50 flex h-14 items-center gap-2.5 border-b border-border/60 bg-background/82 px-3 backdrop-blur-xl">
         <button
           onClick={() =>
-            window.innerWidth >= 1024 ? setExpanded((o) => !o) : setMobileOpen((o) => !o)
+            window.innerWidth >= 1024
+              ? setExpanded((o) => !o)
+              : setMobileOpen((o) => !o)
           }
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl hover:bg-muted transition-colors"
           aria-label={expanded ? "Collapse sidebar" : "Open menu"}
@@ -267,7 +276,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </button>
           <div
             className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-[10px] font-black text-primary-foreground"
-            style={{ background: "linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/0.6))" }}
+            style={{
+              background:
+                "linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/0.6))",
+            }}
           >
             O
           </div>
@@ -284,7 +296,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* ── Mobile Drawer ── */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden" onClick={() => setMobileOpen(false)}>
+        <div
+          className="fixed inset-0 z-50 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        >
           <div className="absolute inset-0 bg-background/55 backdrop-blur-sm" />
           <aside
             className="absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-border/50 bg-sidebar/95 backdrop-blur-xl"
@@ -308,10 +323,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* ── Bottom mobile nav ── */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-border/50 bg-sidebar/90 px-2 backdrop-blur-xl lg:hidden">
         {mobileNavItems.map((item) => {
-          const active = item.href === "/" ? location === "/" : location.startsWith(item.href);
+          const active =
+            item.href === "/"
+              ? location === "/"
+              : location.startsWith(item.href);
           return (
             <Link key={item.href} href={item.href}>
-              <div className={cn("flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-colors", active ? "text-primary" : "text-muted-foreground")}> 
+              <div
+                className={cn(
+                  "flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-colors",
+                  active ? "text-primary" : "text-muted-foreground",
+                )}
+              >
                 <item.Icon size={18} />
                 <span className="text-[8px] font-bold">{item.label}</span>
               </div>
@@ -323,13 +346,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* ── Main content ── */}
       <main
         className={cn(
-          "relative z-10 flex min-h-screen flex-col transition-[padding] duration-300",
+          "relative z-10 flex min-h-screen w-full flex-col transition-[padding] duration-300",
           expanded ? "lg:pl-[256px]" : "lg:pl-[72px]",
         )}
       >
         <div className="hidden lg:block" style={{ height: 56 }} />
         <div className="h-14 lg:hidden" />
-        <div className="flex-1 px-3 py-5 pb-22 lg:px-6 xl:px-8 lg:py-6 lg:pb-8">{children}</div>
+        <div className="flex-1 w-full px-3 py-4 pb-22 sm:px-4 lg:px-5 xl:px-6 2xl:px-8 lg:py-5 lg:pb-8">
+          {children}
+        </div>
       </main>
       <ScrollTop />
     </div>
