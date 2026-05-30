@@ -346,13 +346,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* ── Main content ── */}
       <main
         className={cn(
-          "relative z-10 flex min-h-screen flex-col transition-[padding] duration-300",
+          "relative z-10 flex min-h-screen w-full flex-col transition-[padding] duration-300",
           expanded ? "lg:pl-[256px]" : "lg:pl-[72px]",
         )}
       >
         <div className="hidden lg:block" style={{ height: 56 }} />
         <div className="h-14 lg:hidden" />
-        <div className="flex-1 px-3 py-5 pb-22 lg:px-6 xl:px-8 lg:py-6 lg:pb-8">
+        <div className="flex-1 w-full px-3 py-4 pb-22 sm:px-4 lg:px-5 xl:px-6 2xl:px-8 lg:py-5 lg:pb-8">
           {children}
         </div>
       </main>
