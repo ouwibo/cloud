@@ -96,7 +96,6 @@ export default function DashboardPage() {
   const rewards = airdrops.filter(
     (a) => a.status === "Reward Available",
   ).length;
-  const free = airdrops.filter((a) => a.tasks.some((t) => t.cost === 0)).length;
   const newest = airdrops.filter((a) => a.isNew).slice(0, 4);
   const rewardA = airdrops.filter((a) => a.status === "Reward Available");
   const latestArticles = getAllArticles().slice(0, 4);
@@ -108,78 +107,84 @@ export default function DashboardPage() {
         (a.tasks.length + (a.raiseFunds ? 1 : 0)),
     )
     .slice(0, 6);
-  const hour = new Date().getHours();
-  const greet =
-    hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
   return (
     <div className="premium-page space-y-6">
       <section className="premium-panel overflow-hidden rounded-3xl border p-5 sm:p-6">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="max-w-3xl">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-black uppercase tracking-[0.18em] text-primary">
-              <span className="premium-icon h-6 w-6 rounded-full">
-                <Star className="relative z-10 h-3 w-3" fill="currentColor" />
-              </span>
+        <div className="max-w-5xl">
+          <div className="mb-3 inline-flex max-w-full items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-primary sm:text-[11px]">
+            <span className="premium-icon h-6 w-6 shrink-0 rounded-full">
+              <Star className="relative z-10 h-3 w-3" fill="currentColor" />
+            </span>
+            <span className="truncate">
               Research-grade airdrop intelligence
-            </div>
-            <h1 className="premium-heading text-3xl font-black text-foreground sm:text-4xl lg:text-5xl">
-              {greet}, welcome to Ouwibo.
-            </h1>
-            <p className="mt-4 text-sm leading-7 text-muted-foreground sm:text-[15px]">
-              Ouwibo is a professional airdrop intelligence workspace for
-              discovering credible campaigns, comparing time-to-reward signals,
-              and tracking claim-ready opportunities without noisy speculation.
-            </p>
-            <p className="mt-2 text-[13px] font-semibold text-foreground/80">
-              {total} airdrops tracked · {confirmed} confirmed · {rewards}{" "}
-              reward
-              {rewards !== 1 ? "s" : ""} available
-            </p>
+            </span>
           </div>
-          <Link href="/airdrops" className="w-full sm:w-auto">
-            <button className="w-full shrink-0 rounded-2xl bg-primary px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_16px_34px_hsl(var(--primary)/0.22)] transition-all hover:-translate-y-0.5 hover:shadow-[0_22px_44px_hsl(var(--primary)/0.28)] sm:w-auto">
-              Explore Airdrops →
-            </button>
-          </Link>
+          <h1 className="premium-heading text-[28px] font-black leading-[1.08] text-foreground sm:text-4xl lg:text-5xl">
+            Ouwibo: professional airdrop intelligence workspace.
+          </h1>
+          <p className="mt-4 max-w-4xl text-sm leading-7 text-muted-foreground sm:text-[15px]">
+            Discover credible campaigns, compare time-to-reward signals, and
+            track claim-ready opportunities in one clean workspace without noisy
+            speculation or overlapping dashboard copy.
+          </p>
+          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <Link href="/airdrops" className="w-full sm:w-auto">
+              <button className="w-full shrink-0 rounded-2xl bg-primary px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_16px_34px_hsl(var(--primary)/0.22)] transition-all hover:-translate-y-0.5 hover:shadow-[0_22px_44px_hsl(var(--primary)/0.28)] sm:w-auto">
+                Explore Airdrops →
+              </button>
+            </Link>
+            <Link href="/news" className="w-full sm:w-auto">
+              <button className="w-full rounded-2xl border border-border bg-card/70 px-5 py-3 text-[13px] font-black text-foreground transition-colors hover:bg-muted sm:w-auto">
+                Read Research
+              </button>
+            </Link>
+          </div>
         </div>
       </section>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
           {
-            label: "Total",
+            label: "Airdrops Tracked",
+            detail: "Curated opportunities",
             value: total,
-            icon: <Zap className="w-4 h-4" />,
+            icon: <Zap className="h-4 w-4" />,
             cls: "text-primary border-primary/25 bg-primary/5",
           },
           {
             label: "Confirmed",
+            detail: "Verified campaign signals",
             value: confirmed,
-            icon: <CheckCircle2 className="w-4 h-4" />,
+            icon: <CheckCircle2 className="h-4 w-4" />,
             cls: "text-emerald-500 border-emerald-500/25 bg-emerald-500/5",
           },
           {
             label: "Potential",
+            detail: "Under review",
             value: potential,
-            icon: <Clock className="w-4 h-4" />,
+            icon: <Clock className="h-4 w-4" />,
             cls: "text-amber-500 border-amber-500/25 bg-amber-500/5",
           },
           {
-            label: "Free Tasks",
-            value: free,
-            icon: <Gift className="w-4 h-4" />,
+            label: "Rewards Available",
+            detail: "Claim-ready now",
+            value: rewards,
+            icon: <Gift className="h-4 w-4" />,
             cls: "text-blue-400 border-blue-500/25 bg-blue-500/5",
           },
-        ].map(({ label, value, icon, cls }) => (
+        ].map(({ label, detail, value, icon, cls }) => (
           <div
             key={label}
             className={cn("premium-stat rounded-2xl border p-3.5", cls)}
           >
             <div className="premium-icon mb-2 h-8 w-8 rounded-xl">{icon}</div>
             <div className="text-[22px] font-bold leading-none">{value}</div>
-            <div className="mt-1 text-[11px] text-muted-foreground">
+            <div className="mt-1 text-[11px] font-black uppercase tracking-[0.14em] text-foreground/80">
               {label}
+            </div>
+            <div className="mt-0.5 text-[10px] text-muted-foreground">
+              {detail}
             </div>
           </div>
         ))}

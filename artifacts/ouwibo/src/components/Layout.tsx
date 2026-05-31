@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 import { cn } from "@/lib/utils";
 import {
@@ -20,6 +20,8 @@ import {
   Moon,
 } from "lucide-react";
 import AnimatedBackdrop from "@/components/AnimatedBackdrop";
+import { mockAirdrops } from "@/lib/mockData";
+import { getAllArticles } from "@/lib/articleStore";
 
 const NAV_GROUPS = [
   {
@@ -52,38 +54,14 @@ type NavItem = (typeof ALL_NAV)[number];
 
 function BrandMark() {
   return (
-    <span className="premium-icon h-9 w-9 rounded-2xl text-primary-foreground">
-      <svg
-        viewBox="0 0 32 32"
-        className="relative z-10 h-5 w-5 drop-shadow-[0_2px_10px_hsl(var(--primary)/0.45)]"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M17.7 2.8 7.3 17.2h7.1l-1.1 12 11.4-15.8h-7.6l.6-10.6Z"
-          fill="url(#brand-bolt)"
-        />
-        <path
-          d="M17.7 2.8 7.3 17.2h7.1l-1.1 12 11.4-15.8h-7.6l.6-10.6Z"
-          stroke="rgba(255,255,255,.55)"
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-        />
-        <defs>
-          <linearGradient
-            id="brand-bolt"
-            x1="8"
-            y1="4"
-            x2="24"
-            y2="28"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="white" />
-            <stop offset=".42" stopColor="hsl(var(--primary-foreground))" />
-            <stop offset="1" stopColor="hsl(var(--primary))" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-card shadow-lg shadow-background/20">
+      <img
+        src="/site-logo.svg"
+        alt="Ouwibo mascot logo"
+        className="h-full w-full object-contain p-0.5"
+        width={40}
+        height={40}
+      />
     </span>
   );
 }
@@ -107,42 +85,23 @@ function ScrollTop() {
   );
 }
 
-/* ── Appearance panel (dark/light only) ── */
-function AppearancePanel({ expanded }: { expanded: boolean }) {
+function ThemeToggleButton() {
   const { mode, setMode } = useTheme();
   const isDark = mode === "dark";
 
   return (
-    <div className="px-2 py-2 border-t border-border/40">
-      <button
-        onClick={() => setMode(isDark ? "light" : "dark")}
-        className={cn(
-          "group flex w-full items-center gap-2 rounded-xl border border-border/50 bg-background/35 px-3 py-2 text-muted-foreground",
-          "transition-[background-color,color,border-color,transform] duration-200 ease-out hover:-translate-y-0.5 hover:bg-muted hover:text-foreground",
-          expanded ? "justify-start" : "justify-center",
-        )}
-        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      >
-        <span className="relative flex h-4 w-4 items-center justify-center">
-          {isDark ? (
-            <Moon
-              size={14}
-              className="transition-transform duration-300 group-hover:-rotate-12"
-            />
-          ) : (
-            <Sun
-              size={14}
-              className="transition-transform duration-300 group-hover:rotate-45"
-            />
-          )}
-        </span>
-        {expanded && (
-          <span className="text-[10px] font-bold">
-            {isDark ? "Night mode" : "Light mode"}
-          </span>
-        )}
-      </button>
-    </div>
+    <button
+      onClick={() => setMode(isDark ? "light" : "dark")}
+      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-border/50 bg-card/65 text-muted-foreground shadow-sm transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/30 hover:bg-muted hover:text-foreground"
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {isDark ? (
+        <Sun className="h-4 w-4 transition-transform duration-300 group-hover:rotate-45" />
+      ) : (
+        <Moon className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-12" />
+      )}
+    </button>
   );
 }
 
@@ -162,7 +121,7 @@ function NavLink({
   const inner = (
     <div
       className={cn(
-        "flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-all w-full",
+        "flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2 transition-[background-color,color,transform] duration-300 ease-out",
         active
           ? "bg-primary text-primary-foreground"
           : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
@@ -170,7 +129,7 @@ function NavLink({
     >
       <div
         className={cn(
-          "premium-icon shrink-0 rounded-lg",
+          "premium-icon shrink-0 rounded-lg transition-[width,height,transform] duration-300 ease-out",
           expanded ? "h-7 w-7" : "h-8 w-8",
           active &&
             "border-primary-foreground/30 bg-primary-foreground/12 text-primary-foreground",
@@ -250,7 +209,6 @@ function SidebarContents({
           onClick={onNav}
         />
       </div>
-      <AppearancePanel expanded={expanded} />
     </>
   );
 }
@@ -259,12 +217,79 @@ function SidebarContents({
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [expanded, setExpanded] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [location] = useLocation();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [location, navigate] = useLocation();
   const SIDEBAR_W = expanded ? 256 : 72;
   const mobileNavItems = ALL_NAV.filter((i) => !("soon" in i) || !i.soon).slice(
     0,
     5,
   );
+
+  const searchResults = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return [];
+
+    const airdrops = mockAirdrops
+      .filter((item) =>
+        `${item.name} ${item.ticker ?? ""} ${item.status}`
+          .toLowerCase()
+          .includes(query),
+      )
+      .slice(0, 4)
+      .map((item) => ({
+        key: `airdrop-${item.id}`,
+        title: item.name,
+        subtitle: `${item.status} · ${item.rewardType}`,
+        href: `/airdrops/${item.slug}`,
+        type: "Airdrop",
+      }));
+
+    const articles = getAllArticles()
+      .filter((item) =>
+        `${item.title} ${item.excerpt} ${item.category}`
+          .toLowerCase()
+          .includes(query),
+      )
+      .slice(0, 4)
+      .map((item) => ({
+        key: `article-${item.id}`,
+        title: item.title,
+        subtitle: `${item.category} · ${item.readTime} min read`,
+        href: `/article/${item.slug}`,
+        type: "Article",
+      }));
+
+    return [...airdrops, ...articles].slice(0, 6);
+  }, [searchQuery]);
+
+  const submitSearch = () => {
+    const query = searchQuery.trim();
+    if (!query) {
+      setSearchOpen((value) => !value);
+      return;
+    }
+    navigate(`/airdrops?search=${encodeURIComponent(query)}`);
+    setSearchOpen(false);
+  };
+
+  const goToResult = (href: string) => {
+    navigate(href);
+    setSearchOpen(false);
+    setSearchQuery("");
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setSearchOpen(true);
+      }
+      if (event.key === "Escape") setSearchOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -300,38 +325,86 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </Link>
-        <div className="mx-auto flex-1 max-w-xl px-2">
-          <div className="flex items-center gap-2 rounded-xl border border-border/50 bg-muted/35 px-3 py-2 text-muted-foreground shadow-sm">
-            <Search size={11} />
-            <span className="text-[10px]">Search airdrops, news…</span>
-            <span className="ml-auto hidden rounded-md border border-border/40 bg-background px-1.5 py-0.5 text-[9px] md:block">
+        <div className="relative mx-auto max-w-xl flex-1 px-1 sm:px-2">
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              submitSearch();
+            }}
+            className="flex h-10 items-center gap-2 rounded-2xl border border-border/60 bg-card/75 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/40 focus-within:bg-card focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.08)]"
+          >
+            <Search className="h-4 w-4 shrink-0" />
+            <input
+              value={searchQuery}
+              onFocus={() => setSearchOpen(true)}
+              onChange={(event) => {
+                setSearchQuery(event.target.value);
+                setSearchOpen(true);
+              }}
+              placeholder="Search airdrops, news…"
+              className="min-w-0 flex-1 bg-transparent text-[12px] font-semibold text-foreground outline-none placeholder:text-muted-foreground/70"
+            />
+            <button
+              type="submit"
+              className="hidden rounded-lg border border-border/50 bg-background/75 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
+            >
               ⌘K
-            </span>
-          </div>
+            </button>
+          </form>
+          {searchOpen && (searchQuery.trim() || searchResults.length > 0) && (
+            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-border/70 bg-popover/95 shadow-2xl shadow-background/30 backdrop-blur-xl sm:left-2 sm:right-2">
+              {searchResults.length > 0 ? (
+                <div className="max-h-[min(70vh,360px)] overflow-y-auto p-1.5">
+                  {searchResults.map((result) => (
+                    <button
+                      key={result.key}
+                      onClick={() => goToResult(result.href)}
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-muted"
+                    >
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                        <Search className="h-3.5 w-3.5" />
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-[12px] font-black text-foreground">
+                          {result.title}
+                        </span>
+                        <span className="block truncate text-[10px] font-semibold text-muted-foreground">
+                          {result.type} · {result.subtitle}
+                        </span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4 text-center text-[12px] font-semibold text-muted-foreground">
+                  No results found. Press Enter to search airdrops.
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div className="ml-auto flex items-center gap-1">
+          <ThemeToggleButton />
           <button
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl hover:bg-muted transition-colors"
+            className="relative hidden h-9 w-9 items-center justify-center rounded-xl transition-colors hover:bg-muted sm:flex"
             aria-label="Alerts"
           >
             <Bell size={14} />
             <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary" />
           </button>
-          <div
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-[10px] font-black text-primary-foreground"
-            style={{
-              background:
-                "linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/0.6))",
-            }}
-          >
-            O
-          </div>
+          <img
+            src="/site-logo.svg"
+            alt="Ouwibo mascot"
+            className="hidden h-8 w-8 rounded-full border border-border bg-card object-contain p-0.5 sm:block"
+            width={32}
+            height={32}
+          />
         </div>
       </header>
 
       {/* ── Desktop Sidebar ── */}
       <aside
-        className="fixed bottom-0 left-0 top-14 z-40 hidden flex-col overflow-hidden border-r border-border/60 bg-sidebar/92 backdrop-blur-xl shadow-[1px_0_0_rgba(255,255,255,0.03)] lg:flex"
+        className="fixed bottom-0 left-0 top-14 z-40 hidden flex-col overflow-hidden border-r border-border/60 bg-sidebar/92 backdrop-blur-xl shadow-[1px_0_0_rgba(255,255,255,0.03)] transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
         style={{ width: SIDEBAR_W }}
       >
         <SidebarContents expanded={expanded} />
@@ -345,7 +418,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           <div className="absolute inset-0 bg-background/55 backdrop-blur-sm" />
           <aside
-            className="absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-border/50 bg-sidebar/95 backdrop-blur-xl"
+            className="absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-border/50 bg-sidebar/95 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex h-14 items-center justify-between border-b border-border/40 px-4">
@@ -389,7 +462,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* ── Main content ── */}
       <main
         className={cn(
-          "relative z-10 flex min-h-screen w-full flex-col transition-[padding] duration-300",
+          "relative z-10 flex min-h-screen w-full flex-col transition-[padding] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
           expanded ? "lg:pl-[256px]" : "lg:pl-[72px]",
         )}
       >
