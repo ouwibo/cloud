@@ -172,7 +172,7 @@ export const mockAirdrops: Airdrop[] = [
     slug: "the-beacon-season-one",
     name: "The Beacon",
     ticker: "BCN",
-    logoUrl: "https://pbs.twimg.com/profile_images/1931698210840797185/7a51VGa8_400x400.png",
+    logoUrl: "https://pbs.twimg.com/profile_images/1740080990133878784/S3Ygy13G_400x400.png",
     logoColor: "#3b82f6",
     logoInitial: "TB",
     isNew: true,
@@ -182,7 +182,7 @@ export const mockAirdrops: Airdrop[] = [
     raiseFunds: undefined,
     backers: [],
     description:
-      "Season-based on-chain treasure hunt built on Treasure DAO ecosystem (Arbitrum). Play the current season 'Goblin's Gambit', complete tasks and climb the leaderboard for future token rewards.",
+      "Season-based on-chain treasure hunt by Skillcap Studio, built on Treasure DAO ecosystem (Arbitrum). Play the current season 'Goblin's Gambit', complete tasks and climb the leaderboard for future token $BCN rewards. Skillcap is a fully remote indie studio founded 2022, funded via private investment and digital collectible sales — no major VC rounds disclosed. Community reception is mixed: Season 1 had a buggy launch but still draws strong traffic.",
     website: "https://app.thebeacon.gg",
     twitter: "thebeacon_gg",
     telegram: "https://t.me/thebeacongg",
@@ -203,6 +203,13 @@ export const mockAirdrops: Airdrop[] = [
         cost: 0,
         timeMin: 1,
         url: "https://twitter.com/thebeacon_gg",
+      },
+      {
+        name: "Join Discord",
+        types: ["Social"],
+        cost: 0,
+        timeMin: 1,
+        url: "https://discord.gg/thebeacon",
       },
       {
         name: "Join Telegram",
