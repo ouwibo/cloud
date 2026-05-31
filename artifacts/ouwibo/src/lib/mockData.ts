@@ -169,6 +169,59 @@ const VC: Record<string, Backer> = {
 export const mockAirdrops: Airdrop[] = [
   {
     id: 1,
+    slug: "the-beacon-season-one",
+    name: "The Beacon",
+    ticker: "BCN",
+    logoUrl: "https://pbs.twimg.com/profile_images/1931698210840797185/7a51VGa8_400x400.png",
+    logoColor: "#3b82f6",
+    logoInitial: "TB",
+    isNew: true,
+    status: "Potential",
+    statusDate: "May 25, 2026",
+    rewardType: "Airdrop",
+    raiseFunds: undefined,
+    backers: [],
+    description:
+      "Season-based on-chain treasure hunt built on Treasure DAO ecosystem (Arbitrum). Play the current season 'Goblin's Gambit', complete tasks and climb the leaderboard for future token rewards.",
+    website: "https://app.thebeacon.gg",
+    twitter: "thebeacon_gg",
+    telegram: "https://t.me/thebeacongg",
+    discord: "https://discord.gg/thebeacon",
+    chain: "Arbitrum",
+    network: "Mainnet",
+    tasks: [
+      {
+        name: "Sign Up via Referral",
+        types: ["Social"],
+        cost: 0,
+        timeMin: 2,
+        url: "https://app.thebeacon.gg/season-one?referralCode=EQKYL2YBVF",
+      },
+      {
+        name: "Follow X (Twitter)",
+        types: ["Social"],
+        cost: 0,
+        timeMin: 1,
+        url: "https://twitter.com/thebeacon_gg",
+      },
+      {
+        name: "Join Telegram",
+        types: ["Social"],
+        cost: 0,
+        timeMin: 1,
+        url: "https://t.me/thebeacongg",
+      },
+      {
+        name: "Play 'Goblin's Gambit'",
+        types: ["Game"],
+        cost: 0,
+        timeMin: 10,
+        url: "https://app.thebeacon.gg/season-one",
+      },
+    ],
+  },
+  {
+    id: 2,
     slug: "strato",
     name: "STRATO",
     ticker: undefined,
@@ -222,7 +275,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     slug: "netrun",
     name: "Netrun",
     ticker: "NET",
@@ -276,7 +329,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     slug: "boost-rabbithole",
     name: "Boost (RabbitHole)",
     ticker: undefined,
@@ -309,7 +362,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     slug: "hotstuff",
     name: "Hotstuff (Prev. Syndr Protocol)",
     ticker: undefined,
@@ -377,7 +430,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     slug: "popdex",
     name: "PopDEX",
     ticker: undefined,
@@ -424,7 +477,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     slug: "beep",
     name: "Beep",
     ticker: undefined,
@@ -457,7 +510,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     slug: "nado",
     name: "Nado",
     ticker: undefined,
@@ -504,7 +557,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     slug: "k25-ai",
     name: "K25.ai",
     ticker: undefined,
@@ -537,7 +590,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 9,
+    id: 10,
     slug: "grove",
     name: "Grove",
     ticker: undefined,
@@ -570,7 +623,7 @@ export const mockAirdrops: Airdrop[] = [
     ],
   },
   {
-    id: 10,
+    id: 11,
     slug: "konnex",
     name: "Konnex",
     ticker: "KNX",
