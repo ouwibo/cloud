@@ -139,6 +139,7 @@ function LinkBlock({
   value,
   note,
   accent,
+  cardAccent,
 }: {
   href?: string;
   icon: ReactNode;
@@ -146,7 +147,12 @@ function LinkBlock({
   value: string;
   note: string;
   accent: string;
+  cardAccent: string;
 }) {
+  const cardClassName = cn(
+    "group relative flex min-w-0 items-center gap-3 overflow-hidden rounded-2xl border px-3 py-3 shadow-sm transition-colors",
+    cardAccent,
+  );
   const content = (
     <>
       <div
@@ -171,11 +177,7 @@ function LinkBlock({
   );
 
   if (!href) {
-    return (
-      <div className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background/45 px-3 py-3">
-        {content}
-      </div>
-    );
+    return <div className={cn(cardClassName, "opacity-75")}>{content}</div>;
   }
 
   return (
@@ -183,7 +185,7 @@ function LinkBlock({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background/45 px-3 py-3 transition-colors hover:bg-muted/40"
+      className={cn(cardClassName, "hover:brightness-110")}
     >
       {content}
     </a>
@@ -354,7 +356,8 @@ export default function AirdropDetailPage() {
                     label="Website"
                     value={websiteLabel || "Official site"}
                     note="Project homepage"
-                    accent="bg-blue-500/10"
+                    accent="bg-blue-500/15"
+                    cardAccent="border-blue-500/25 bg-blue-500/10"
                   />
                   <LinkBlock
                     href={
@@ -366,7 +369,8 @@ export default function AirdropDetailPage() {
                     label="Twitter / X"
                     value={twitterLabel || "Not listed"}
                     note="Updates & announcements"
-                    accent="bg-sky-500/10"
+                    accent="bg-sky-500/15"
+                    cardAccent="border-sky-500/25 bg-sky-500/10"
                   />
                   <LinkBlock
                     href={airdrop.telegram}
@@ -374,7 +378,8 @@ export default function AirdropDetailPage() {
                     label="Telegram"
                     value={telegramLabel || "Not listed"}
                     note="Community chat"
-                    accent="bg-blue-400/10"
+                    accent="bg-blue-400/15"
+                    cardAccent="border-blue-400/25 bg-blue-400/10"
                   />
                   <LinkBlock
                     href={airdrop.discord}
@@ -382,7 +387,8 @@ export default function AirdropDetailPage() {
                     label="Discord"
                     value={discordLabel || "Not listed"}
                     note="Official server"
-                    accent="bg-indigo-500/10"
+                    accent="bg-indigo-500/15"
+                    cardAccent="border-indigo-500/25 bg-indigo-500/10"
                   />
                 </div>
               </div>
