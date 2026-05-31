@@ -108,40 +108,93 @@ export default function DashboardPage() {
         (a.tasks.length + (a.raiseFunds ? 1 : 0)),
     )
     .slice(0, 6);
-  const hour = new Date().getHours();
-  const greet =
-    hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const introStats = [
+    {
+      label: "Airdrops Tracked",
+      value: total,
+      detail: "Curated opportunities",
+      icon: <Zap className="h-4 w-4" />,
+      cls: "text-primary border-primary/25 bg-primary/5",
+    },
+    {
+      label: "Confirmed",
+      value: confirmed,
+      detail: "Verified campaign signals",
+      icon: <CheckCircle2 className="h-4 w-4" />,
+      cls: "text-emerald-500 border-emerald-500/25 bg-emerald-500/5",
+    },
+    {
+      label: "Rewards Available",
+      value: rewards,
+      detail: "Claim-ready now",
+      icon: <Gift className="h-4 w-4" />,
+      cls: "text-blue-400 border-blue-500/25 bg-blue-500/5",
+    },
+  ];
 
   return (
     <div className="premium-page space-y-6">
       <section className="premium-panel overflow-hidden rounded-3xl border p-5 sm:p-6">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="max-w-3xl">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-black uppercase tracking-[0.18em] text-primary">
-              <span className="premium-icon h-6 w-6 rounded-full">
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] xl:items-center">
+          <div className="min-w-0">
+            <div className="mb-3 inline-flex max-w-full items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-primary sm:text-[11px]">
+              <span className="premium-icon h-6 w-6 shrink-0 rounded-full">
                 <Star className="relative z-10 h-3 w-3" fill="currentColor" />
               </span>
-              Research-grade airdrop intelligence
+              <span className="truncate">
+                Research-grade airdrop intelligence
+              </span>
             </div>
-            <h1 className="premium-heading text-3xl font-black text-foreground sm:text-4xl lg:text-5xl">
-              {greet}, welcome to Ouwibo.
+            <h1 className="premium-heading max-w-5xl text-[28px] font-black leading-[1.08] text-foreground sm:text-4xl lg:text-5xl">
+              Ouwibo: professional airdrop intelligence workspace.
             </h1>
-            <p className="mt-4 text-sm leading-7 text-muted-foreground sm:text-[15px]">
-              Ouwibo is a professional airdrop intelligence workspace for
-              discovering credible campaigns, comparing time-to-reward signals,
-              and tracking claim-ready opportunities without noisy speculation.
+            <p className="mt-4 max-w-4xl text-sm leading-7 text-muted-foreground sm:text-[15px]">
+              Discover credible campaigns, compare time-to-reward signals, and
+              track claim-ready opportunities in one clean workspace without
+              noisy speculation or overlapping dashboard copy.
             </p>
-            <p className="mt-2 text-[13px] font-semibold text-foreground/80">
-              {total} airdrops tracked · {confirmed} confirmed · {rewards}{" "}
-              reward
-              {rewards !== 1 ? "s" : ""} available
-            </p>
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              <Link href="/airdrops" className="w-full sm:w-auto">
+                <button className="w-full shrink-0 rounded-2xl bg-primary px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_16px_34px_hsl(var(--primary)/0.22)] transition-all hover:-translate-y-0.5 hover:shadow-[0_22px_44px_hsl(var(--primary)/0.28)] sm:w-auto">
+                  Explore Airdrops →
+                </button>
+              </Link>
+              <Link href="/news" className="w-full sm:w-auto">
+                <button className="w-full rounded-2xl border border-border bg-card/70 px-5 py-3 text-[13px] font-black text-foreground transition-colors hover:bg-muted sm:w-auto">
+                  Read Research
+                </button>
+              </Link>
+            </div>
           </div>
-          <Link href="/airdrops" className="w-full sm:w-auto">
-            <button className="w-full shrink-0 rounded-2xl bg-primary px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_16px_34px_hsl(var(--primary)/0.22)] transition-all hover:-translate-y-0.5 hover:shadow-[0_22px_44px_hsl(var(--primary)/0.28)] sm:w-auto">
-              Explore Airdrops →
-            </button>
-          </Link>
+
+          <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
+            {introStats.map(({ label, value, detail, icon, cls }) => (
+              <div
+                key={label}
+                className={cn(
+                  "premium-stat rounded-2xl border p-4 shadow-sm",
+                  cls,
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="premium-icon h-10 w-10 shrink-0 rounded-xl">
+                    {icon}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[24px] font-black leading-none">
+                      {value}
+                    </div>
+                    <div className="mt-1 truncate text-[11px] font-black uppercase tracking-[0.16em] text-foreground/80">
+                      {label}
+                    </div>
+                    <div className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                      {detail}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

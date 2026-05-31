@@ -52,38 +52,14 @@ type NavItem = (typeof ALL_NAV)[number];
 
 function BrandMark() {
   return (
-    <span className="premium-icon h-9 w-9 rounded-2xl text-primary-foreground">
-      <svg
-        viewBox="0 0 32 32"
-        className="relative z-10 h-5 w-5 drop-shadow-[0_2px_10px_hsl(var(--primary)/0.45)]"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M17.7 2.8 7.3 17.2h7.1l-1.1 12 11.4-15.8h-7.6l.6-10.6Z"
-          fill="url(#brand-bolt)"
-        />
-        <path
-          d="M17.7 2.8 7.3 17.2h7.1l-1.1 12 11.4-15.8h-7.6l.6-10.6Z"
-          stroke="rgba(255,255,255,.55)"
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-        />
-        <defs>
-          <linearGradient
-            id="brand-bolt"
-            x1="8"
-            y1="4"
-            x2="24"
-            y2="28"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="white" />
-            <stop offset=".42" stopColor="hsl(var(--primary-foreground))" />
-            <stop offset="1" stopColor="hsl(var(--primary))" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-card shadow-lg shadow-background/20">
+      <img
+        src="/site-logo.svg"
+        alt="Ouwibo mascot logo"
+        className="h-full w-full object-cover"
+        width={40}
+        height={40}
+      />
     </span>
   );
 }
