@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { mockAirdrops } from "@/lib/mockData";
 import type { Airdrop, Backer } from "@/lib/mockData";
@@ -441,12 +441,23 @@ function AnimatedItem({
 }
 
 export default function AirdropsPage() {
+  const [location] = useLocation();
   const [tab, setTab] = useState("All");
   const [rewardTab, setRewardTab] = useState("All");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(() => {
+    if (typeof window === "undefined") return "";
+    return new URLSearchParams(window.location.search).get("search") ?? "";
+  });
   const [view, setView] = useState<"list" | "cards">("list");
   const [isCompact, setIsCompact] = useState(false);
   const [bookmarks, setBookmarks] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const nextSearch =
+      new URLSearchParams(window.location.search).get("search") ?? "";
+    setSearch(nextSearch);
+  }, [location]);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 639px)");
@@ -498,7 +509,7 @@ export default function AirdropsPage() {
   return (
     <div className="premium-page space-y-5 pb-8">
       <section className="premium-panel rounded-3xl border p-4 sm:p-5 anim anim-up">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-start">
           <div className="min-w-0">
             <p className="text-[11px] font-black uppercase tracking-[0.2em] text-primary">
               Airdrop Radar
@@ -506,35 +517,36 @@ export default function AirdropsPage() {
             <h1 className="mt-1 text-2xl font-black tracking-tight text-foreground sm:text-3xl">
               Find campaigns worth farming
             </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-              Clean list of active, potential, and reward-ready campaigns with
-              cost, time, requirements, and funding signals aligned for fast
-              scanning.
+            <p className="mt-2 max-w-2xl text-[13px] leading-6 text-muted-foreground sm:text-sm">
+              Campaign aktif, potential, dan reward-ready dirapikan dengan
+              sinyal cost, waktu, task, dan funding untuk scanning cepat.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-2 min-[420px]:grid-cols-3 lg:min-w-[360px]">
-            <div className="premium-stat rounded-2xl border border-emerald-500/25 p-3 text-emerald-400 anim anim-scale anim-delay-1">
-              <p className="text-2xl font-black text-emerald-400">
+          <div className="grid grid-cols-3 gap-2 lg:min-w-[360px]">
+            <div className="premium-stat rounded-2xl border border-emerald-500/25 p-2.5 text-center text-emerald-400 anim anim-scale anim-delay-1 sm:p-3">
+              <p className="text-xl font-black text-emerald-400 sm:text-2xl">
                 {counts.confirmed}
               </p>
-              <p className="text-[11px] font-bold text-emerald-300/80">
+              <p className="mt-1 truncate text-[10px] font-bold text-emerald-300/80 sm:text-[11px]">
                 Confirmed
               </p>
             </div>
-            <div className="premium-stat rounded-2xl border border-amber-500/25 p-3 text-amber-400 anim anim-scale anim-delay-2">
-              <p className="text-2xl font-black text-amber-400">
+            <div className="premium-stat rounded-2xl border border-amber-500/25 p-2.5 text-center text-amber-400 anim anim-scale anim-delay-2 sm:p-3">
+              <p className="text-xl font-black text-amber-400 sm:text-2xl">
                 {counts.potential}
               </p>
-              <p className="text-[11px] font-bold text-amber-300/80">
+              <p className="mt-1 truncate text-[10px] font-bold text-amber-300/80 sm:text-[11px]">
                 Potential
               </p>
             </div>
-            <div className="premium-stat rounded-2xl border border-sky-500/25 p-3 text-sky-400 anim anim-scale anim-delay-3">
-              <p className="text-2xl font-black text-sky-400">
+            <div className="premium-stat rounded-2xl border border-sky-500/25 p-2.5 text-center text-sky-400 anim anim-scale anim-delay-3 sm:p-3">
+              <p className="text-xl font-black text-sky-400 sm:text-2xl">
                 {counts.reward}
               </p>
-              <p className="text-[11px] font-bold text-sky-300/80">Rewards</p>
+              <p className="mt-1 truncate text-[10px] font-bold text-sky-300/80 sm:text-[11px]">
+                Rewards
+              </p>
             </div>
           </div>
         </div>
@@ -542,13 +554,13 @@ export default function AirdropsPage() {
 
       <section className="premium-panel rounded-3xl border p-3 sm:p-4">
         <div className="grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div className="grid min-w-0 grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
+          <div className="flex min-w-0 gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:items-center sm:overflow-visible sm:pb-0 [-webkit-overflow-scrolling:touch]">
             {FILTER_TABS.map((item) => (
               <button
                 key={item}
                 onClick={() => setTab(item)}
                 className={cn(
-                  "inline-flex h-9 items-center justify-center rounded-full border px-3 text-center text-[11px] font-bold transition-colors sm:text-[12px]",
+                  "inline-flex h-9 shrink-0 items-center justify-center rounded-full border px-3 text-center text-[11px] font-bold transition-colors sm:text-[12px]",
                   tab === item
                     ? "border-primary bg-primary text-primary-foreground shadow-sm"
                     : "border-border/60 bg-background/45 text-muted-foreground hover:text-foreground",
@@ -602,7 +614,7 @@ export default function AirdropsPage() {
           </div>
         </div>
 
-        <div className="mt-3 flex min-w-0 gap-2 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
+        <div className="mt-3 flex min-w-0 gap-2 overflow-x-auto pb-2 [-webkit-overflow-scrolling:touch]">
           {REWARD_TABS.map((item) => (
             <button
               key={item}
@@ -630,7 +642,7 @@ export default function AirdropsPage() {
           </div>
         </section>
       ) : effectiveView === "cards" ? (
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {filtered.map((airdrop, index) => (
             <AnimatedItem key={airdrop.id} index={index}>
               <AirdropCard

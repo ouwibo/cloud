@@ -79,7 +79,7 @@ function MiniCard({
   return (
     <div
       className={cn(
-        "premium-panel overflow-hidden rounded-2xl border",
+        "premium-panel overflow-hidden rounded-3xl border shadow-sm",
         className,
       )}
     >
@@ -98,9 +98,9 @@ function SectionHeader({
   count?: number;
 }) {
   return (
-    <div className="flex items-center gap-2 border-b border-border/60 px-4 py-3">
+    <div className="flex items-center gap-2 border-b border-border/60 bg-gradient-to-r from-primary/8 to-transparent px-4 py-3">
       {icon}
-      <h2 className="text-[13px] font-bold">{title}</h2>
+      <h2 className="text-[13px] font-black tracking-tight">{title}</h2>
       {count !== undefined && (
         <span className="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
           {count}
@@ -139,6 +139,7 @@ function LinkBlock({
   value,
   note,
   accent,
+  cardAccent,
 }: {
   href?: string;
   icon: ReactNode;
@@ -146,7 +147,12 @@ function LinkBlock({
   value: string;
   note: string;
   accent: string;
+  cardAccent: string;
 }) {
+  const cardClassName = cn(
+    "group relative flex min-w-0 items-center gap-3 overflow-hidden rounded-2xl border px-3 py-3 shadow-sm transition-[filter,transform,border-color] duration-300",
+    cardAccent,
+  );
   const content = (
     <>
       <div
@@ -171,11 +177,7 @@ function LinkBlock({
   );
 
   if (!href) {
-    return (
-      <div className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background/45 px-3 py-3">
-        {content}
-      </div>
-    );
+    return <div className={cn(cardClassName, "opacity-75")}>{content}</div>;
   }
 
   return (
@@ -183,7 +185,10 @@ function LinkBlock({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-3 rounded-2xl border border-border/50 bg-background/45 px-3 py-3 transition-colors hover:bg-muted/40"
+      className={cn(
+        cardClassName,
+        "hover:-translate-y-0.5 hover:brightness-110",
+      )}
     >
       {content}
     </a>
@@ -239,30 +244,31 @@ export default function AirdropDetailPage() {
         </span>
       </Link>
 
-      <MiniCard className="overflow-hidden">
+      <MiniCard className="relative overflow-hidden">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
         <div
-          className="h-1 w-full"
+          className="h-1.5 w-full"
           style={{
             background: `linear-gradient(90deg, ${airdrop.logoColor}, ${chainColor})`,
           }}
         />
-        <div className="p-5 sm:p-6">
+        <div className="relative p-5 sm:p-6">
           <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
               <AirdropLogo
                 name={airdrop.name}
                 logoUrl={airdrop.logoUrl}
                 logoInitial={airdrop.logoInitial}
                 logoColor={airdrop.logoColor}
-                size={64}
-                className="rounded-2xl"
+                size={76}
+                className="rounded-3xl shadow-xl shadow-background/30"
               />
 
               <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="grid gap-4 xl:grid-cols-[1fr_auto] xl:items-start">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h1 className="text-[22px] font-black tracking-tight text-foreground sm:text-[28px]">
+                      <h1 className="premium-heading text-[26px] font-black leading-tight tracking-tight text-foreground sm:text-[34px]">
                         {airdrop.name}
                       </h1>
                       {airdrop.ticker && (
@@ -313,12 +319,12 @@ export default function AirdropDetailPage() {
                         </span>
                       )}
                     </div>
-                    <p className="mt-3 max-w-3xl text-sm leading-7 text-muted-foreground">
+                    <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground sm:text-[15px]">
                       {longDescription}
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2 xl:justify-end">
                     {airdrop.website && (
                       <a
                         href={airdrop.website}
@@ -354,7 +360,8 @@ export default function AirdropDetailPage() {
                     label="Website"
                     value={websiteLabel || "Official site"}
                     note="Project homepage"
-                    accent="bg-blue-500/10"
+                    accent="bg-blue-500/15"
+                    cardAccent="border-blue-500/25 bg-blue-500/10"
                   />
                   <LinkBlock
                     href={
@@ -366,7 +373,8 @@ export default function AirdropDetailPage() {
                     label="Twitter / X"
                     value={twitterLabel || "Not listed"}
                     note="Updates & announcements"
-                    accent="bg-sky-500/10"
+                    accent="bg-sky-500/15"
+                    cardAccent="border-sky-500/25 bg-sky-500/10"
                   />
                   <LinkBlock
                     href={airdrop.telegram}
@@ -374,7 +382,8 @@ export default function AirdropDetailPage() {
                     label="Telegram"
                     value={telegramLabel || "Not listed"}
                     note="Community chat"
-                    accent="bg-blue-400/10"
+                    accent="bg-blue-400/15"
+                    cardAccent="border-blue-400/25 bg-blue-400/10"
                   />
                   <LinkBlock
                     href={airdrop.discord}
@@ -382,7 +391,8 @@ export default function AirdropDetailPage() {
                     label="Discord"
                     value={discordLabel || "Not listed"}
                     note="Official server"
-                    accent="bg-indigo-500/10"
+                    accent="bg-indigo-500/15"
+                    cardAccent="border-indigo-500/25 bg-indigo-500/10"
                   />
                 </div>
               </div>
@@ -445,66 +455,87 @@ export default function AirdropDetailPage() {
       <MiniCard>
         <SectionHeader
           icon={<Activity className="h-4 w-4 text-primary" />}
-          title="Project Overview"
+          title="Project Intelligence"
         />
-        <div className="p-4 sm:p-5">
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="rounded-2xl border border-border/50 bg-muted/20 p-4">
+        <div className="grid gap-4 p-4 sm:p-5 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card/65 p-5">
+            <div className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full bg-primary/10 blur-3xl" />
+            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-primary">
+              Project description
+            </p>
+            <h2 className="mt-2 text-[20px] font-black leading-tight text-foreground sm:text-[24px]">
+              {airdrop.name} snapshot
+            </h2>
+            <p className="mt-3 text-[13px] leading-7 text-muted-foreground sm:text-sm">
+              {airdrop.description || longDescription}
+            </p>
+            <div className="mt-4 rounded-2xl border border-primary/15 bg-primary/8 p-4">
               <p className="text-[11px] font-black uppercase tracking-[0.18em] text-primary">
-                What this project is
+                Research note
               </p>
-              <p className="mt-2 text-[13px] leading-7 text-muted-foreground">
-                {airdrop.description}
-              </p>
-              <p className="mt-3 text-[13px] leading-7 text-muted-foreground">
-                This page is intentionally arranged as a tall vertical guide so
-                you can scan the project, review community links, verify the
-                network, and continue to tasks without jumping between panes.
+              <p className="mt-2 text-[12px] leading-6 text-muted-foreground">
+                Review official links, community activity, chain/network fit,
+                funding context, and task cost before connecting a wallet or
+                allocating farming time.
               </p>
             </div>
-            <div className="rounded-2xl border border-border/50 bg-muted/20 p-4">
-              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-primary">
-                Quick facts
-              </p>
-              <div className="mt-3 grid grid-cols-2 gap-2 text-[12px]">
-                <div className="rounded-xl bg-background/60 px-3 py-2">
-                  <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                    Status
-                  </span>
-                  <span
-                    className={cn(
-                      "mt-1 block font-black",
-                      STATUS_CLS[airdrop.status],
-                    )}
-                  >
-                    {airdrop.status}
-                  </span>
+          </div>
+
+          <div className="grid gap-3">
+            <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/15 via-card/70 to-primary/10 p-5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-500/15 text-amber-400">
+                  <DollarSign className="h-5 w-5" />
                 </div>
-                <div className="rounded-xl bg-background/60 px-3 py-2">
-                  <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                    Reward
-                  </span>
-                  <span className="mt-1 block font-black text-foreground">
-                    {airdrop.rewardType}
-                  </span>
-                </div>
-                <div className="rounded-xl bg-background/60 px-3 py-2">
-                  <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                    Chain
-                  </span>
-                  <span className="mt-1 block font-black text-foreground">
-                    {airdrop.chain ?? "—"}
-                  </span>
-                </div>
-                <div className="rounded-xl bg-background/60 px-3 py-2">
-                  <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                    Raise
-                  </span>
-                  <span className="mt-1 block font-black text-foreground">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                    Reported funding
+                  </p>
+                  <p className="mt-1 text-[24px] font-black leading-none text-foreground">
                     {airdrop.raiseFunds ?? "Undisclosed"}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-[12px]">
+                <div className="rounded-2xl border border-border/50 bg-background/45 px-3 py-2.5">
+                  <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                    Backers
+                  </span>
+                  <span className="mt-1 block font-black text-foreground">
+                    {(airdrop.backers?.length ?? 0) +
+                      (airdrop.backersExtra ?? 0)}
+                  </span>
+                </div>
+                <div className="rounded-2xl border border-border/50 bg-background/45 px-3 py-2.5">
+                  <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                    Total cost
+                  </span>
+                  <span className="mt-1 block font-black text-foreground">
+                    {totalCost === 0 ? "Free" : `$${totalCost}`}
                   </span>
                 </div>
               </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 text-[12px]">
+              {[
+                ["Status", airdrop.status, STATUS_CLS[airdrop.status]],
+                ["Reward", airdrop.rewardType, "text-foreground"],
+                ["Chain", airdrop.chain ?? "—", "text-foreground"],
+                ["Network", airdrop.network ?? "—", "text-foreground"],
+              ].map(([label, value, cls]) => (
+                <div
+                  key={label}
+                  className="rounded-2xl border border-border/50 bg-background/50 px-3 py-3"
+                >
+                  <span className="block text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                    {label}
+                  </span>
+                  <span className={cn("mt-1 block font-black", cls)}>
+                    {value}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -577,7 +608,7 @@ export default function AirdropDetailPage() {
             </div>
           </div>
           <div className="rounded-2xl border border-border/50 bg-background/50 p-4 sm:col-span-2">
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/15">
                   <Activity className="h-4 w-4 text-primary" />
@@ -596,7 +627,7 @@ export default function AirdropDetailPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 rounded-full border border-border/50 bg-muted/30 px-3 py-1.5 text-[11px] font-bold text-muted-foreground">
+              <div className="flex w-fit items-center gap-2 rounded-full border border-border/50 bg-muted/30 px-3 py-1.5 text-[11px] font-bold text-muted-foreground">
                 <BarChart3 className="h-3.5 w-3.5 text-amber-400" /> Reported
                 raise: {airdrop.raiseFunds ?? "Undisclosed"}
               </div>
@@ -661,7 +692,7 @@ export default function AirdropDetailPage() {
             {airdrop.tasks.map((task, index) => (
               <div
                 key={index}
-                className="flex flex-col gap-4 px-4 py-5 sm:flex-row sm:items-center sm:gap-5"
+                className="flex flex-col gap-4 px-4 py-5 transition-colors hover:bg-muted/20 sm:flex-row sm:items-center sm:gap-5"
               >
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-[10px] font-black text-muted-foreground">
                   {index + 1}
