@@ -653,43 +653,22 @@ export default function AirdropDetailPage() {
           title="All Tasks"
           count={airdrop.tasks.length}
         />
-        {airdrop.tasks.length === 0 ? (
-          <div className="flex items-center justify-center px-4 py-14 text-center text-muted-foreground">
-            <div>
-              <CheckCircle2 className="mx-auto mb-2 h-10 w-10 opacity-20" />
-              <p className="text-[13px] font-bold">
-                No active tasks — reward may be claimable
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="divide-y divide-border/40">
-            {airdrop.tasks.map((task, index) => (
-              <div
-                key={index}
-                className="flex flex-col gap-4 px-4 py-5 sm:flex-row sm:items-center sm:gap-5"
-              >
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-[10px] font-black text-muted-foreground">
+        <div className="grid gap-2 p-4">
+          {airdrop.tasks.map((task, index) => (
+            <div
+              key={index}
+              className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-4 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="relative flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-[12px] font-black text-primary">
                   {index + 1}
                 </div>
-                <div className="min-w-0 flex-1 space-y-2">
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="truncate text-[14px] font-black text-foreground">
-                      {task.name}
-                    </p>
-                    <span
-                      className={cn(
-                        "inline-flex w-fit items-center rounded-full border px-2.5 py-1 text-[10px] font-bold",
-                        task.cost === 0
-                          ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-500"
-                          : "border-amber-500/20 bg-amber-500/10 text-amber-400",
-                      )}
-                    >
-                      {task.cost === 0 ? "Free" : `$${task.cost}`} ·{" "}
-                      {task.timeMin} min
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-1.5">
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px] font-black text-foreground">
+                    {task.name}
+                  </p>
+                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                     {task.types.map((type) => (
                       <span
                         key={type}
@@ -704,18 +683,31 @@ export default function AirdropDetailPage() {
                     ))}
                   </div>
                 </div>
-                <a
-                  href={task.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-1 rounded-xl bg-primary px-4 py-2 text-[11px] font-bold text-primary-foreground transition-opacity hover:opacity-90 sm:ml-auto"
-                >
-                  Go <ChevronRight className="h-3.5 w-3.5" />
-                </a>
+                <div className="flex items-center gap-2 sm:shrink-0">
+                  <span
+                    className={cn(
+                      "inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-bold",
+                      task.cost === 0
+                        ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-500"
+                        : "border-amber-500/20 bg-amber-500/10 text-amber-400",
+                    )}
+                  >
+                    {task.cost === 0 ? "Free" : `$${task.cost}`} ·{" "}
+                    {task.timeMin} min
+                  </span>
+                  <a
+                    href={task.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-2 text-[11px] font-bold text-primary-foreground transition-opacity hover:opacity-90"
+                  >
+                    Go <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
       </MiniCard>
     </div>
   );
