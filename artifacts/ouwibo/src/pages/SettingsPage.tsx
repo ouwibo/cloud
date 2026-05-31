@@ -1,102 +1,220 @@
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Palette, Globe, Youtube, Instagram, Linkedin, Twitter, MessageCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowUpRight,
+  Globe,
+  Instagram,
+  Linkedin,
+  Mail,
+  MessageCircle,
+  ShieldCheck,
+  Sparkles,
+  Twitter,
+  Youtube,
+  Zap,
+} from "lucide-react";
 
-const PASTEL = ["#b8d8f0", "#f0c4a8", "#d4c0f0"];
+const PROFILE = {
+  name: "Ouwibo Cloud",
+  handle: "@ouwibo",
+  website: "https://ouwibo.bond",
+  email: "hello@ouwibo.bond",
+  description:
+    "Platform tracking crypto airdrops, Web3 tasks, and daily market/news analysis for Indonesian airdrop hunters.",
+};
 
-function NeoSection({ title, bg, children, icon: Icon }: { title: string; bg: string; children: React.ReactNode; icon: typeof Palette }) {
+const SOCIAL_LINKS: Array<{
+  label: string;
+  value: string;
+  href: string;
+  Icon: LucideIcon;
+  accent: string;
+}> = [
+  {
+    label: "X / Twitter",
+    value: "@ouwibo",
+    href: "https://x.com/ouwibo",
+    Icon: Twitter,
+    accent: "from-sky-500/20 to-blue-500/10 text-sky-400 border-sky-500/25",
+  },
+  {
+    label: "Telegram",
+    value: "t.me/ouwibo",
+    href: "https://t.me/ouwibo",
+    Icon: MessageCircle,
+    accent: "from-cyan-500/20 to-blue-500/10 text-cyan-400 border-cyan-500/25",
+  },
+  {
+    label: "YouTube",
+    value: "youtube.com/@ouwibo",
+    href: "https://youtube.com/@ouwibo",
+    Icon: Youtube,
+    accent: "from-red-500/20 to-rose-500/10 text-red-400 border-red-500/25",
+  },
+  {
+    label: "Instagram",
+    value: "instagram.com/ouwibo",
+    href: "https://instagram.com/ouwibo",
+    Icon: Instagram,
+    accent:
+      "from-pink-500/20 to-fuchsia-500/10 text-pink-400 border-pink-500/25",
+  },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/company/ouwibo",
+    href: "https://linkedin.com/company/ouwibo",
+    Icon: Linkedin,
+    accent:
+      "from-blue-600/20 to-indigo-500/10 text-blue-400 border-blue-500/25",
+  },
+  {
+    label: "Email",
+    value: PROFILE.email,
+    href: `mailto:${PROFILE.email}`,
+    Icon: Mail,
+    accent:
+      "from-emerald-500/20 to-teal-500/10 text-emerald-400 border-emerald-500/25",
+  },
+];
+
+const HIGHLIGHTS = [
+  {
+    title: "Airdrop Tracker",
+    desc: "List peluang confirmed dan potential, lengkap dengan task, chain, difficulty, dan estimasi reward.",
+    Icon: Zap,
+  },
+  {
+    title: "News & Analysis",
+    desc: "Artikel ringkas seputar DeFi, Layer 1/2, infrastructure, dan narasi Web3 yang sedang bergerak.",
+    Icon: Sparkles,
+  },
+  {
+    title: "Safer Research",
+    desc: "Setiap link dibuat mudah dicek agar pengguna bisa verifikasi project sebelum connect wallet.",
+    Icon: ShieldCheck,
+  },
+];
+
+function SocialCard({
+  label,
+  value,
+  href,
+  Icon,
+  accent,
+}: (typeof SOCIAL_LINKS)[number]) {
   return (
-    <div className="neo-card p-5" style={{ backgroundColor: bg }}>
-      <div className="flex items-center gap-2 mb-5">
-        <div className="w-7 h-7 rounded-xl border-2 border-foreground/20 flex items-center justify-center bg-white/40">
-          <Icon size={13} />
-        </div>
-        <p style={{ fontSize: "0.82rem", fontWeight: 700 }}>{title}</p>
-      </div>
-      {children}
-    </div>
-  );
-}
-
-function SocialInput({ label, placeholder, icon: Icon, value, onChange }: { label: string; placeholder: string; icon: typeof Globe; value: string; onChange: (value: string) => void }) {
-  return (
-    <div>
-      <Label style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase" }}>{label}</Label>
-      <div className="mt-1 flex items-center gap-2 rounded-[12px] border-2 border-[hsl(var(--border))] bg-white/50 px-3 py-2">
-        <Icon size={14} className="text-muted-foreground shrink-0" />
-        <Input
-          value={value}
-          onChange={e => onChange(e.target.value)}
-          placeholder={placeholder}
-          className="border-0 bg-transparent p-0 shadow-none focus-visible:ring-0"
-          style={{ borderRadius: 0 }}
-        />
-      </div>
-    </div>
+    <a
+      href={href}
+      target={href.startsWith("mailto:") ? undefined : "_blank"}
+      rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+      className={`group flex min-w-0 items-center gap-3 rounded-2xl border bg-gradient-to-br ${accent} p-4 transition-[transform,filter] hover:-translate-y-1 hover:brightness-110`}
+    >
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-current/20 bg-background/50 shadow-sm">
+        <Icon className="h-5 w-5" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">
+          {label}
+        </span>
+        <span className="block truncate text-[13px] font-bold text-foreground">
+          {value}
+        </span>
+      </span>
+      <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+    </a>
   );
 }
 
 export default function SettingsPage() {
-  const [siteName, setSiteName] = useState("Ouwibo");
-  const [siteDesc, setSiteDesc] = useState("Crypto airdrop tracker & news");
-  const [website, setWebsite] = useState("https://ouwibo.bond");
-  const [twitter, setTwitter] = useState("");
-  const [youtube, setYoutube] = useState("");
-  const [instagram, setInstagram] = useState("");
-  const [linkedin, setLinkedin] = useState("");
-  const [telegram, setTelegram] = useState("");
-
   return (
-    <div>
-      <div className="mb-8">
-        <h1 style={{ fontSize: "1.5rem", fontWeight: 700, lineHeight: 1.15 }}>About / Info</h1>
-        <p className="text-muted-foreground mt-0.5" style={{ fontSize: "0.7rem" }}>Public website info and social links.</p>
-      </div>
+    <div className="premium-page space-y-5 pb-8">
+      <section className="premium-panel relative overflow-hidden rounded-3xl border p-5 sm:p-7">
+        <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-primary/15 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 left-1/4 h-72 w-72 rounded-full bg-sky-500/10 blur-3xl" />
+        <div className="relative grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-primary">
+              <Globe className="h-3.5 w-3.5" /> About Ouwibo
+            </div>
+            <h1 className="premium-heading max-w-3xl text-[30px] font-black leading-tight sm:text-[42px]">
+              {PROFILE.name} — crypto airdrop tracker & Web3 news hub.
+            </h1>
+            <p className="mt-4 max-w-2xl text-[14px] leading-7 text-muted-foreground">
+              {PROFILE.description} Follow akun resmi di bawah untuk update,
+              pengumuman, artikel baru, dan kontak kolaborasi.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <a
+                href={PROFILE.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-2 text-[12px] font-black text-primary-foreground shadow-lg shadow-primary/15 transition-transform hover:-translate-y-0.5"
+              >
+                Visit Website <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+              <a
+                href="https://x.com/ouwibo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card/70 px-4 py-2 text-[12px] font-black transition-colors hover:bg-muted"
+              >
+                Follow {PROFILE.handle}
+              </a>
+            </div>
+          </div>
 
-      <div className="space-y-4 max-w-2xl">
-        <NeoSection title="Website Identity" bg={PASTEL[0]} icon={Palette}>
-          <div className="space-y-3">
-            <div>
-              <Label style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase" }}>Site Name</Label>
-              <Input className="mt-1" value={siteName} onChange={e => setSiteName(e.target.value)} style={{ border: "2px solid hsl(var(--border))", borderRadius: "12px", backgroundColor: "rgba(255,255,255,0.5)" }} data-testid="input-site-name" />
-            </div>
-            <div>
-              <Label style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase" }}>Site Description</Label>
-              <Input className="mt-1" value={siteDesc} onChange={e => setSiteDesc(e.target.value)} style={{ border: "2px solid hsl(var(--border))", borderRadius: "12px", backgroundColor: "rgba(255,255,255,0.5)" }} data-testid="input-site-desc" />
-            </div>
-            <div>
-              <Label style={{ fontSize: "0.6rem", fontWeight: 700, textTransform: "uppercase" }}>Website URL</Label>
-              <div className="mt-1 flex items-center gap-2 rounded-[12px] border-2 border-[hsl(var(--border))] bg-white/50 px-3 py-2">
-                <Globe size={14} className="text-muted-foreground shrink-0" />
-                <Input
-                  value={website}
-                  onChange={e => setWebsite(e.target.value)}
-                  placeholder="https://your-site.com"
-                  className="border-0 bg-transparent p-0 shadow-none focus-visible:ring-0"
-                  style={{ borderRadius: 0 }}
-                />
+          <div className="rounded-3xl border border-border/60 bg-card/70 p-4 shadow-xl shadow-background/20 backdrop-blur">
+            <div className="flex items-center gap-3 border-b border-border/50 pb-4">
+              <img
+                src="/site-logo.svg"
+                alt="Ouwibo mascot logo"
+                className="h-14 w-14 rounded-3xl border border-border object-cover"
+                width={56}
+                height={56}
+              />
+              <div>
+                <p className="text-[15px] font-black">{PROFILE.name}</p>
+                <p className="text-[12px] text-muted-foreground">
+                  {PROFILE.handle} · Official links
+                </p>
               </div>
             </div>
+            <div className="mt-4 grid gap-3">
+              {HIGHLIGHTS.map(({ title, desc, Icon }) => (
+                <div
+                  key={title}
+                  className="flex gap-3 rounded-2xl bg-muted/45 p-3"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="text-[12px] font-black">{title}</p>
+                    <p className="mt-0.5 text-[11px] leading-5 text-muted-foreground">
+                      {desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </NeoSection>
+        </div>
+      </section>
 
-        <NeoSection title="Social Links" bg={PASTEL[1]} icon={MessageCircle}>
-          <div className="grid gap-3">
-            <SocialInput label="X / Twitter" placeholder="@yourhandle or https://x.com/yourhandle" icon={Twitter} value={twitter} onChange={setTwitter} />
-            <SocialInput label="YouTube" placeholder="https://youtube.com/@yourchannel" icon={Youtube} value={youtube} onChange={setYoutube} />
-            <SocialInput label="Instagram" placeholder="https://instagram.com/yourname" icon={Instagram} value={instagram} onChange={setInstagram} />
-            <SocialInput label="LinkedIn" placeholder="https://linkedin.com/in/yourname" icon={Linkedin} value={linkedin} onChange={setLinkedin} />
-            <SocialInput label="Telegram" placeholder="https://t.me/yourchannel" icon={MessageCircle} value={telegram} onChange={setTelegram} />
-          </div>
-        </NeoSection>
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {SOCIAL_LINKS.map((item) => (
+          <SocialCard key={item.label} {...item} />
+        ))}
+      </section>
 
-        <NeoSection title="How this page is used" bg={PASTEL[2]} icon={Globe}>
-          <p className="text-foreground/75" style={{ fontSize: "0.68rem", lineHeight: 1.6 }}>
-            This page is now an About / Info page for the public site. Use it to show what Ouwibo is, where people can follow you, and where visitors should go next.
-          </p>
-        </NeoSection>
-      </div>
+      <section className="premium-card rounded-3xl border p-5 sm:p-6">
+        <h2 className="text-[16px] font-black">Catatan</h2>
+        <p className="mt-2 max-w-4xl text-[13px] leading-7 text-muted-foreground">
+          Data social di halaman ini sudah diisi sebagai profil publik Ouwibo.
+          Jika nanti handle resmi berubah, cukup update daftar social link di
+          halaman About ini agar seluruh card mengikuti mode siang/malam tanpa
+          warna pastel hardcoded.
+        </p>
+      </section>
     </div>
   );
 }
