@@ -51,7 +51,7 @@ function AirdropRow({ a, rank }: { a: Airdrop; rank: number }) {
                 className={
                   task.cost === 0
                     ? "font-medium text-emerald-500"
-                    : "font-medium text-fuchsia-400"
+                    : "font-medium text-sky-500"
                 }
               >
                 {task.cost === 0 ? "Free" : `$${task.cost}`}
@@ -130,12 +130,12 @@ export default function DashboardPage() {
           </p>
           <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
             <Link href="/airdrops" className="w-full sm:w-auto">
-              <button className="w-full shrink-0 rounded-2xl border border-white/10 bg-gradient-to-r from-violet-400 via-primary to-fuchsia-500 px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_16px_34px_hsl(var(--primary)/0.28)] transition-all hover:-translate-y-0.5 hover:shadow-[0_22px_48px_hsl(var(--primary)/0.34)] sm:w-auto">
+              <button className="w-full shrink-0 rounded-2xl border border-blue-600/10 bg-gradient-to-b from-sky-400 to-primary px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_10px_22px_hsl(var(--primary)/0.20)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_28px_hsl(var(--primary)/0.24)] sm:w-auto">
                 Explore Airdrops →
               </button>
             </Link>
             <Link href="/news" className="w-full sm:w-auto">
-              <button className="w-full rounded-2xl border border-white/10 bg-card/70 px-5 py-3 text-[13px] font-black text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/35 hover:bg-primary/10 sm:w-auto">
+              <button className="w-full rounded-2xl border border-sky-200 bg-white/85 px-5 py-3 text-[13px] font-black text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:bg-sky-50 sm:w-auto">
                 Read Research
               </button>
             </Link>
@@ -164,7 +164,7 @@ export default function DashboardPage() {
             detail: "Under review",
             value: potential,
             icon: <Clock className="h-4 w-4" />,
-            cls: "text-fuchsia-400 border-fuchsia-500/25 bg-fuchsia-500/5",
+            cls: "text-sky-500 border-sky-500/25 bg-sky-500/5",
           },
           {
             label: "Rewards Available",

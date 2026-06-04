@@ -69,7 +69,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="dashboard" {...props} />
         ),
-        iconTone: "text-violet-400",
+        iconTone: "text-blue-600",
       },
       {
         href: "/airdrops",
@@ -77,7 +77,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="airdrops" {...props} />
         ),
-        iconTone: "text-fuchsia-400",
+        iconTone: "text-sky-600",
       },
       {
         href: "/news",
@@ -85,7 +85,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="news" {...props} />
         ),
-        iconTone: "text-sky-400",
+        iconTone: "text-cyan-600",
       },
     ],
   },
@@ -98,7 +98,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="portfolio" {...props} />
         ),
-        iconTone: "text-cyan-400",
+        iconTone: "text-blue-500",
         soon: true,
       },
       {
@@ -107,7 +107,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="calendar" {...props} />
         ),
-        iconTone: "text-fuchsia-400",
+        iconTone: "text-sky-600",
         soon: true,
       },
       {
@@ -116,7 +116,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="alerts" {...props} />
         ),
-        iconTone: "text-violet-500",
+        iconTone: "text-blue-500",
         soon: true,
       },
     ],
@@ -130,7 +130,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="guide" {...props} />
         ),
-        iconTone: "text-fuchsia-500",
+        iconTone: "text-sky-600",
         soon: true,
       },
       {
@@ -139,7 +139,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="chat" {...props} />
         ),
-        iconTone: "text-sky-400",
+        iconTone: "text-cyan-600",
       },
     ],
   },
@@ -150,7 +150,7 @@ type NavItem = (typeof ALL_NAV)[number];
 
 function BrandMark() {
   return (
-    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-primary/35 bg-primary/10 shadow-lg shadow-primary/20">
+    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-primary/35 bg-white/45 shadow-lg shadow-sky-500/20">
       <img
         src="/site-logo.svg"
         alt="Ouwibo mascot logo"
@@ -188,7 +188,7 @@ function ThemeToggleButton() {
   return (
     <button
       onClick={() => setMode(isDark ? "light" : "dark")}
-      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 text-primary shadow-sm shadow-primary/10 transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/15 hover:text-primary"
+      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-sky-300/70 bg-white/45 text-primary shadow-sm shadow-sky-500/10 transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/15 hover:text-primary"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
@@ -224,7 +224,7 @@ function NavLink({
       )}
     >
       {active && (
-        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-cyan-300 via-primary to-fuchsia-500" />
+        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-white via-sky-100 to-primary" />
       )}
       <item.Icon
         size={expanded ? 18 : 20}
@@ -308,7 +308,7 @@ function SidebarContents({
             Icon: (props: BasilNavIconProps) => (
               <BasilIcon name="settings" {...props} />
             ),
-            iconTone: "text-violet-400",
+            iconTone: "text-blue-600",
           }}
           active={location === "/settings"}
           expanded={expanded}
@@ -400,7 +400,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className="relative min-h-screen overflow-x-hidden bg-background text-foreground"
+      className="relative min-h-screen overflow-x-hidden bg-transparent text-foreground"
       style={layoutVars}
     >
       <AnimatedBackdrop />
@@ -409,19 +409,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         aria-hidden
       >
-        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-violet-500/[0.16] blur-[120px]" />
-        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-fuchsia-500/[0.12] blur-[100px]" />
-        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-sky-500/[0.10] blur-[130px]" />
+        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-white/35 blur-[120px]" />
+        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-sky-200/45 blur-[100px]" />
+        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-white/40 blur-[130px]" />
       </div>
       {/* ── Navbar ── */}
-      <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b border-primary/20 px-3 backdrop-blur-xl lg:left-[var(--sidebar-w)]">
+      <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b border-white/45 px-3 backdrop-blur-xl lg:left-[var(--sidebar-w)]">
         <button
           onClick={() =>
             window.innerWidth >= 1024
               ? setExpanded((o) => !o)
               : setMobileOpen((o) => !o)
           }
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-primary/25 hover:bg-primary/10 hover:text-primary"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-sky-300/70 hover:bg-white/45 hover:text-primary"
           aria-label={expanded ? "Collapse sidebar" : "Open menu"}
         >
           <Menu size={16} />
@@ -441,7 +441,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               event.preventDefault();
               submitSearch();
             }}
-            className="flex h-10 items-center gap-2 rounded-2xl border border-primary/25 bg-card/80 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/55 focus-within:bg-card/95 focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.14)]"
+            className="flex h-10 items-center gap-2 rounded-2xl border border-sky-300/70 bg-card/80 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/55 focus-within:bg-card/95 focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.14)]"
           >
             <Search className="h-4 w-4 shrink-0" />
             <input
@@ -456,22 +456,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             />
             <button
               type="submit"
-              className="hidden rounded-lg border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
+              className="hidden rounded-lg border border-sky-300/70 bg-white/45 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
             >
               ⌘K
             </button>
           </form>
           {searchOpen && (searchQuery.trim() || searchResults.length > 0) && (
-            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-primary/25 bg-popover/95 shadow-2xl shadow-primary/15 backdrop-blur-xl sm:left-2 sm:right-2">
+            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-sky-300/70 bg-popover/95 shadow-2xl shadow-primary/15 backdrop-blur-xl sm:left-2 sm:right-2">
               {searchResults.length > 0 ? (
                 <div className="max-h-[min(70vh,360px)] overflow-y-auto p-1.5">
                   {searchResults.map((result) => (
                     <button
                       key={result.key}
                       onClick={() => goToResult(result.href)}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-primary/10"
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-white/45"
                     >
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-primary/20 bg-primary/15 text-primary">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-white/45 bg-primary/15 text-primary">
                         <Search className="h-3.5 w-3.5" />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -496,7 +496,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="ml-auto flex items-center gap-1">
           <ThemeToggleButton />
           <button
-            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-primary/25 hover:bg-primary/10 hover:text-primary sm:flex"
+            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-sky-300/70 hover:bg-white/45 hover:text-primary sm:flex"
             aria-label="Alerts"
           >
             <Bell size={14} />
@@ -505,7 +505,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <img
             src="/site-logo.svg"
             alt="Ouwibo mascot"
-            className="hidden h-8 w-8 rounded-full border border-primary/25 bg-primary/10 object-contain p-0.5 shadow-sm shadow-primary/20 sm:block"
+            className="hidden h-8 w-8 rounded-full border border-sky-300/70 bg-white/45 object-contain p-0.5 shadow-sm shadow-sky-500/20 sm:block"
             width={32}
             height={32}
           />
@@ -514,12 +514,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* ── Desktop Sidebar ── */}
       <aside
-        className="app-sidebar-shell fixed bottom-0 left-0 top-0 z-50 hidden flex-col overflow-hidden border-r border-primary/20 backdrop-blur-xl transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
+        className="app-sidebar-shell fixed bottom-0 left-0 top-0 z-50 hidden flex-col overflow-hidden border-r border-white/45 backdrop-blur-xl transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
         style={{ width: SIDEBAR_W }}
       >
         <div
           className={cn(
-            "flex h-14 items-center border-b border-primary/20 px-4",
+            "flex h-14 items-center border-b border-white/45 px-4",
             expanded ? "justify-start gap-3" : "justify-center",
           )}
         >
@@ -546,14 +546,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           <div className="absolute inset-0 bg-background/65 backdrop-blur-sm" />
           <aside
-            className="app-sidebar-shell absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-primary/20 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
+            className="app-sidebar-shell absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-white/45 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex h-14 items-center justify-between border-b border-primary/20 px-4">
+            <div className="flex h-14 items-center justify-between border-b border-white/45 px-4">
               <span className="text-sm font-black">Ouwibo Cloud</span>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary hover:bg-primary/15"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/45 bg-white/45 text-primary hover:bg-primary/15"
                 aria-label="Close menu"
               >
                 <Menu size={14} />
@@ -565,7 +565,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* ── Bottom mobile nav ── */}
-      <nav className="app-topbar fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-primary/20 px-2 backdrop-blur-xl lg:hidden">
+      <nav className="app-topbar fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-white/45 px-2 backdrop-blur-xl lg:hidden">
         {mobileNavItems.map((item) => {
           const active =
             item.href === "/"
@@ -577,7 +577,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-colors",
                   active
-                    ? "bg-primary/10 text-primary"
+                    ? "bg-white/45 text-primary"
                     : "text-muted-foreground hover:bg-primary/5 hover:text-primary",
                 )}
               >
