@@ -87,7 +87,7 @@ export default function AnimatedBackdrop() {
             vy: (Math.random() - 0.5) * 0.18,
             r: 1.1 + Math.random() * 1.7,
             phase: Math.random() * Math.PI * 2,
-            hue: Math.random() * 360,
+            hue: 16 + Math.random() * 34,
           });
         }
       }
@@ -144,7 +144,7 @@ export default function AnimatedBackdrop() {
         p.vy *= 0.995;
 
         const pulse = 0.55 + Math.sin(time / 1000 + p.phase) * 0.2;
-        const hue = (p.hue + time / 95) % 360;
+        const hue = (p.hue + Math.sin(time / 1800 + p.phase) * 10) % 360;
         ctx.beginPath();
         ctx.fillStyle = `hsl(${hue} 92% 66% / ${palette.bubbleAlpha})`;
         ctx.globalAlpha = pulse;
@@ -162,7 +162,7 @@ export default function AnimatedBackdrop() {
           const maxDist = 150;
           if (dist > maxDist) continue;
           const alpha = 1 - dist / maxDist;
-          const hue = (a.hue + b.hue + time / 120) / 2;
+          const hue = (a.hue + b.hue) / 2 + Math.sin(time / 2600) * 8;
           ctx.beginPath();
           ctx.strokeStyle = `hsl(${hue % 360} 90% 66% / ${palette.lineAlpha})`;
           ctx.globalAlpha = alpha * 0.9;
