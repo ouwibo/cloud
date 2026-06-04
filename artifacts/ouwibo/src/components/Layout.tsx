@@ -32,19 +32,19 @@ const NAV_GROUPS = [
         href: "/",
         label: "Dashboard",
         Icon: LayoutDashboard,
-        iconTone: "text-cyan-500",
+        iconTone: "text-orange-500",
       },
       {
         href: "/airdrops",
         label: "Airdrops",
         Icon: Zap,
-        iconTone: "text-violet-500",
+        iconTone: "text-amber-500",
       },
       {
         href: "/news",
         label: "News",
         Icon: Newspaper,
-        iconTone: "text-blue-500",
+        iconTone: "text-red-500",
       },
     ],
   },
@@ -55,7 +55,7 @@ const NAV_GROUPS = [
         href: "/portfolio",
         label: "Portfolio",
         Icon: Wallet,
-        iconTone: "text-emerald-500",
+        iconTone: "text-yellow-600",
         soon: true,
       },
       {
@@ -69,7 +69,7 @@ const NAV_GROUPS = [
         href: "/alerts",
         label: "Alerts",
         Icon: Bell,
-        iconTone: "text-rose-500",
+        iconTone: "text-orange-600",
         soon: true,
       },
     ],
@@ -81,14 +81,14 @@ const NAV_GROUPS = [
         href: "/guide",
         label: "How to Farm",
         Icon: BookOpen,
-        iconTone: "text-sky-500",
+        iconTone: "text-amber-600",
         soon: true,
       },
       {
         href: "/chat",
         label: "AI Chat",
         Icon: MessageSquare,
-        iconTone: "text-fuchsia-500",
+        iconTone: "text-red-500",
       },
     ],
   },
@@ -99,11 +99,11 @@ type NavItem = (typeof ALL_NAV)[number];
 
 function BrandMark() {
   return (
-    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-card shadow-lg shadow-background/20">
+    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-primary/35 bg-primary/10 shadow-lg shadow-primary/20">
       <img
         src="/site-logo.svg"
         alt="Ouwibo mascot logo"
-        className="h-full w-full object-contain p-0.5"
+        className="h-full w-full object-contain p-0.5 drop-shadow-[0_8px_14px_hsl(var(--primary)/0.2)]"
         width={40}
         height={40}
       />
@@ -137,7 +137,7 @@ function ThemeToggleButton() {
   return (
     <button
       onClick={() => setMode(isDark ? "light" : "dark")}
-      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-border/50 bg-card/65 text-muted-foreground shadow-sm transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/30 hover:bg-muted hover:text-foreground"
+      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 text-primary shadow-sm shadow-primary/10 transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/15 hover:text-primary"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
@@ -173,7 +173,7 @@ function NavLink({
       )}
     >
       {active && (
-        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-cyan-400 via-primary to-violet-400" />
+        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-yellow-300 via-primary to-red-500" />
       )}
       <item.Icon
         size={expanded ? 18 : 20}
@@ -255,7 +255,7 @@ function SidebarContents({
             href: "/settings",
             label: "About",
             Icon: Settings,
-            iconTone: "text-slate-500",
+            iconTone: "text-orange-500",
           }}
           active={location === "/settings"}
           expanded={expanded}
@@ -356,19 +356,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         aria-hidden
       >
-        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-cyan-500/[0.08] blur-[120px]" />
-        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-violet-500/[0.06] blur-[100px]" />
-        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-blue-500/[0.045] blur-[130px]" />
+        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-orange-500/[0.12] blur-[120px]" />
+        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-amber-500/[0.10] blur-[100px]" />
+        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-red-500/[0.07] blur-[130px]" />
       </div>
       {/* ── Navbar ── */}
-      <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b border-border/50 px-3 backdrop-blur-xl lg:left-[var(--sidebar-w)]">
+      <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b border-primary/20 px-3 backdrop-blur-xl lg:left-[var(--sidebar-w)]">
         <button
           onClick={() =>
             window.innerWidth >= 1024
               ? setExpanded((o) => !o)
               : setMobileOpen((o) => !o)
           }
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:text-primary"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-primary/25 hover:bg-primary/10 hover:text-primary"
           aria-label={expanded ? "Collapse sidebar" : "Open menu"}
         >
           <Menu size={16} />
@@ -388,7 +388,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               event.preventDefault();
               submitSearch();
             }}
-            className="flex h-10 items-center gap-2 rounded-2xl border border-border/55 bg-card/70 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/40 focus-within:bg-card/90 focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.08)]"
+            className="flex h-10 items-center gap-2 rounded-2xl border border-primary/25 bg-card/80 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/55 focus-within:bg-card/95 focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.14)]"
           >
             <Search className="h-4 w-4 shrink-0" />
             <input
@@ -403,22 +403,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             />
             <button
               type="submit"
-              className="hidden rounded-lg border border-border/50 bg-background/75 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
+              className="hidden rounded-lg border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
             >
               ⌘K
             </button>
           </form>
           {searchOpen && (searchQuery.trim() || searchResults.length > 0) && (
-            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-border/70 bg-popover/95 shadow-2xl shadow-background/30 backdrop-blur-xl sm:left-2 sm:right-2">
+            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-primary/25 bg-popover/95 shadow-2xl shadow-primary/15 backdrop-blur-xl sm:left-2 sm:right-2">
               {searchResults.length > 0 ? (
                 <div className="max-h-[min(70vh,360px)] overflow-y-auto p-1.5">
                   {searchResults.map((result) => (
                     <button
                       key={result.key}
                       onClick={() => goToResult(result.href)}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-muted"
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-primary/10"
                     >
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-primary/20 bg-primary/15 text-primary">
                         <Search className="h-3.5 w-3.5" />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -443,7 +443,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="ml-auto flex items-center gap-1">
           <ThemeToggleButton />
           <button
-            className="relative hidden h-9 w-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:text-primary sm:flex"
+            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-primary/25 hover:bg-primary/10 hover:text-primary sm:flex"
             aria-label="Alerts"
           >
             <Bell size={14} />
@@ -452,7 +452,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <img
             src="/site-logo.svg"
             alt="Ouwibo mascot"
-            className="hidden h-8 w-8 rounded-full object-contain p-0.5 sm:block"
+            className="hidden h-8 w-8 rounded-full border border-primary/25 bg-primary/10 object-contain p-0.5 shadow-sm shadow-primary/20 sm:block"
             width={32}
             height={32}
           />
@@ -461,12 +461,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* ── Desktop Sidebar ── */}
       <aside
-        className="app-sidebar-shell fixed bottom-0 left-0 top-0 z-50 hidden flex-col overflow-hidden border-r border-border/50 backdrop-blur-xl transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
+        className="app-sidebar-shell fixed bottom-0 left-0 top-0 z-50 hidden flex-col overflow-hidden border-r border-primary/20 backdrop-blur-xl transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
         style={{ width: SIDEBAR_W }}
       >
         <div
           className={cn(
-            "flex h-14 items-center border-b border-border/35 px-4",
+            "flex h-14 items-center border-b border-primary/20 px-4",
             expanded ? "justify-start gap-3" : "justify-center",
           )}
         >
@@ -491,16 +491,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           className="fixed inset-0 z-50 lg:hidden"
           onClick={() => setMobileOpen(false)}
         >
-          <div className="absolute inset-0 bg-background/55 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-background/65 backdrop-blur-sm" />
           <aside
-            className="app-sidebar-shell absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-border/50 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
+            className="app-sidebar-shell absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-primary/20 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex h-14 items-center justify-between border-b border-border/40 px-4">
+            <div className="flex h-14 items-center justify-between border-b border-primary/20 px-4">
               <span className="text-sm font-black">Ouwibo Cloud</span>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-primary"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary hover:bg-primary/15"
                 aria-label="Close menu"
               >
                 <Menu size={14} />
@@ -512,7 +512,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* ── Bottom mobile nav ── */}
-      <nav className="app-topbar fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-border/50 px-2 backdrop-blur-xl lg:hidden">
+      <nav className="app-topbar fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-primary/20 px-2 backdrop-blur-xl lg:hidden">
         {mobileNavItems.map((item) => {
           const active =
             item.href === "/"
@@ -523,7 +523,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div
                 className={cn(
                   "flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-colors",
-                  active ? "text-primary" : "text-muted-foreground",
+                  active
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-primary/5 hover:text-primary",
                 )}
               >
                 <item.Icon size={18} />
