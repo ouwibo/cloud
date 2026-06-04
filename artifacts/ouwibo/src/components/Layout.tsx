@@ -4,25 +4,60 @@ import type { CSSProperties } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
-  Zap,
-  Newspaper,
-  Wallet,
-  Calendar,
   Bell,
-  Settings,
-  Menu,
-  ChevronUp,
-  Search,
-  BookOpen,
-  MessageSquare,
   ChevronRight,
-  Sun,
+  ChevronUp,
+  Menu,
   Moon,
+  Search,
+  Sun,
 } from "lucide-react";
 import AnimatedBackdrop from "@/components/AnimatedBackdrop";
 import { mockAirdrops } from "@/lib/mockData";
 import { getAllArticles } from "@/lib/articleStore";
+
+/* Basil icons by Craftwork, CC BY 4.0. Source pack: https://www.figma.com/community/file/931906394678748246/basil-icons */
+const BASIL_ICON_BODY = {
+  dashboard:
+    '<path fill="currentColor" fill-rule="evenodd" d="M8.93 4.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.577a16.8 16.8 0 0 0 0 3.907a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576M4.903 2.98a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.893c-1.382.154-2.81.154-4.192 0a2.166 2.166 0 0 1-1.91-1.893a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892M8.93 14.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.576a16.8 16.8 0 0 0 0 3.908a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.892c-1.382.155-2.81.155-4.192 0a2.166 2.166 0 0 1-1.91-1.892a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892M18.93 4.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.577a16.8 16.8 0 0 0 0 3.907a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.893c-1.382.154-2.81.154-4.192 0a2.166 2.166 0 0 1-1.91-1.893a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892m4.027 11.49a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.576a16.8 16.8 0 0 0 0 3.908a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.892c-1.382.155-2.81.155-4.192 0a2.166 2.166 0 0 1-1.91-1.892a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892" clip-rule="evenodd"/>',
+  airdrops:
+    '<path fill="currentColor" fill-rule="evenodd" d="M13.614 2.31a.75.75 0 0 1 .456.69v6.998H18a.75.75 0 0 1 .653 1.12l-.492.87a35.8 35.8 0 0 1-7.05 8.842l-.796.725A.75.75 0 0 1 9.06 21v-6.939H5a.75.75 0 0 1-.653-1.119a35.8 35.8 0 0 1 6.675-8.773l1.778-1.71a.75.75 0 0 1 .814-.149m-7.33 10.251H9.81a.75.75 0 0 1 .75.75v5.983a34.3 34.3 0 0 0 6.153-7.796H13.32a.75.75 0 0 1-.75-.75V4.762l-.508.488a34.3 34.3 0 0 0-5.777 7.311" clip-rule="evenodd"/>',
+  news: '<path fill="currentColor" d="M15.75 13a.75.75 0 0 0-.75-.75H9a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 .75-.75m0 4a.75.75 0 0 0-.75-.75H9a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 .75-.75"/><path fill="currentColor" fill-rule="evenodd" d="M7 2.25A2.75 2.75 0 0 0 4.25 5v14A2.75 2.75 0 0 0 7 21.75h10A2.75 2.75 0 0 0 19.75 19V7.968c0-.381-.124-.751-.354-1.055l-2.998-3.968a1.75 1.75 0 0 0-1.396-.695zM5.75 5c0-.69.56-1.25 1.25-1.25h7.25v4.397c0 .414.336.75.75.75h3.25V19c0 .69-.56 1.25-1.25 1.25H7c-.69 0-1.25-.56-1.25-1.25z" clip-rule="evenodd"/>',
+  portfolio:
+    '<path fill="currentColor" d="M15.5 12a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0"/><path fill="currentColor" fill-rule="evenodd" d="M20.441 6.674a4.71 4.71 0 0 0-3.84-2.839l-.652-.068a44.4 44.4 0 0 0-9.9.068l-.432.051a3.68 3.68 0 0 0-3.214 3.169a37.4 37.4 0 0 0 0 9.89a3.68 3.68 0 0 0 3.214 3.169l.432.051c3.287.392 6.607.415 9.9.068l.652-.068a4.71 4.71 0 0 0 3.84-2.839a2.77 2.77 0 0 0 1.963-2.324c.233-1.994.233-4.01 0-6.004a2.77 2.77 0 0 0-1.963-2.324m-4.65-1.416a43 43 0 0 0-9.565.066l-.432.052A2.18 2.18 0 0 0 3.89 7.253a36 36 0 0 0 0 9.494a2.18 2.18 0 0 0 1.904 1.877l.432.052c3.176.378 6.385.4 9.566.066l.652-.069a3.2 3.2 0 0 0 2.124-1.131a27 27 0 0 1-4.526-.118a2.77 2.77 0 0 1-2.446-2.422a26 26 0 0 1 0-6.004a2.77 2.77 0 0 1 2.446-2.422a27 27 0 0 1 4.526-.118a3.2 3.2 0 0 0-2.124-1.131zm3.486 2.757l.002.011l.006.04l.199-.032q.154.015.308.033c.587.065 1.055.53 1.122 1.105c.22 1.879.22 3.777 0 5.656a1.27 1.27 0 0 1-1.122 1.105q-.154.018-.308.033l-.199-.031l-.006.039l-.002.011c-1.678.152-3.4.135-5.069-.052a1.27 1.27 0 0 1-1.122-1.105a24.3 24.3 0 0 1 0-5.656a1.27 1.27 0 0 1 1.122-1.105a25.4 25.4 0 0 1 5.07-.052" clip-rule="evenodd"/>',
+  calendar:
+    '<path fill="currentColor" fill-rule="evenodd" d="M7 3.25a.75.75 0 0 1 .75.75v1.668a48 48 0 0 1 8.5 0V4a.75.75 0 0 1 1.5 0v1.816a3.375 3.375 0 0 1 2.872 2.899l.087.653c.364 2.746.332 5.53-.094 8.268a3.01 3.01 0 0 1-2.678 2.532l-1.193.118a48.4 48.4 0 0 1-9.488 0l-1.193-.118a3.01 3.01 0 0 1-2.678-2.532a29 29 0 0 1-.094-8.268l.087-.653A3.375 3.375 0 0 1 6.25 5.816V4A.75.75 0 0 1 7 3.25m.445 3.953c3.03-.299 6.08-.299 9.11 0l.905.09c.867.085 1.56.756 1.675 1.619l.087.653q.045.342.082.685H4.696q.037-.343.082-.685l.087-.653a1.875 1.875 0 0 1 1.675-1.62zM4.577 11.75a27.5 27.5 0 0 0 .29 5.655a1.51 1.51 0 0 0 1.343 1.27l1.193.118c3.057.302 6.137.302 9.194 0l1.193-.118a1.51 1.51 0 0 0 1.343-1.27c.292-1.872.388-3.767.29-5.655z" clip-rule="evenodd"/>',
+  alerts:
+    '<path fill="currentColor" fill-rule="evenodd" d="M13 3a1 1 0 1 0-2 0v.75h-.557A4.214 4.214 0 0 0 6.237 7.7l-.221 3.534a7.4 7.4 0 0 1-1.308 3.754a1.617 1.617 0 0 0 1.135 2.529l3.407.408V19a2.75 2.75 0 1 0 5.5 0v-1.075l3.407-.409a1.617 1.617 0 0 0 1.135-2.528a7.4 7.4 0 0 1-1.308-3.754l-.221-3.533a4.214 4.214 0 0 0-4.206-3.951H13zm-2.557 2.25a2.714 2.714 0 0 0-2.709 2.544l-.22 3.534a8.9 8.9 0 0 1-1.574 4.516a.117.117 0 0 0 .082.183l3.737.449c1.489.178 2.993.178 4.482 0l3.737-.449a.117.117 0 0 0 .082-.183a8.9 8.9 0 0 1-1.573-4.516l-.221-3.534a2.714 2.714 0 0 0-2.709-2.544zm1.557 15c-.69 0-1.25-.56-1.25-1.25v-.75h2.5V19c0 .69-.56 1.25-1.25 1.25" clip-rule="evenodd"/>',
+  guide:
+    '<path fill="currentColor" fill-rule="evenodd" d="M11.602 18.636a.75.75 0 0 0 .398.11a.75.75 0 0 0 .398-.11l1.135-.681a8.3 8.3 0 0 1 7.36-.59c.89.356 1.857-.3 1.857-1.257V4.45c0-.578-.352-1.097-.889-1.312a10.7 10.7 0 0 0-9.48.76L12 4.124l-.382-.229a10.7 10.7 0 0 0-9.48-.76A1.41 1.41 0 0 0 1.25 4.45v11.66c0 .957.967 1.612 1.857 1.256a8.3 8.3 0 0 1 7.36.59zM2.75 4.508v11.387a9.8 9.8 0 0 1 8.489.774l.011.006V5.425l-.403-.242a9.2 9.2 0 0 0-8.097-.675m10.011 12.16l-.011.007V5.425l.403-.242a9.2 9.2 0 0 1 8.097-.675v11.387a9.8 9.8 0 0 0-8.489.774" clip-rule="evenodd"/><path fill="currentColor" d="M9.275 19.042a6.5 6.5 0 0 0-6.55 0l-.103.06a.75.75 0 1 0 .756 1.296l.103-.06a5 5 0 0 1 5.038 0l1.088.634a4.75 4.75 0 0 0 4.786 0l1.088-.634a5 5 0 0 1 5.038 0l.103.06a.75.75 0 0 0 .756-1.296l-.103-.06a6.5 6.5 0 0 0-6.55 0l-1.087.634a3.25 3.25 0 0 1-3.276 0z"/>',
+  chat: '<path fill="currentColor" fill-rule="evenodd" d="M4.592 15.304C2.344 9.787 6.403 3.75 12.36 3.75h.321a8.07 8.07 0 0 1 8.068 8.068a8.98 8.98 0 0 1-8.982 8.982h-7.82a.75.75 0 0 1-.47-1.335l1.971-1.583a.25.25 0 0 0 .075-.29zM12.36 5.25c-4.893 0-8.226 4.957-6.38 9.488l.932 2.289a1.75 1.75 0 0 1-.525 2.024l-.309.249h5.689a7.48 7.48 0 0 0 7.482-7.482a6.57 6.57 0 0 0-6.568-6.568z" clip-rule="evenodd"/>',
+  settings:
+    '<g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M11.199 2.587a1.65 1.65 0 0 1 1.602 0l7.2 4c.524.291.849.843.849 1.443v7.94c0 .6-.325 1.152-.849 1.443l-7.2 4a1.65 1.65 0 0 1-1.602 0l-7.2-4a1.65 1.65 0 0 1-.849-1.443V8.03c0-.6.325-1.152.849-1.443zm.874 1.312a.15.15 0 0 0-.146 0l-7.2 4a.15.15 0 0 0-.077.13v7.942c0 .054.03.104.077.13l7.2 4a.15.15 0 0 0 .146 0l7.2-4a.15.15 0 0 0 .077-.13V8.03a.15.15 0 0 0-.077-.131z"/><path d="M7.25 12a4.75 4.75 0 1 1 9.5 0a4.75 4.75 0 0 1-9.5 0M12 8.75a3.25 3.25 0 1 0 0 6.5a3.25 3.25 0 0 0 0-6.5"/></g>',
+} as const;
+
+type BasilIconName = keyof typeof BASIL_ICON_BODY;
+type BasilIconProps = {
+  name: BasilIconName;
+  size?: number;
+  className?: string;
+  strokeWidth?: number;
+};
+
+type BasilNavIconProps = Omit<BasilIconProps, "name">;
+
+function BasilIcon({ name, size = 20, className }: BasilIconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      className={className}
+      dangerouslySetInnerHTML={{ __html: BASIL_ICON_BODY[name] }}
+    />
+  );
+}
 
 const NAV_GROUPS = [
   {
@@ -31,19 +66,25 @@ const NAV_GROUPS = [
       {
         href: "/",
         label: "Dashboard",
-        Icon: LayoutDashboard,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="dashboard" {...props} />
+        ),
         iconTone: "text-orange-500",
       },
       {
         href: "/airdrops",
         label: "Airdrops",
-        Icon: Zap,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="airdrops" {...props} />
+        ),
         iconTone: "text-amber-500",
       },
       {
         href: "/news",
         label: "News",
-        Icon: Newspaper,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="news" {...props} />
+        ),
         iconTone: "text-red-500",
       },
     ],
@@ -54,21 +95,27 @@ const NAV_GROUPS = [
       {
         href: "/portfolio",
         label: "Portfolio",
-        Icon: Wallet,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="portfolio" {...props} />
+        ),
         iconTone: "text-yellow-600",
         soon: true,
       },
       {
         href: "/calendar",
         label: "Calendar",
-        Icon: Calendar,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="calendar" {...props} />
+        ),
         iconTone: "text-amber-500",
         soon: true,
       },
       {
         href: "/alerts",
         label: "Alerts",
-        Icon: Bell,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="alerts" {...props} />
+        ),
         iconTone: "text-orange-600",
         soon: true,
       },
@@ -80,14 +127,18 @@ const NAV_GROUPS = [
       {
         href: "/guide",
         label: "How to Farm",
-        Icon: BookOpen,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="guide" {...props} />
+        ),
         iconTone: "text-amber-600",
         soon: true,
       },
       {
         href: "/chat",
         label: "AI Chat",
-        Icon: MessageSquare,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="chat" {...props} />
+        ),
         iconTone: "text-red-500",
       },
     ],
@@ -254,7 +305,9 @@ function SidebarContents({
           item={{
             href: "/settings",
             label: "About",
-            Icon: Settings,
+            Icon: (props: BasilNavIconProps) => (
+              <BasilIcon name="settings" {...props} />
+            ),
             iconTone: "text-orange-500",
           }}
           active={location === "/settings"}

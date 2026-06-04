@@ -208,6 +208,10 @@ export default function AnimatedBackdrop() {
       aria-hidden="true"
     >
       <div className="animated-grid" />
+      <div className="hyperframe-scanline" />
+      <div className="hyperframe-stage hyperframe-stage-a" />
+      <div className="hyperframe-stage hyperframe-stage-b" />
+      <div className="hyperframe-stage hyperframe-stage-c" />
       <div className="rainbow-bubble rainbow-bubble-a" />
       <div className="rainbow-bubble rainbow-bubble-b" />
       <div className="rainbow-bubble rainbow-bubble-c" />

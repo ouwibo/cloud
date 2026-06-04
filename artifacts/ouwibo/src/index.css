@@ -927,7 +927,9 @@
 ═══════════════════════════════════════════ */
 .animated-network,
 .animated-mesh,
-.animated-vignette {
+.animated-vignette,
+.hyperframe-scanline,
+.hyperframe-stage {
   pointer-events: none;
   position: absolute;
   inset: 0;
@@ -1013,6 +1015,92 @@
   background-size: 74px 74px;
   mask-image: radial-gradient(circle at 50% 20%, black, transparent 72%);
   animation: premiumGridDrift 26s linear infinite;
+}
+
+.hyperframe-scanline {
+  z-index: 1;
+  opacity: 0.42;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 42%,
+    hsl(var(--primary) / 0.12) 50%,
+    transparent 58%,
+    transparent 100%
+  );
+  transform: translate3d(0, -60%, 0);
+  animation: hyperframeScan 14s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.hyperframe-stage {
+  inset: auto;
+  z-index: 1;
+  width: clamp(190px, 21vw, 360px);
+  height: clamp(120px, 14vw, 230px);
+  border: 1px solid hsl(var(--primary) / 0.13);
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, hsl(var(--card) / 0.08), transparent 62%),
+    radial-gradient(
+      circle at 14% 16%,
+      hsl(var(--primary) / 0.09),
+      transparent 42%
+    );
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.16),
+    0 26px 80px hsl(var(--primary) / 0.07);
+  opacity: 0.46;
+  transform: translate3d(0, 0, 0) rotate(var(--frame-rotate, 0deg));
+  animation: hyperframeFloat var(--frame-duration, 18s) ease-in-out infinite;
+  animation-delay: var(--frame-delay, 0s);
+}
+
+.hyperframe-stage::before,
+.hyperframe-stage::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.hyperframe-stage::before {
+  border: 1px dashed hsl(var(--foreground) / 0.08);
+}
+
+.hyperframe-stage::after {
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    hsl(0 0% 100% / 0.14) 48%,
+    transparent 62%
+  );
+  transform: translateX(-115%);
+  animation: hyperframeSheen 7.2s ease-in-out infinite;
+  animation-delay: var(--frame-delay, 0s);
+}
+
+.hyperframe-stage-a {
+  top: 14%;
+  left: 9%;
+  --frame-rotate: -7deg;
+  --frame-duration: 20s;
+}
+
+.hyperframe-stage-b {
+  right: 9%;
+  top: 22%;
+  --frame-rotate: 6deg;
+  --frame-duration: 23s;
+  --frame-delay: -5s;
+}
+
+.hyperframe-stage-c {
+  bottom: 16%;
+  left: 34%;
+  --frame-rotate: 3deg;
+  --frame-duration: 26s;
+  --frame-delay: -11s;
 }
 
 .rainbow-bubble {
@@ -1144,6 +1232,49 @@
   animation-direction: reverse;
 }
 
+@keyframes hyperframeScan {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -70%, 0);
+  }
+  18%,
+  70% {
+    opacity: 0.42;
+  }
+  85% {
+    opacity: 0;
+    transform: translate3d(0, 70%, 0);
+  }
+}
+
+@keyframes hyperframeFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--frame-rotate, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -14px, 0)
+      rotate(calc(var(--frame-rotate, 0deg) * -1));
+  }
+}
+
+@keyframes hyperframeSheen {
+  0%,
+  45% {
+    opacity: 0;
+    transform: translateX(-115%);
+  }
+  60% {
+    opacity: 1;
+  }
+  82%,
+  100% {
+    opacity: 0;
+    transform: translateX(115%);
+  }
+}
+
 @keyframes premiumGridDrift {
   from {
     transform: translate3d(0, 0, 0);
@@ -1216,7 +1347,9 @@
 }
 
 @media (prefers-reduced-motion: reduce), (update: slow) {
-  .rainbow-bubble {
+  .rainbow-bubble,
+  .hyperframe-scanline,
+  .hyperframe-stage {
     display: none !important;
     animation: none !important;
   }
@@ -1256,7 +1389,9 @@
   .animated-mesh,
   .animated-grid,
   .animated-orb,
-  .animated-vignette {
+  .animated-vignette,
+  .hyperframe-scanline,
+  .hyperframe-stage {
     display: none !important;
     animation: none !important;
   }
