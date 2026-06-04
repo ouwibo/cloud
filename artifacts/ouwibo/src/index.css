@@ -105,6 +105,14 @@
   --chart-3: 12 88% 54%;
   --chart-4: 30 100% 66%;
   --chart-5: 348 84% 60%;
+  --input: 0 0% 80%;
+  --ring: 24 96% 52%;
+
+  --chart-1: 24 96% 52%;
+  --chart-2: 156 50% 42%;
+  --chart-3: 222 72% 58%;
+  --chart-4: 268 62% 62%;
+  --chart-5: 328 58% 58%;
 
   --app-font-sans:
     "Poppins", "Manrope", -apple-system, BlinkMacSystemFont, "Inter",
@@ -182,6 +190,13 @@
   --sidebar-primary-foreground: 224 24% 7%;
   --sidebar-accent: 22 48% 13%;
   --sidebar-accent-foreground: 34 84% 88%;
+  --sidebar: 224 28% 8%;
+  --sidebar-foreground: 218 18% 84%;
+  --sidebar-border: 222 20% 17%;
+  --sidebar-primary: 25 100% 61%;
+  --sidebar-primary-foreground: 224 24% 7%;
+  --sidebar-accent: 224 22% 14%;
+  --sidebar-accent-foreground: 218 18% 84%;
   --sidebar-ring: 25 100% 61%;
 
   --popover: 22 42% 10%;
