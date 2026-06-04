@@ -9,15 +9,15 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  mode: "dark",
-  isDark: true,
+  mode: "light",
+  isDark: false,
   setMode: () => {},
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mode, setModeState] = useState<BaseMode>(() => {
     const saved = localStorage.getItem("ouwibo-mode") as BaseMode | null;
-    return saved === "light" || saved === "dark" ? saved : "dark";
+    return saved === "light" || saved === "dark" ? saved : "light";
   });
 
   const setMode = (nextMode: BaseMode) => {

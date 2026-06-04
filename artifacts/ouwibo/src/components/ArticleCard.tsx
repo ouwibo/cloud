@@ -5,12 +5,12 @@ import type { Article } from "@/lib/articleStore";
 
 const CAT_COLORS: Record<string, string> = {
   DeFi: "hsl(var(--primary))",
-  "Layer 1": "#8b5cf6",
-  "Layer 2": "#3b82f6",
+  "Layer 1": "#3b82f6",
+  "Layer 2": "#0ea5e9",
   Infrastructure: "#06b6d4",
-  Gaming: "#f43f5e",
-  Guide: "#f59e0b",
-  Analysis: "#a855f7",
+  Gaming: "#8b5cf6",
+  Guide: "#10b981",
+  Analysis: "#6366f1",
   News: "hsl(var(--primary))",
 };
 
