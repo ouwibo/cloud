@@ -1,8 +1,6 @@
 import { Link } from "wouter";
 import { mockAirdrops } from "@/lib/mockData";
 import type { Airdrop } from "@/lib/mockData";
-import { getAllArticles } from "@/lib/articleStore";
-import { ArticleCard } from "@/components/ArticleCard";
 import {
   TrendingUp,
   Zap,
@@ -10,11 +8,11 @@ import {
   CheckCircle2,
   ChevronRight,
   Gift,
-  Newspaper,
   Star,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AirdropLogo } from "@/components/AirdropLogo";
+import ScrollReveal from "@/components/ScrollReveal";
 
 function AirdropRow({ a, rank }: { a: Airdrop; rank: number }) {
   const task = a.tasks[0];
@@ -98,7 +96,6 @@ export default function DashboardPage() {
   ).length;
   const newest = airdrops.filter((a) => a.isNew).slice(0, 4);
   const rewardA = airdrops.filter((a) => a.status === "Reward Available");
-  const latestArticles = getAllArticles().slice(0, 4);
   const top = [...airdrops]
     .sort(
       (a, b) =>
@@ -110,38 +107,40 @@ export default function DashboardPage() {
 
   return (
     <div className="premium-page space-y-6">
-      <section className="premium-panel overflow-hidden rounded-3xl border p-5 sm:p-6">
-        <div className="max-w-5xl">
-          <div className="mb-3 inline-flex max-w-full items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-primary sm:text-[11px]">
-            <span className="premium-icon h-6 w-6 shrink-0 rounded-full">
-              <Star className="relative z-10 h-3 w-3" fill="currentColor" />
-            </span>
-            <span className="truncate">
-              Research-grade airdrop intelligence
-            </span>
+      <ScrollReveal>
+        <section className="premium-panel overflow-hidden rounded-3xl border p-5 sm:p-6">
+          <div className="max-w-5xl">
+            <div className="mb-3 inline-flex max-w-full items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-primary sm:text-[11px]">
+              <span className="premium-icon h-6 w-6 shrink-0 rounded-full">
+                <Star className="relative z-10 h-3 w-3" fill="currentColor" />
+              </span>
+              <span className="truncate">
+                Research-grade airdrop intelligence
+              </span>
+            </div>
+            <h1 className="premium-heading text-[28px] font-black leading-[1.08] text-foreground sm:text-4xl lg:text-5xl">
+              Ouwibo: professional airdrop intelligence workspace.
+            </h1>
+            <p className="mt-4 max-w-4xl text-sm leading-7 text-muted-foreground sm:text-[15px]">
+              Discover credible campaigns, compare time-to-reward signals, and
+              track claim-ready opportunities in one clean workspace without
+              noisy speculation or overlapping dashboard copy.
+            </p>
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              <Link href="/airdrops" className="w-full sm:w-auto">
+                <button className="w-full shrink-0 rounded-2xl border border-blue-600/10 bg-gradient-to-b from-sky-400 to-primary px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_10px_22px_hsl(var(--primary)/0.20)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_28px_hsl(var(--primary)/0.24)] sm:w-auto">
+                  Explore Airdrops →
+                </button>
+              </Link>
+              <Link href="/chat" className="w-full sm:w-auto">
+                <button className="w-full rounded-2xl border border-sky-200 bg-white/85 px-5 py-3 text-[13px] font-black text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:bg-sky-50 sm:w-auto">
+                  Ask AI Assistant
+                </button>
+              </Link>
+            </div>
           </div>
-          <h1 className="premium-heading text-[28px] font-black leading-[1.08] text-foreground sm:text-4xl lg:text-5xl">
-            Ouwibo: professional airdrop intelligence workspace.
-          </h1>
-          <p className="mt-4 max-w-4xl text-sm leading-7 text-muted-foreground sm:text-[15px]">
-            Discover credible campaigns, compare time-to-reward signals, and
-            track claim-ready opportunities in one clean workspace without noisy
-            speculation or overlapping dashboard copy.
-          </p>
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-            <Link href="/airdrops" className="w-full sm:w-auto">
-              <button className="w-full shrink-0 rounded-2xl border border-blue-600/10 bg-gradient-to-b from-sky-400 to-primary px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_10px_22px_hsl(var(--primary)/0.20)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_28px_hsl(var(--primary)/0.24)] sm:w-auto">
-                Explore Airdrops →
-              </button>
-            </Link>
-            <Link href="/news" className="w-full sm:w-auto">
-              <button className="w-full rounded-2xl border border-sky-200 bg-white/85 px-5 py-3 text-[13px] font-black text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:bg-sky-50 sm:w-auto">
-                Read Research
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
@@ -173,45 +172,46 @@ export default function DashboardPage() {
             icon: <Gift className="h-4 w-4" />,
             cls: "text-blue-400 border-blue-500/25 bg-blue-500/5",
           },
-        ].map(({ label, detail, value, icon, cls }) => (
-          <div
-            key={label}
-            className={cn("premium-stat rounded-2xl border p-3.5", cls)}
-          >
-            <div className="premium-icon mb-2 h-8 w-8 rounded-xl">{icon}</div>
-            <div className="text-[22px] font-bold leading-none">{value}</div>
-            <div className="mt-1 text-[11px] font-black uppercase tracking-[0.14em] text-foreground/80">
-              {label}
+        ].map(({ label, detail, value, icon, cls }, index) => (
+          <ScrollReveal key={label} delay={80 * index}>
+            <div className={cn("premium-stat rounded-2xl border p-3.5", cls)}>
+              <div className="premium-icon mb-2 h-8 w-8 rounded-xl">{icon}</div>
+              <div className="text-[22px] font-bold leading-none">{value}</div>
+              <div className="mt-1 text-[11px] font-black uppercase tracking-[0.14em] text-foreground/80">
+                {label}
+              </div>
+              <div className="mt-0.5 text-[10px] text-muted-foreground">
+                {detail}
+              </div>
             </div>
-            <div className="mt-0.5 text-[10px] text-muted-foreground">
-              {detail}
-            </div>
-          </div>
+          </ScrollReveal>
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        <div className="premium-panel overflow-hidden rounded-2xl border lg:col-span-2">
-          <div className="flex items-center justify-between border-b border-border/50 bg-gradient-to-r from-primary/8 to-transparent px-4 py-3">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-primary" />
-              <span className="text-[13px] font-semibold">Top Ranked</span>
+        <ScrollReveal className="lg:col-span-2" delay={120}>
+          <div className="premium-panel overflow-hidden rounded-2xl border">
+            <div className="flex items-center justify-between border-b border-border/50 bg-gradient-to-r from-primary/8 to-transparent px-4 py-3">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                <span className="text-[13px] font-semibold">Top Ranked</span>
+              </div>
+              <Link
+                href="/airdrops"
+                className="text-[11px] text-primary hover:underline"
+              >
+                See all →
+              </Link>
             </div>
-            <Link
-              href="/airdrops"
-              className="text-[11px] text-primary hover:underline"
-            >
-              See all →
-            </Link>
+            <div className="grid gap-3 p-4">
+              {top.map((a, i) => (
+                <AirdropRow key={a.id} a={a} rank={i + 1} />
+              ))}
+            </div>
           </div>
-          <div className="grid gap-3 p-4">
-            {top.map((a, i) => (
-              <AirdropRow key={a.id} a={a} rank={i + 1} />
-            ))}
-          </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="space-y-4">
+        <ScrollReveal className="space-y-4" delay={220}>
           <div className="premium-panel overflow-hidden rounded-2xl border">
             <div className="flex items-center gap-2 border-b border-border/50 bg-gradient-to-r from-sky-500/8 to-transparent px-4 py-3">
               <span className="text-[13px] font-semibold">Claim Now</span>
@@ -283,21 +283,7 @@ export default function DashboardPage() {
               </div>
             )}
           </div>
-        </div>
-      </div>
-
-      <div className="premium-panel overflow-hidden rounded-2xl border">
-        <div className="flex items-center justify-between border-b border-border/50 bg-gradient-to-r from-primary/8 to-transparent px-4 py-3">
-          <div className="flex items-center gap-2">
-            <Newspaper className="w-4 h-4 text-primary" />
-            <span className="text-[13px] font-semibold">Latest News</span>
-          </div>
-        </div>
-        <div className="grid gap-4 p-4 md:grid-cols-2 xl:grid-cols-4">
-          {latestArticles.map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   );

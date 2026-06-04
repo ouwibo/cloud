@@ -10,10 +10,8 @@ import PageErrorBoundary from "@/components/PageErrorBoundary";
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
 const AirdropsPage = lazy(() => import("@/pages/AirdropsPage"));
 const AirdropDetailPage = lazy(() => import("@/pages/AirdropDetailPage"));
-const NewsPage = lazy(() => import("@/pages/NewsPage"));
 const ChatPage = lazy(() => import("@/pages/ChatPage"));
 const SettingsPage = lazy(() => import("@/pages/SettingsPage"));
-const ArticlePage = lazy(() => import("@/pages/ArticlePage"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 const qc = new QueryClient();
@@ -55,8 +53,6 @@ function App() {
                       path="/airdrops/:slug"
                       component={AirdropDetailPage}
                     />
-                    <Route path="/news" component={NewsPage} />
-                    <Route path="/article/:slug" component={ArticlePage} />
                     <Route path="/chat" component={ChatPage} />
                     <Route path="/settings" component={SettingsPage} />
                     <Route component={NotFound} />
