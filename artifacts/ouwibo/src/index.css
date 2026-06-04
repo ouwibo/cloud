@@ -329,6 +329,11 @@
         hsl(0 0% 100% / 0.54) 0 36%,
         transparent 66%
       ),
+      radial-gradient(
+        circle at 48% 110%,
+        hsl(199 98% 58% / 0.11),
+        transparent 38rem
+      ),
       linear-gradient(
         180deg,
         hsl(207 92% 57%) 0%,
@@ -548,7 +553,7 @@
 
 .premium-heading {
   font-family: var(--app-font-display);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.055em;
   text-wrap: balance;
 }
 
