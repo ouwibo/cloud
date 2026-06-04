@@ -69,7 +69,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="dashboard" {...props} />
         ),
-        iconTone: "text-orange-500",
+        iconTone: "text-violet-400",
       },
       {
         href: "/airdrops",
@@ -77,7 +77,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="airdrops" {...props} />
         ),
-        iconTone: "text-amber-500",
+        iconTone: "text-fuchsia-400",
       },
       {
         href: "/news",
@@ -85,7 +85,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="news" {...props} />
         ),
-        iconTone: "text-red-500",
+        iconTone: "text-sky-400",
       },
     ],
   },
@@ -98,7 +98,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="portfolio" {...props} />
         ),
-        iconTone: "text-yellow-600",
+        iconTone: "text-cyan-400",
         soon: true,
       },
       {
@@ -107,7 +107,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="calendar" {...props} />
         ),
-        iconTone: "text-amber-500",
+        iconTone: "text-fuchsia-400",
         soon: true,
       },
       {
@@ -116,7 +116,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="alerts" {...props} />
         ),
-        iconTone: "text-orange-600",
+        iconTone: "text-violet-500",
         soon: true,
       },
     ],
@@ -130,7 +130,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="guide" {...props} />
         ),
-        iconTone: "text-amber-600",
+        iconTone: "text-fuchsia-500",
         soon: true,
       },
       {
@@ -139,7 +139,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="chat" {...props} />
         ),
-        iconTone: "text-red-500",
+        iconTone: "text-sky-400",
       },
     ],
   },
@@ -224,7 +224,7 @@ function NavLink({
       )}
     >
       {active && (
-        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-yellow-300 via-primary to-red-500" />
+        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-cyan-300 via-primary to-fuchsia-500" />
       )}
       <item.Icon
         size={expanded ? 18 : 20}
@@ -308,7 +308,7 @@ function SidebarContents({
             Icon: (props: BasilNavIconProps) => (
               <BasilIcon name="settings" {...props} />
             ),
-            iconTone: "text-orange-500",
+            iconTone: "text-violet-400",
           }}
           active={location === "/settings"}
           expanded={expanded}
@@ -409,9 +409,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         aria-hidden
       >
-        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-orange-500/[0.12] blur-[120px]" />
-        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-amber-500/[0.10] blur-[100px]" />
-        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-red-500/[0.07] blur-[130px]" />
+        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-violet-500/[0.16] blur-[120px]" />
+        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-fuchsia-500/[0.12] blur-[100px]" />
+        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-sky-500/[0.10] blur-[130px]" />
       </div>
       {/* ── Navbar ── */}
       <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b border-primary/20 px-3 backdrop-blur-xl lg:left-[var(--sidebar-w)]">
