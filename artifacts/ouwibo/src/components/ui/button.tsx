@@ -5,22 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0" +
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold transition-[background-color,color,border-color,box-shadow,transform] duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0" +
     " hover-elevate active-elevate-2",
   {
     variants: {
       variant: {
         default:
-          "border border-primary-border bg-gradient-to-b from-orange-400 to-primary text-primary-foreground shadow-sm shadow-primary/25 hover:shadow-md hover:shadow-primary/30",
+          "border border-blue-600/10 bg-gradient-to-b from-sky-400 to-primary text-primary-foreground shadow-[0_10px_22px_hsl(var(--primary)/0.20)] hover:-translate-y-0.5 hover:shadow-[0_14px_28px_hsl(var(--primary)/0.24)]",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm border-destructive-border",
         outline:
           // @replit Shows the background color of whatever card / sidebar / accent background it is inside of.
           // Inherits the current text color. Uses shadow-xs. no shadow on active
           // No hover state
-          " border [border-color:var(--button-outline)] shadow-xs active:shadow-none ",
+          " border bg-white/85 [border-color:var(--button-outline)] shadow-xs active:shadow-none hover:-translate-y-0.5 hover:border-primary/30 hover:bg-sky-50 ",
         secondary:
-          "border border-secondary-border bg-secondary text-secondary-foreground shadow-sm shadow-primary/10 hover:border-primary/30 hover:bg-primary/10 ",
+          "border border-sky-200/80 bg-sky-100/80 text-secondary-foreground shadow-sm shadow-primary/10 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-sky-100 ",
         // @replit no hover, transparent border
         ghost:
           "border border-transparent hover:border-primary/25 hover:bg-primary/10 hover:text-primary",
