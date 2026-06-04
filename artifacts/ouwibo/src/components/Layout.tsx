@@ -4,25 +4,60 @@ import type { CSSProperties } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
-  Zap,
-  Newspaper,
-  Wallet,
-  Calendar,
   Bell,
-  Settings,
-  Menu,
-  ChevronUp,
-  Search,
-  BookOpen,
-  MessageSquare,
   ChevronRight,
-  Sun,
+  ChevronUp,
+  Menu,
   Moon,
+  Search,
+  Sun,
 } from "lucide-react";
 import AnimatedBackdrop from "@/components/AnimatedBackdrop";
 import { mockAirdrops } from "@/lib/mockData";
 import { getAllArticles } from "@/lib/articleStore";
+
+/* Basil icons by Craftwork, CC BY 4.0. Source pack: https://www.figma.com/community/file/931906394678748246/basil-icons */
+const BASIL_ICON_BODY = {
+  dashboard:
+    '<path fill="currentColor" fill-rule="evenodd" d="M8.93 4.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.577a16.8 16.8 0 0 0 0 3.907a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576M4.903 2.98a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.893c-1.382.154-2.81.154-4.192 0a2.166 2.166 0 0 1-1.91-1.893a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892M8.93 14.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.576a16.8 16.8 0 0 0 0 3.908a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.892c-1.382.155-2.81.155-4.192 0a2.166 2.166 0 0 1-1.91-1.892a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892M18.93 4.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.577a16.8 16.8 0 0 0 0 3.907a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.893c-1.382.154-2.81.154-4.192 0a2.166 2.166 0 0 1-1.91-1.893a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892m4.027 11.49a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.576a16.8 16.8 0 0 0 0 3.908a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.892c-1.382.155-2.81.155-4.192 0a2.166 2.166 0 0 1-1.91-1.892a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892" clip-rule="evenodd"/>',
+  airdrops:
+    '<path fill="currentColor" fill-rule="evenodd" d="M13.614 2.31a.75.75 0 0 1 .456.69v6.998H18a.75.75 0 0 1 .653 1.12l-.492.87a35.8 35.8 0 0 1-7.05 8.842l-.796.725A.75.75 0 0 1 9.06 21v-6.939H5a.75.75 0 0 1-.653-1.119a35.8 35.8 0 0 1 6.675-8.773l1.778-1.71a.75.75 0 0 1 .814-.149m-7.33 10.251H9.81a.75.75 0 0 1 .75.75v5.983a34.3 34.3 0 0 0 6.153-7.796H13.32a.75.75 0 0 1-.75-.75V4.762l-.508.488a34.3 34.3 0 0 0-5.777 7.311" clip-rule="evenodd"/>',
+  news: '<path fill="currentColor" d="M15.75 13a.75.75 0 0 0-.75-.75H9a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 .75-.75m0 4a.75.75 0 0 0-.75-.75H9a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 .75-.75"/><path fill="currentColor" fill-rule="evenodd" d="M7 2.25A2.75 2.75 0 0 0 4.25 5v14A2.75 2.75 0 0 0 7 21.75h10A2.75 2.75 0 0 0 19.75 19V7.968c0-.381-.124-.751-.354-1.055l-2.998-3.968a1.75 1.75 0 0 0-1.396-.695zM5.75 5c0-.69.56-1.25 1.25-1.25h7.25v4.397c0 .414.336.75.75.75h3.25V19c0 .69-.56 1.25-1.25 1.25H7c-.69 0-1.25-.56-1.25-1.25z" clip-rule="evenodd"/>',
+  portfolio:
+    '<path fill="currentColor" d="M15.5 12a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0"/><path fill="currentColor" fill-rule="evenodd" d="M20.441 6.674a4.71 4.71 0 0 0-3.84-2.839l-.652-.068a44.4 44.4 0 0 0-9.9.068l-.432.051a3.68 3.68 0 0 0-3.214 3.169a37.4 37.4 0 0 0 0 9.89a3.68 3.68 0 0 0 3.214 3.169l.432.051c3.287.392 6.607.415 9.9.068l.652-.068a4.71 4.71 0 0 0 3.84-2.839a2.77 2.77 0 0 0 1.963-2.324c.233-1.994.233-4.01 0-6.004a2.77 2.77 0 0 0-1.963-2.324m-4.65-1.416a43 43 0 0 0-9.565.066l-.432.052A2.18 2.18 0 0 0 3.89 7.253a36 36 0 0 0 0 9.494a2.18 2.18 0 0 0 1.904 1.877l.432.052c3.176.378 6.385.4 9.566.066l.652-.069a3.2 3.2 0 0 0 2.124-1.131a27 27 0 0 1-4.526-.118a2.77 2.77 0 0 1-2.446-2.422a26 26 0 0 1 0-6.004a2.77 2.77 0 0 1 2.446-2.422a27 27 0 0 1 4.526-.118a3.2 3.2 0 0 0-2.124-1.131zm3.486 2.757l.002.011l.006.04l.199-.032q.154.015.308.033c.587.065 1.055.53 1.122 1.105c.22 1.879.22 3.777 0 5.656a1.27 1.27 0 0 1-1.122 1.105q-.154.018-.308.033l-.199-.031l-.006.039l-.002.011c-1.678.152-3.4.135-5.069-.052a1.27 1.27 0 0 1-1.122-1.105a24.3 24.3 0 0 1 0-5.656a1.27 1.27 0 0 1 1.122-1.105a25.4 25.4 0 0 1 5.07-.052" clip-rule="evenodd"/>',
+  calendar:
+    '<path fill="currentColor" fill-rule="evenodd" d="M7 3.25a.75.75 0 0 1 .75.75v1.668a48 48 0 0 1 8.5 0V4a.75.75 0 0 1 1.5 0v1.816a3.375 3.375 0 0 1 2.872 2.899l.087.653c.364 2.746.332 5.53-.094 8.268a3.01 3.01 0 0 1-2.678 2.532l-1.193.118a48.4 48.4 0 0 1-9.488 0l-1.193-.118a3.01 3.01 0 0 1-2.678-2.532a29 29 0 0 1-.094-8.268l.087-.653A3.375 3.375 0 0 1 6.25 5.816V4A.75.75 0 0 1 7 3.25m.445 3.953c3.03-.299 6.08-.299 9.11 0l.905.09c.867.085 1.56.756 1.675 1.619l.087.653q.045.342.082.685H4.696q.037-.343.082-.685l.087-.653a1.875 1.875 0 0 1 1.675-1.62zM4.577 11.75a27.5 27.5 0 0 0 .29 5.655a1.51 1.51 0 0 0 1.343 1.27l1.193.118c3.057.302 6.137.302 9.194 0l1.193-.118a1.51 1.51 0 0 0 1.343-1.27c.292-1.872.388-3.767.29-5.655z" clip-rule="evenodd"/>',
+  alerts:
+    '<path fill="currentColor" fill-rule="evenodd" d="M13 3a1 1 0 1 0-2 0v.75h-.557A4.214 4.214 0 0 0 6.237 7.7l-.221 3.534a7.4 7.4 0 0 1-1.308 3.754a1.617 1.617 0 0 0 1.135 2.529l3.407.408V19a2.75 2.75 0 1 0 5.5 0v-1.075l3.407-.409a1.617 1.617 0 0 0 1.135-2.528a7.4 7.4 0 0 1-1.308-3.754l-.221-3.533a4.214 4.214 0 0 0-4.206-3.951H13zm-2.557 2.25a2.714 2.714 0 0 0-2.709 2.544l-.22 3.534a8.9 8.9 0 0 1-1.574 4.516a.117.117 0 0 0 .082.183l3.737.449c1.489.178 2.993.178 4.482 0l3.737-.449a.117.117 0 0 0 .082-.183a8.9 8.9 0 0 1-1.573-4.516l-.221-3.534a2.714 2.714 0 0 0-2.709-2.544zm1.557 15c-.69 0-1.25-.56-1.25-1.25v-.75h2.5V19c0 .69-.56 1.25-1.25 1.25" clip-rule="evenodd"/>',
+  guide:
+    '<path fill="currentColor" fill-rule="evenodd" d="M11.602 18.636a.75.75 0 0 0 .398.11a.75.75 0 0 0 .398-.11l1.135-.681a8.3 8.3 0 0 1 7.36-.59c.89.356 1.857-.3 1.857-1.257V4.45c0-.578-.352-1.097-.889-1.312a10.7 10.7 0 0 0-9.48.76L12 4.124l-.382-.229a10.7 10.7 0 0 0-9.48-.76A1.41 1.41 0 0 0 1.25 4.45v11.66c0 .957.967 1.612 1.857 1.256a8.3 8.3 0 0 1 7.36.59zM2.75 4.508v11.387a9.8 9.8 0 0 1 8.489.774l.011.006V5.425l-.403-.242a9.2 9.2 0 0 0-8.097-.675m10.011 12.16l-.011.007V5.425l.403-.242a9.2 9.2 0 0 1 8.097-.675v11.387a9.8 9.8 0 0 0-8.489.774" clip-rule="evenodd"/><path fill="currentColor" d="M9.275 19.042a6.5 6.5 0 0 0-6.55 0l-.103.06a.75.75 0 1 0 .756 1.296l.103-.06a5 5 0 0 1 5.038 0l1.088.634a4.75 4.75 0 0 0 4.786 0l1.088-.634a5 5 0 0 1 5.038 0l.103.06a.75.75 0 0 0 .756-1.296l-.103-.06a6.5 6.5 0 0 0-6.55 0l-1.087.634a3.25 3.25 0 0 1-3.276 0z"/>',
+  chat: '<path fill="currentColor" fill-rule="evenodd" d="M4.592 15.304C2.344 9.787 6.403 3.75 12.36 3.75h.321a8.07 8.07 0 0 1 8.068 8.068a8.98 8.98 0 0 1-8.982 8.982h-7.82a.75.75 0 0 1-.47-1.335l1.971-1.583a.25.25 0 0 0 .075-.29zM12.36 5.25c-4.893 0-8.226 4.957-6.38 9.488l.932 2.289a1.75 1.75 0 0 1-.525 2.024l-.309.249h5.689a7.48 7.48 0 0 0 7.482-7.482a6.57 6.57 0 0 0-6.568-6.568z" clip-rule="evenodd"/>',
+  settings:
+    '<g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M11.199 2.587a1.65 1.65 0 0 1 1.602 0l7.2 4c.524.291.849.843.849 1.443v7.94c0 .6-.325 1.152-.849 1.443l-7.2 4a1.65 1.65 0 0 1-1.602 0l-7.2-4a1.65 1.65 0 0 1-.849-1.443V8.03c0-.6.325-1.152.849-1.443zm.874 1.312a.15.15 0 0 0-.146 0l-7.2 4a.15.15 0 0 0-.077.13v7.942c0 .054.03.104.077.13l7.2 4a.15.15 0 0 0 .146 0l7.2-4a.15.15 0 0 0 .077-.13V8.03a.15.15 0 0 0-.077-.131z"/><path d="M7.25 12a4.75 4.75 0 1 1 9.5 0a4.75 4.75 0 0 1-9.5 0M12 8.75a3.25 3.25 0 1 0 0 6.5a3.25 3.25 0 0 0 0-6.5"/></g>',
+} as const;
+
+type BasilIconName = keyof typeof BASIL_ICON_BODY;
+type BasilIconProps = {
+  name: BasilIconName;
+  size?: number;
+  className?: string;
+  strokeWidth?: number;
+};
+
+type BasilNavIconProps = Omit<BasilIconProps, "name">;
+
+function BasilIcon({ name, size = 20, className }: BasilIconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      className={className}
+      dangerouslySetInnerHTML={{ __html: BASIL_ICON_BODY[name] }}
+    />
+  );
+}
 
 const NAV_GROUPS = [
   {
@@ -31,20 +66,26 @@ const NAV_GROUPS = [
       {
         href: "/",
         label: "Dashboard",
-        Icon: LayoutDashboard,
-        iconTone: "text-cyan-500",
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="dashboard" {...props} />
+        ),
+        iconTone: "text-orange-500",
       },
       {
         href: "/airdrops",
         label: "Airdrops",
-        Icon: Zap,
-        iconTone: "text-violet-500",
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="airdrops" {...props} />
+        ),
+        iconTone: "text-amber-500",
       },
       {
         href: "/news",
         label: "News",
-        Icon: Newspaper,
-        iconTone: "text-blue-500",
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="news" {...props} />
+        ),
+        iconTone: "text-red-500",
       },
     ],
   },
@@ -54,22 +95,28 @@ const NAV_GROUPS = [
       {
         href: "/portfolio",
         label: "Portfolio",
-        Icon: Wallet,
-        iconTone: "text-emerald-500",
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="portfolio" {...props} />
+        ),
+        iconTone: "text-yellow-600",
         soon: true,
       },
       {
         href: "/calendar",
         label: "Calendar",
-        Icon: Calendar,
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="calendar" {...props} />
+        ),
         iconTone: "text-amber-500",
         soon: true,
       },
       {
         href: "/alerts",
         label: "Alerts",
-        Icon: Bell,
-        iconTone: "text-rose-500",
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="alerts" {...props} />
+        ),
+        iconTone: "text-orange-600",
         soon: true,
       },
     ],
@@ -80,15 +127,19 @@ const NAV_GROUPS = [
       {
         href: "/guide",
         label: "How to Farm",
-        Icon: BookOpen,
-        iconTone: "text-sky-500",
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="guide" {...props} />
+        ),
+        iconTone: "text-amber-600",
         soon: true,
       },
       {
         href: "/chat",
         label: "AI Chat",
-        Icon: MessageSquare,
-        iconTone: "text-fuchsia-500",
+        Icon: (props: BasilNavIconProps) => (
+          <BasilIcon name="chat" {...props} />
+        ),
+        iconTone: "text-red-500",
       },
     ],
   },
@@ -99,11 +150,11 @@ type NavItem = (typeof ALL_NAV)[number];
 
 function BrandMark() {
   return (
-    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-card shadow-lg shadow-background/20">
+    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-primary/35 bg-primary/10 shadow-lg shadow-primary/20">
       <img
         src="/site-logo.svg"
         alt="Ouwibo mascot logo"
-        className="h-full w-full object-contain p-0.5"
+        className="h-full w-full object-contain p-0.5 drop-shadow-[0_8px_14px_hsl(var(--primary)/0.2)]"
         width={40}
         height={40}
       />
@@ -137,7 +188,7 @@ function ThemeToggleButton() {
   return (
     <button
       onClick={() => setMode(isDark ? "light" : "dark")}
-      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-border/50 bg-card/65 text-muted-foreground shadow-sm transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/30 hover:bg-muted hover:text-foreground"
+      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 text-primary shadow-sm shadow-primary/10 transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/15 hover:text-primary"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
@@ -173,7 +224,7 @@ function NavLink({
       )}
     >
       {active && (
-        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-cyan-400 via-primary to-violet-400" />
+        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-yellow-300 via-primary to-red-500" />
       )}
       <item.Icon
         size={expanded ? 18 : 20}
@@ -254,8 +305,10 @@ function SidebarContents({
           item={{
             href: "/settings",
             label: "About",
-            Icon: Settings,
-            iconTone: "text-slate-500",
+            Icon: (props: BasilNavIconProps) => (
+              <BasilIcon name="settings" {...props} />
+            ),
+            iconTone: "text-orange-500",
           }}
           active={location === "/settings"}
           expanded={expanded}
@@ -356,19 +409,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         aria-hidden
       >
-        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-cyan-500/[0.08] blur-[120px]" />
-        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-violet-500/[0.06] blur-[100px]" />
-        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-blue-500/[0.045] blur-[130px]" />
+        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-orange-500/[0.12] blur-[120px]" />
+        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-amber-500/[0.10] blur-[100px]" />
+        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-red-500/[0.07] blur-[130px]" />
       </div>
       {/* ── Navbar ── */}
-      <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b border-border/50 px-3 backdrop-blur-xl lg:left-[var(--sidebar-w)]">
+      <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b border-primary/20 px-3 backdrop-blur-xl lg:left-[var(--sidebar-w)]">
         <button
           onClick={() =>
             window.innerWidth >= 1024
               ? setExpanded((o) => !o)
               : setMobileOpen((o) => !o)
           }
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:text-primary"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-primary/25 hover:bg-primary/10 hover:text-primary"
           aria-label={expanded ? "Collapse sidebar" : "Open menu"}
         >
           <Menu size={16} />
@@ -388,7 +441,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               event.preventDefault();
               submitSearch();
             }}
-            className="flex h-10 items-center gap-2 rounded-2xl border border-border/55 bg-card/70 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/40 focus-within:bg-card/90 focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.08)]"
+            className="flex h-10 items-center gap-2 rounded-2xl border border-primary/25 bg-card/80 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/55 focus-within:bg-card/95 focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.14)]"
           >
             <Search className="h-4 w-4 shrink-0" />
             <input
@@ -403,22 +456,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             />
             <button
               type="submit"
-              className="hidden rounded-lg border border-border/50 bg-background/75 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
+              className="hidden rounded-lg border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
             >
               ⌘K
             </button>
           </form>
           {searchOpen && (searchQuery.trim() || searchResults.length > 0) && (
-            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-border/70 bg-popover/95 shadow-2xl shadow-background/30 backdrop-blur-xl sm:left-2 sm:right-2">
+            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-primary/25 bg-popover/95 shadow-2xl shadow-primary/15 backdrop-blur-xl sm:left-2 sm:right-2">
               {searchResults.length > 0 ? (
                 <div className="max-h-[min(70vh,360px)] overflow-y-auto p-1.5">
                   {searchResults.map((result) => (
                     <button
                       key={result.key}
                       onClick={() => goToResult(result.href)}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-muted"
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-primary/10"
                     >
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-primary/20 bg-primary/15 text-primary">
                         <Search className="h-3.5 w-3.5" />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -443,7 +496,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="ml-auto flex items-center gap-1">
           <ThemeToggleButton />
           <button
-            className="relative hidden h-9 w-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:text-primary sm:flex"
+            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-primary/25 hover:bg-primary/10 hover:text-primary sm:flex"
             aria-label="Alerts"
           >
             <Bell size={14} />
@@ -452,7 +505,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <img
             src="/site-logo.svg"
             alt="Ouwibo mascot"
-            className="hidden h-8 w-8 rounded-full object-contain p-0.5 sm:block"
+            className="hidden h-8 w-8 rounded-full border border-primary/25 bg-primary/10 object-contain p-0.5 shadow-sm shadow-primary/20 sm:block"
             width={32}
             height={32}
           />
@@ -461,12 +514,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* ── Desktop Sidebar ── */}
       <aside
-        className="app-sidebar-shell fixed bottom-0 left-0 top-0 z-50 hidden flex-col overflow-hidden border-r border-border/50 backdrop-blur-xl transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
+        className="app-sidebar-shell fixed bottom-0 left-0 top-0 z-50 hidden flex-col overflow-hidden border-r border-primary/20 backdrop-blur-xl transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
         style={{ width: SIDEBAR_W }}
       >
         <div
           className={cn(
-            "flex h-14 items-center border-b border-border/35 px-4",
+            "flex h-14 items-center border-b border-primary/20 px-4",
             expanded ? "justify-start gap-3" : "justify-center",
           )}
         >
@@ -491,16 +544,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           className="fixed inset-0 z-50 lg:hidden"
           onClick={() => setMobileOpen(false)}
         >
-          <div className="absolute inset-0 bg-background/55 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-background/65 backdrop-blur-sm" />
           <aside
-            className="app-sidebar-shell absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-border/50 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
+            className="app-sidebar-shell absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-primary/20 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex h-14 items-center justify-between border-b border-border/40 px-4">
+            <div className="flex h-14 items-center justify-between border-b border-primary/20 px-4">
               <span className="text-sm font-black">Ouwibo Cloud</span>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-primary"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary hover:bg-primary/15"
                 aria-label="Close menu"
               >
                 <Menu size={14} />
@@ -512,7 +565,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* ── Bottom mobile nav ── */}
-      <nav className="app-topbar fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-border/50 px-2 backdrop-blur-xl lg:hidden">
+      <nav className="app-topbar fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-primary/20 px-2 backdrop-blur-xl lg:hidden">
         {mobileNavItems.map((item) => {
           const active =
             item.href === "/"
@@ -523,7 +576,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div
                 className={cn(
                   "flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-colors",
-                  active ? "text-primary" : "text-muted-foreground",
+                  active
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-primary/5 hover:text-primary",
                 )}
               >
                 <item.Icon size={18} />
