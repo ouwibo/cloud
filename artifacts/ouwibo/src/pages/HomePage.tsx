@@ -111,7 +111,7 @@ export default function HomePage() {
                     {drop.name}
                   </span>
                   {drop.isNew && (
-                    <span className="text-[8px] bg-emerald-500 text-white px-1 py-0.5 rounded shrink-0">
+                    <span className="text-[8px] bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 px-1 py-0.5 rounded shrink-0">
                       NEW
                     </span>
                   )}
