@@ -29,7 +29,7 @@ export function AirdropLogo({
       title={name}
       aria-label={name}
       className={cn(
-        "relative flex items-center justify-center overflow-hidden shrink-0 rounded-full border border-white/80 text-white font-black shadow-[0_8px_18px_hsl(211_54%_34%/0.14)] ring-1 ring-sky-200/45 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_28%_18%,rgba(255,255,255,0.46),transparent_34%)] before:opacity-80",
+        "app-token-logo relative flex items-center justify-center overflow-hidden shrink-0 rounded-full border border-white/80 text-white font-black shadow-[0_8px_18px_hsl(211_54%_34%/0.14)] ring-1 ring-sky-200/45 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_28%_18%,rgba(255,255,255,0.46),transparent_34%)] before:opacity-80",
         className,
       )}
       style={{

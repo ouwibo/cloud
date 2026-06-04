@@ -140,11 +140,11 @@ type NavItem = (typeof ALL_NAV)[number];
 
 function BrandMark() {
   return (
-    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-primary/35 bg-white/45 shadow-lg shadow-sky-500/20">
+    <span className="brand-mark flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-primary/35 bg-white/45 shadow-lg shadow-sky-500/20">
       <img
         src="/site-logo.svg"
         alt="Ouwibo mascot logo"
-        className="h-full w-full object-contain p-0.5 drop-shadow-[0_8px_14px_hsl(var(--primary)/0.2)]"
+        className="brand-mark-image h-full w-full object-contain p-0.5 drop-shadow-[0_8px_14px_hsl(var(--primary)/0.2)]"
         width={40}
         height={40}
       />
@@ -178,7 +178,7 @@ function ThemeToggleButton() {
   return (
     <button
       onClick={() => setMode(isDark ? "light" : "dark")}
-      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-sky-300/70 bg-white/45 text-primary shadow-sm shadow-sky-500/10 transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/15 hover:text-primary"
+      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-sky-300/70 bg-white/45 text-primary shadow-sm shadow-sky-500/10 transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:border-primary/45 hover:bg-primary/15 hover:text-primary"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
@@ -219,7 +219,7 @@ function NavLink({
       <item.Icon
         size={expanded ? 18 : 20}
         className={cn(
-          "shrink-0 transition-[color,filter,transform] duration-300 ease-out group-hover:scale-110",
+          "nav-glyph shrink-0 transition-[color,filter,transform] duration-300 ease-out group-hover:scale-110",
           active
             ? "text-primary drop-shadow-[0_0_14px_hsl(var(--primary)/0.35)]"
             : item.iconTone,
