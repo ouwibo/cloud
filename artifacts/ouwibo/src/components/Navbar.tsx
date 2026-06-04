@@ -7,7 +7,6 @@ import { Search, Sun, Moon, Menu, X } from "lucide-react";
 const NAV = [
   { href: "/", label: "Home" },
   { href: "/airdrops", label: "Airdrops" },
-  { href: "/news", label: "News" },
 ];
 
 export default function Navbar() {
@@ -80,7 +79,7 @@ export default function Navbar() {
           <input
             autoFocus
             type="search"
-            placeholder="Search airdrops, news…"
+            placeholder="Search curated airdrops…"
             className="mx-auto block w-full max-w-5xl bg-transparent text-[13px] outline-none placeholder:text-muted-foreground"
           />
         </div>

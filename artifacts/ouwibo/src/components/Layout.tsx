@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import AnimatedBackdrop from "@/components/AnimatedBackdrop";
 import { mockAirdrops } from "@/lib/mockData";
-import { getAllArticles } from "@/lib/articleStore";
 
 /* Basil icons by Craftwork, CC BY 4.0. Source pack: https://www.figma.com/community/file/931906394678748246/basil-icons */
 const BASIL_ICON_BODY = {
@@ -22,7 +21,6 @@ const BASIL_ICON_BODY = {
     '<path fill="currentColor" fill-rule="evenodd" d="M8.93 4.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.577a16.8 16.8 0 0 0 0 3.907a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576M4.903 2.98a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.893c-1.382.154-2.81.154-4.192 0a2.166 2.166 0 0 1-1.91-1.893a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892M8.93 14.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.576a16.8 16.8 0 0 0 0 3.908a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.892c-1.382.155-2.81.155-4.192 0a2.166 2.166 0 0 1-1.91-1.892a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892M18.93 4.47a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.577a16.8 16.8 0 0 0 0 3.907a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.893c-1.382.154-2.81.154-4.192 0a2.166 2.166 0 0 1-1.91-1.893a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892m4.027 11.49a17.5 17.5 0 0 0-3.86 0a.666.666 0 0 0-.586.576a16.8 16.8 0 0 0 0 3.908a.666.666 0 0 0 .587.576c1.271.142 2.587.142 3.858 0a.666.666 0 0 0 .587-.576c.152-1.298.152-2.61 0-3.908a.666.666 0 0 0-.587-.576m-4.026-1.49a19 19 0 0 1 4.192 0c.99.11 1.793.89 1.91 1.892a18.3 18.3 0 0 1 0 4.256a2.166 2.166 0 0 1-1.91 1.892c-1.382.155-2.81.155-4.192 0a2.166 2.166 0 0 1-1.91-1.892a18.3 18.3 0 0 1 0-4.256a2.166 2.166 0 0 1 1.91-1.892" clip-rule="evenodd"/>',
   airdrops:
     '<path fill="currentColor" fill-rule="evenodd" d="M13.614 2.31a.75.75 0 0 1 .456.69v6.998H18a.75.75 0 0 1 .653 1.12l-.492.87a35.8 35.8 0 0 1-7.05 8.842l-.796.725A.75.75 0 0 1 9.06 21v-6.939H5a.75.75 0 0 1-.653-1.119a35.8 35.8 0 0 1 6.675-8.773l1.778-1.71a.75.75 0 0 1 .814-.149m-7.33 10.251H9.81a.75.75 0 0 1 .75.75v5.983a34.3 34.3 0 0 0 6.153-7.796H13.32a.75.75 0 0 1-.75-.75V4.762l-.508.488a34.3 34.3 0 0 0-5.777 7.311" clip-rule="evenodd"/>',
-  news: '<path fill="currentColor" d="M15.75 13a.75.75 0 0 0-.75-.75H9a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 .75-.75m0 4a.75.75 0 0 0-.75-.75H9a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 .75-.75"/><path fill="currentColor" fill-rule="evenodd" d="M7 2.25A2.75 2.75 0 0 0 4.25 5v14A2.75 2.75 0 0 0 7 21.75h10A2.75 2.75 0 0 0 19.75 19V7.968c0-.381-.124-.751-.354-1.055l-2.998-3.968a1.75 1.75 0 0 0-1.396-.695zM5.75 5c0-.69.56-1.25 1.25-1.25h7.25v4.397c0 .414.336.75.75.75h3.25V19c0 .69-.56 1.25-1.25 1.25H7c-.69 0-1.25-.56-1.25-1.25z" clip-rule="evenodd"/>',
   portfolio:
     '<path fill="currentColor" d="M15.5 12a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0"/><path fill="currentColor" fill-rule="evenodd" d="M20.441 6.674a4.71 4.71 0 0 0-3.84-2.839l-.652-.068a44.4 44.4 0 0 0-9.9.068l-.432.051a3.68 3.68 0 0 0-3.214 3.169a37.4 37.4 0 0 0 0 9.89a3.68 3.68 0 0 0 3.214 3.169l.432.051c3.287.392 6.607.415 9.9.068l.652-.068a4.71 4.71 0 0 0 3.84-2.839a2.77 2.77 0 0 0 1.963-2.324c.233-1.994.233-4.01 0-6.004a2.77 2.77 0 0 0-1.963-2.324m-4.65-1.416a43 43 0 0 0-9.565.066l-.432.052A2.18 2.18 0 0 0 3.89 7.253a36 36 0 0 0 0 9.494a2.18 2.18 0 0 0 1.904 1.877l.432.052c3.176.378 6.385.4 9.566.066l.652-.069a3.2 3.2 0 0 0 2.124-1.131a27 27 0 0 1-4.526-.118a2.77 2.77 0 0 1-2.446-2.422a26 26 0 0 1 0-6.004a2.77 2.77 0 0 1 2.446-2.422a27 27 0 0 1 4.526-.118a3.2 3.2 0 0 0-2.124-1.131zm3.486 2.757l.002.011l.006.04l.199-.032q.154.015.308.033c.587.065 1.055.53 1.122 1.105c.22 1.879.22 3.777 0 5.656a1.27 1.27 0 0 1-1.122 1.105q-.154.018-.308.033l-.199-.031l-.006.039l-.002.011c-1.678.152-3.4.135-5.069-.052a1.27 1.27 0 0 1-1.122-1.105a24.3 24.3 0 0 1 0-5.656a1.27 1.27 0 0 1 1.122-1.105a25.4 25.4 0 0 1 5.07-.052" clip-rule="evenodd"/>',
   calendar:
@@ -69,7 +67,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="dashboard" {...props} />
         ),
-        iconTone: "text-orange-500",
+        iconTone: "text-blue-600",
       },
       {
         href: "/airdrops",
@@ -77,15 +75,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="airdrops" {...props} />
         ),
-        iconTone: "text-amber-500",
-      },
-      {
-        href: "/news",
-        label: "News",
-        Icon: (props: BasilNavIconProps) => (
-          <BasilIcon name="news" {...props} />
-        ),
-        iconTone: "text-red-500",
+        iconTone: "text-sky-600",
       },
     ],
   },
@@ -98,7 +88,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="portfolio" {...props} />
         ),
-        iconTone: "text-yellow-600",
+        iconTone: "text-blue-500",
         soon: true,
       },
       {
@@ -107,7 +97,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="calendar" {...props} />
         ),
-        iconTone: "text-amber-500",
+        iconTone: "text-sky-600",
         soon: true,
       },
       {
@@ -116,7 +106,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="alerts" {...props} />
         ),
-        iconTone: "text-orange-600",
+        iconTone: "text-blue-500",
         soon: true,
       },
     ],
@@ -130,7 +120,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="guide" {...props} />
         ),
-        iconTone: "text-amber-600",
+        iconTone: "text-sky-600",
         soon: true,
       },
       {
@@ -139,7 +129,7 @@ const NAV_GROUPS = [
         Icon: (props: BasilNavIconProps) => (
           <BasilIcon name="chat" {...props} />
         ),
-        iconTone: "text-red-500",
+        iconTone: "text-cyan-600",
       },
     ],
   },
@@ -150,11 +140,11 @@ type NavItem = (typeof ALL_NAV)[number];
 
 function BrandMark() {
   return (
-    <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-primary/35 bg-primary/10 shadow-lg shadow-primary/20">
+    <span className="brand-mark flex h-10 w-10 items-center justify-center overflow-hidden rounded-2xl border border-primary/35 bg-white/45 shadow-lg shadow-sky-500/20">
       <img
         src="/site-logo.svg"
         alt="Ouwibo mascot logo"
-        className="h-full w-full object-contain p-0.5 drop-shadow-[0_8px_14px_hsl(var(--primary)/0.2)]"
+        className="brand-mark-image h-full w-full object-contain p-0.5 drop-shadow-[0_8px_14px_hsl(var(--primary)/0.2)]"
         width={40}
         height={40}
       />
@@ -188,7 +178,7 @@ function ThemeToggleButton() {
   return (
     <button
       onClick={() => setMode(isDark ? "light" : "dark")}
-      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 text-primary shadow-sm shadow-primary/10 transition-[background-color,color,border-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/15 hover:text-primary"
+      className="group flex h-9 w-9 items-center justify-center rounded-xl border border-sky-300/70 bg-white/45 text-primary shadow-sm shadow-sky-500/10 transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:border-primary/45 hover:bg-primary/15 hover:text-primary"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
@@ -224,12 +214,12 @@ function NavLink({
       )}
     >
       {active && (
-        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-yellow-300 via-primary to-red-500" />
+        <span className="absolute left-0 h-5 w-0.5 rounded-full bg-gradient-to-b from-white via-sky-100 to-primary" />
       )}
       <item.Icon
         size={expanded ? 18 : 20}
         className={cn(
-          "shrink-0 transition-[color,filter,transform] duration-300 ease-out group-hover:scale-110",
+          "nav-glyph shrink-0 transition-[color,filter,transform] duration-300 ease-out group-hover:scale-110",
           active
             ? "text-primary drop-shadow-[0_0_14px_hsl(var(--primary)/0.35)]"
             : item.iconTone,
@@ -308,7 +298,7 @@ function SidebarContents({
             Icon: (props: BasilNavIconProps) => (
               <BasilIcon name="settings" {...props} />
             ),
-            iconTone: "text-orange-500",
+            iconTone: "text-blue-600",
           }}
           active={location === "/settings"}
           expanded={expanded}
@@ -352,22 +342,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         type: "Airdrop",
       }));
 
-    const articles = getAllArticles()
-      .filter((item) =>
-        `${item.title} ${item.excerpt} ${item.category}`
-          .toLowerCase()
-          .includes(query),
-      )
-      .slice(0, 4)
-      .map((item) => ({
-        key: `article-${item.id}`,
-        title: item.title,
-        subtitle: `${item.category} · ${item.readTime} min read`,
-        href: `/article/${item.slug}`,
-        type: "Article",
-      }));
-
-    return [...airdrops, ...articles].slice(0, 6);
+    return airdrops.slice(0, 6);
   }, [searchQuery]);
 
   const submitSearch = () => {
@@ -400,28 +375,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className="relative min-h-screen overflow-x-hidden bg-background text-foreground"
+      className="relative min-h-screen overflow-x-hidden bg-transparent text-foreground"
       style={layoutVars}
     >
       <AnimatedBackdrop />
-      {/* ── Premium background glows ── */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-        aria-hidden
-      >
-        <div className="absolute bottom-[-10%] left-[-5%] h-[55vw] w-[55vw] max-h-[700px] max-w-[700px] rounded-full bg-orange-500/[0.12] blur-[120px]" />
-        <div className="absolute top-[-10%] right-[-5%] h-[40vw] w-[40vw] max-h-[500px] max-w-[500px] rounded-full bg-amber-500/[0.10] blur-[100px]" />
-        <div className="absolute top-[40%] left-[30%] h-[30vw] w-[30vw] max-h-[400px] max-w-[400px] rounded-full bg-red-500/[0.07] blur-[130px]" />
+      {/* ── Emergent-like soft sky illustration ── */}
+      <div className="emergent-cloud-scene" aria-hidden>
+        <span className="cloud-shape cloud-shape-a" />
+        <span className="cloud-shape cloud-shape-b" />
+        <span className="cloud-shape cloud-shape-c" />
+        <span className="cloud-shape cloud-shape-d" />
+        <span className="cloud-shape cloud-shape-e" />
       </div>
       {/* ── Navbar ── */}
-      <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b border-primary/20 px-3 backdrop-blur-xl lg:left-[var(--sidebar-w)]">
+      <header className="app-topbar fixed left-0 right-0 top-0 z-40 flex h-14 items-center gap-2.5 border-b px-3 backdrop-blur-2xl lg:left-[var(--sidebar-w)]">
         <button
           onClick={() =>
             window.innerWidth >= 1024
               ? setExpanded((o) => !o)
               : setMobileOpen((o) => !o)
           }
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-primary/25 hover:bg-primary/10 hover:text-primary"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-sky-300/70 hover:bg-white/45 hover:text-primary"
           aria-label={expanded ? "Collapse sidebar" : "Open menu"}
         >
           <Menu size={16} />
@@ -441,7 +415,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               event.preventDefault();
               submitSearch();
             }}
-            className="flex h-10 items-center gap-2 rounded-2xl border border-primary/25 bg-card/80 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/55 focus-within:bg-card/95 focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.14)]"
+            className="flex h-10 items-center gap-2 rounded-2xl border border-sky-300/70 bg-card/80 px-3 text-muted-foreground shadow-sm transition-[border-color,box-shadow,background-color] duration-300 focus-within:border-primary/55 focus-within:bg-card/95 focus-within:shadow-[0_0_0_3px_hsl(var(--primary)/0.14)]"
           >
             <Search className="h-4 w-4 shrink-0" />
             <input
@@ -451,27 +425,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 setSearchQuery(event.target.value);
                 setSearchOpen(true);
               }}
-              placeholder="Search airdrops, news…"
+              placeholder="Search curated airdrops…"
               className="min-w-0 flex-1 bg-transparent text-[12px] font-semibold text-foreground outline-none placeholder:text-muted-foreground/70"
             />
             <button
               type="submit"
-              className="hidden rounded-lg border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
+              className="hidden rounded-lg border border-sky-300/70 bg-white/45 px-1.5 py-0.5 text-[9px] font-black text-muted-foreground transition-colors hover:text-foreground md:block"
             >
               ⌘K
             </button>
           </form>
           {searchOpen && (searchQuery.trim() || searchResults.length > 0) && (
-            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-primary/25 bg-popover/95 shadow-2xl shadow-primary/15 backdrop-blur-xl sm:left-2 sm:right-2">
+            <div className="absolute left-1 right-1 top-12 z-[70] overflow-hidden rounded-2xl border border-sky-300/70 bg-popover/95 shadow-2xl shadow-primary/15 backdrop-blur-xl sm:left-2 sm:right-2">
               {searchResults.length > 0 ? (
                 <div className="max-h-[min(70vh,360px)] overflow-y-auto p-1.5">
                   {searchResults.map((result) => (
                     <button
                       key={result.key}
                       onClick={() => goToResult(result.href)}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-primary/10"
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-white/45"
                     >
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-primary/20 bg-primary/15 text-primary">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-white/45 bg-primary/15 text-primary">
                         <Search className="h-3.5 w-3.5" />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -487,7 +461,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               ) : (
                 <div className="p-4 text-center text-[12px] font-semibold text-muted-foreground">
-                  No results found. Press Enter to search airdrops.
+                  No matching campaigns. Press Enter to search airdrops.
                 </div>
               )}
             </div>
@@ -496,7 +470,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="ml-auto flex items-center gap-1">
           <ThemeToggleButton />
           <button
-            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-primary/25 hover:bg-primary/10 hover:text-primary sm:flex"
+            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-transparent text-muted-foreground transition-[background-color,color,border-color] hover:border-sky-300/70 hover:bg-white/45 hover:text-primary sm:flex"
             aria-label="Alerts"
           >
             <Bell size={14} />
@@ -505,7 +479,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <img
             src="/site-logo.svg"
             alt="Ouwibo mascot"
-            className="hidden h-8 w-8 rounded-full border border-primary/25 bg-primary/10 object-contain p-0.5 shadow-sm shadow-primary/20 sm:block"
+            className="hidden h-8 w-8 rounded-full border border-sky-300/70 bg-white/45 object-contain p-0.5 shadow-sm shadow-sky-500/20 sm:block"
             width={32}
             height={32}
           />
@@ -514,12 +488,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* ── Desktop Sidebar ── */}
       <aside
-        className="app-sidebar-shell fixed bottom-0 left-0 top-0 z-50 hidden flex-col overflow-hidden border-r border-primary/20 backdrop-blur-xl transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
+        className="app-sidebar-shell fixed bottom-0 left-0 top-0 z-50 hidden flex-col overflow-hidden border-r backdrop-blur-2xl transition-[width,background-color,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:flex"
         style={{ width: SIDEBAR_W }}
       >
         <div
           className={cn(
-            "flex h-14 items-center border-b border-primary/20 px-4",
+            "flex h-14 items-center border-b border-white/45 px-4",
             expanded ? "justify-start gap-3" : "justify-center",
           )}
         >
@@ -546,14 +520,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           <div className="absolute inset-0 bg-background/65 backdrop-blur-sm" />
           <aside
-            className="app-sidebar-shell absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-primary/20 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
+            className="app-sidebar-shell absolute bottom-0 left-0 top-0 flex w-64 flex-col border-r border-white/45 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex h-14 items-center justify-between border-b border-primary/20 px-4">
+            <div className="flex h-14 items-center justify-between border-b border-white/45 px-4">
               <span className="text-sm font-black">Ouwibo Cloud</span>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary hover:bg-primary/15"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/45 bg-white/45 text-primary hover:bg-primary/15"
                 aria-label="Close menu"
               >
                 <Menu size={14} />
@@ -565,7 +539,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* ── Bottom mobile nav ── */}
-      <nav className="app-topbar fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-primary/20 px-2 backdrop-blur-xl lg:hidden">
+      <nav className="app-topbar fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-white/45 px-2 backdrop-blur-xl lg:hidden">
         {mobileNavItems.map((item) => {
           const active =
             item.href === "/"
@@ -577,7 +551,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex flex-col items-center gap-1 rounded-xl px-3 py-1.5 transition-colors",
                   active
-                    ? "bg-primary/10 text-primary"
+                    ? "bg-white/45 text-primary"
                     : "text-muted-foreground hover:bg-primary/5 hover:text-primary",
                 )}
               >

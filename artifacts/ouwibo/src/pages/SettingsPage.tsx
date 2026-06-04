@@ -19,7 +19,7 @@ const PROFILE = {
   website: "https://ouwibo.bond",
   email: "hello@ouwibo.bond",
   description:
-    "Platform tracking crypto airdrops, Web3 tasks, and daily market/news analysis for Indonesian airdrop hunters.",
+    "Professional workspace for tracking crypto airdrops, Web3 tasks, claim windows, and campaign signals for Indonesian airdrop hunters.",
 };
 
 const SOCIAL_LINKS: Array<{
@@ -83,8 +83,8 @@ const HIGHLIGHTS = [
     Icon: Zap,
   },
   {
-    title: "News & Analysis",
-    desc: "Artikel ringkas seputar DeFi, Layer 1/2, infrastructure, dan narasi Web3 yang sedang bergerak.",
+    title: "Campaign Intelligence",
+    desc: "Ringkasan campaign, task, chain, difficulty, dan reward signals agar riset lebih rapi.",
     Icon: Sparkles,
   },
   {
@@ -136,11 +136,11 @@ export default function SettingsPage() {
               <Globe className="h-3.5 w-3.5" /> About Ouwibo
             </div>
             <h1 className="premium-heading max-w-3xl text-[30px] font-black leading-tight sm:text-[42px]">
-              {PROFILE.name} — crypto airdrop tracker & Web3 news hub.
+              {PROFILE.name} — professional crypto airdrop tracker.
             </h1>
             <p className="mt-4 max-w-2xl text-[14px] leading-7 text-muted-foreground">
               {PROFILE.description} Follow akun resmi di bawah untuk update,
-              pengumuman, artikel baru, dan kontak kolaborasi.
+              pengumuman campaign, update fitur, dan kontak kolaborasi.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               <a
