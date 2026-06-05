@@ -1,6 +1,6 @@
 # Cloud Platform
 
-A modern, full-stack cloud platform built with TypeScript, React, and Node.js. This monorepo contains a collection of interconnected services and applications designed to provide a comprehensive cloud infrastructure solution.
+A modern, full-stack cloud platform built with TypeScript, React, and Node.js. This monorepo contains a collection of interconnected services and applications designed to provide a comprehensive cloud solution.
 
 ## 🚀 Overview
 
@@ -116,7 +116,6 @@ pnpm -w @workspace/api-server dev
 
 ### Supply Chain Protection
 - **Minimum Release Age**: 1440 minutes (24 hours) for npm packages
-- **Trusted Exclusions**: @replit/* packages excluded from minimum age check
 - This defense mechanism prevents installation of malicious packages before they are discovered and removed
 
 ### Build Configuration
