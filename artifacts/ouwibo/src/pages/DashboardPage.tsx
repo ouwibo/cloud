@@ -28,7 +28,7 @@ function AirdropRow({ a, rank }: { a: Airdrop; rank: number }) {
   const task = a.tasks[0];
   return (
     <Link href={`/airdrops/${a.slug}`}>
-      <div className="group flex cursor-pointer items-center gap-3 rounded-[1.25rem] border border-slate-200/70 bg-white/95 px-3.5 py-3 shadow-[0_8px_24px_rgb(15,23,42,0.04)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-[1.01] hover:border-sky-200 hover:bg-sky-50/60 hover:shadow-[0_16px_38px_rgb(14,116,144,0.10)]">
+      <div className="group flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200/70 bg-white px-3.5 py-3 shadow-[0_8px_24px_rgb(15,23,42,0.04)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-[1.01] hover:border-sky-200 hover:bg-sky-50/60 hover:shadow-[0_16px_38px_rgb(14,116,144,0.10)]">
         <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-slate-50 text-[11px] font-bold text-slate-400 ring-1 ring-slate-200/80">
           {rank}
         </span>
@@ -102,9 +102,9 @@ export default function DashboardPage() {
     .slice(0, 6);
 
   return (
-    <div className="premium-page mx-auto flex w-full max-w-[1120px] flex-col gap-5 pb-8">
+    <div className="premium-page mx-auto flex w-full max-w-[1180px] flex-col gap-7 pb-8">
       <ScrollReveal>
-        <section className="hero-prompt-panel mx-auto flex w-full flex-col items-center gap-6 rounded-[2rem] border p-5 text-center sm:rounded-[2rem] sm:p-7 lg:p-8">
+        <section className="hero-prompt-panel mx-auto flex w-full max-w-5xl flex-col items-center gap-6 rounded-[2rem] border p-5 text-center sm:rounded-[2.5rem] sm:p-7 lg:p-9">
           <div className="inline-flex rounded-full border border-white/35 bg-white/20 p-1.5 shadow-[0_10px_30px_rgb(14,116,144,0.12)] backdrop-blur-md">
             <span className="rounded-full bg-white px-5 py-2 text-[12px] font-black text-slate-900 shadow-sm">
               Web App
@@ -130,8 +130,8 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="prompt-input-card w-full max-w-3xl rounded-[1.5rem] bg-white p-3 text-left shadow-[0_18px_60px_rgb(15,23,42,0.16)] ring-1 ring-white/80 transition-all duration-300 ease-in-out focus-within:ring-2 focus-within:ring-sky-300/70">
-            <div className="flex min-h-[72px] items-center gap-3 rounded-[1.125rem] bg-white px-2 sm:px-3">
+          <div className="prompt-input-card w-full max-w-3xl rounded-[1.75rem] bg-white p-3 text-left shadow-[0_18px_60px_rgb(15,23,42,0.16)] ring-1 ring-white/80 transition-all duration-300 ease-in-out focus-within:ring-2 focus-within:ring-sky-300/70">
+            <div className="flex min-h-[72px] items-center gap-3 rounded-[1.35rem] bg-white px-2 sm:px-3">
               <button className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-50 text-slate-500 transition-all duration-300 hover:scale-105 hover:bg-slate-100">
                 <Plus className="h-4 w-4" />
               </button>
@@ -152,7 +152,7 @@ export default function DashboardPage() {
           <div className="flex max-w-3xl flex-wrap items-center justify-center gap-2">
             {PROMPT_SUGGESTIONS.map((item) => (
               <Link key={item.label} href="/airdrops">
-                <span className="suggestion-pill inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/80 px-3 py-2 text-[12px] font-bold text-slate-800 shadow-[0_10px_26px_rgb(15,23,42,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:bg-white/95">
+                <span className="suggestion-pill inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/80 px-3 py-2 text-[12px] font-bold text-slate-800 shadow-[0_10px_26px_rgb(15,23,42,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:bg-white">
                   <span
                     className={cn(
                       "h-4 w-4 rounded-full bg-gradient-to-br shadow-sm",
@@ -167,7 +167,7 @@ export default function DashboardPage() {
         </section>
       </ScrollReveal>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
           {
             label: "Airdrops Tracked",
@@ -200,10 +200,7 @@ export default function DashboardPage() {
         ].map(({ label, detail, value, icon, cls }, index) => (
           <ScrollReveal key={label} delay={80 * index}>
             <div
-              className={cn(
-                "premium-stat flex min-h-[136px] flex-col rounded-[1.5rem] border p-4",
-                cls,
-              )}
+              className={cn("premium-stat rounded-[1.5rem] border p-4", cls)}
             >
               <div className="premium-icon mb-3 h-9 w-9 rounded-full">
                 {icon}
@@ -222,10 +219,10 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <ScrollReveal className="lg:col-span-2" delay={120}>
-          <div className="deployed-panel overflow-hidden rounded-[1.5rem] border">
-            <div className="flex items-center justify-between border-b border-slate-200/70 px-5 py-4">
+          <div className="deployed-panel overflow-hidden rounded-t-[2rem] rounded-b-[1.5rem] border bg-white">
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
               <div className="flex items-center gap-2">
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-sky-50 text-sky-500">
                   <TrendingUp className="h-4 w-4" />
@@ -250,8 +247,8 @@ export default function DashboardPage() {
         </ScrollReveal>
 
         <ScrollReveal className="space-y-4" delay={220}>
-          <div className="deployed-panel overflow-hidden rounded-[1.5rem] border">
-            <div className="border-b border-slate-200/70 px-5 py-4">
+          <div className="deployed-panel overflow-hidden rounded-t-[2rem] rounded-b-[1.5rem] border bg-white">
+            <div className="border-b border-slate-100 px-5 py-4">
               <span className="text-[14px] font-black text-slate-900">
                 Claim Now
               </span>
@@ -264,7 +261,7 @@ export default function DashboardPage() {
               <div className="grid gap-2 p-3">
                 {rewardA.map((drop) => (
                   <Link key={drop.id} href={`/airdrops/${drop.slug}`}>
-                    <div className="premium-card-hover flex cursor-pointer items-center gap-2.5 rounded-[1.25rem] border border-slate-200/70 bg-white/95 px-3 py-2.5 hover:bg-sky-50/70">
+                    <div className="premium-card-hover flex cursor-pointer items-center gap-2.5 rounded-2xl border border-slate-100 bg-white px-3 py-2.5 hover:bg-sky-50/70">
                       <AirdropLogo
                         name={drop.name}
                         logoUrl={drop.logoUrl}
@@ -288,8 +285,8 @@ export default function DashboardPage() {
             )}
           </div>
 
-          <div className="deployed-panel overflow-hidden rounded-[1.5rem] border">
-            <div className="border-b border-slate-200/70 px-5 py-4">
+          <div className="deployed-panel overflow-hidden rounded-t-[2rem] rounded-b-[1.5rem] border bg-white">
+            <div className="border-b border-slate-100 px-5 py-4">
               <span className="text-[14px] font-black text-slate-900">
                 New This Week
               </span>
@@ -302,7 +299,7 @@ export default function DashboardPage() {
               <div className="grid gap-2 p-3">
                 {newest.map((a) => (
                   <Link key={a.id} href={`/airdrops/${a.slug}`}>
-                    <div className="premium-card-hover flex cursor-pointer items-center gap-2.5 rounded-[1.25rem] border border-slate-200/70 bg-white/95 px-3 py-2.5 hover:bg-sky-50/70">
+                    <div className="premium-card-hover flex cursor-pointer items-center gap-2.5 rounded-2xl border border-slate-100 bg-white px-3 py-2.5 hover:bg-sky-50/70">
                       <AirdropLogo
                         name={a.name}
                         logoUrl={a.logoUrl}
