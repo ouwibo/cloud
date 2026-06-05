@@ -268,27 +268,32 @@
     @apply font-sans antialiased bg-background text-foreground;
     background:
       radial-gradient(
-        ellipse 720px 220px at 22% 7%,
-        hsl(0 0% 100% / 0.95) 0 34%,
-        transparent 65%
-      ),
-      radial-gradient(
-        ellipse 620px 190px at 72% 12%,
-        hsl(0 0% 100% / 0.78) 0 35%,
-        transparent 68%
-      ),
-      radial-gradient(
-        ellipse 520px 170px at 92% 36%,
-        hsl(195 100% 92% / 0.82) 0 28%,
+        ellipse 780px 230px at 19% 8%,
+        hsl(0 0% 100% / 0.98) 0 28%,
         transparent 64%
+      ),
+      radial-gradient(
+        ellipse 720px 210px at 76% 11%,
+        hsl(0 0% 100% / 0.9) 0 30%,
+        transparent 67%
+      ),
+      radial-gradient(
+        ellipse 620px 180px at 92% 35%,
+        hsl(195 100% 92% / 0.82) 0 28%,
+        transparent 66%
+      ),
+      radial-gradient(
+        ellipse 760px 260px at 24% 82%,
+        hsl(0 0% 100% / 0.72) 0 30%,
+        transparent 70%
       ),
       linear-gradient(
         180deg,
-        hsl(204 100% 63%) 0%,
-        hsl(202 100% 72%) 28%,
-        hsl(202 92% 86%) 52%,
-        hsl(211 44% 97%) 82%,
-        hsl(var(--background)) 100%
+        hsl(202 100% 58%) 0%,
+        hsl(201 100% 68%) 30%,
+        hsl(198 100% 78%) 58%,
+        hsl(199 92% 88%) 82%,
+        hsl(202 86% 92%) 100%
       );
     background-attachment: fixed;
     font-feature-settings:
@@ -305,27 +310,32 @@
   .dark body {
     background:
       radial-gradient(
-        ellipse 720px 220px at 22% 7%,
-        hsl(0 0% 100% / 0.95) 0 34%,
-        transparent 65%
-      ),
-      radial-gradient(
-        ellipse 620px 190px at 72% 12%,
-        hsl(0 0% 100% / 0.78) 0 35%,
-        transparent 68%
-      ),
-      radial-gradient(
-        ellipse 520px 170px at 92% 36%,
-        hsl(195 100% 92% / 0.82) 0 28%,
+        ellipse 780px 230px at 19% 8%,
+        hsl(0 0% 100% / 0.98) 0 28%,
         transparent 64%
+      ),
+      radial-gradient(
+        ellipse 720px 210px at 76% 11%,
+        hsl(0 0% 100% / 0.9) 0 30%,
+        transparent 67%
+      ),
+      radial-gradient(
+        ellipse 620px 180px at 92% 35%,
+        hsl(195 100% 92% / 0.82) 0 28%,
+        transparent 66%
+      ),
+      radial-gradient(
+        ellipse 760px 260px at 24% 82%,
+        hsl(0 0% 100% / 0.72) 0 30%,
+        transparent 70%
       ),
       linear-gradient(
         180deg,
-        hsl(204 100% 61%) 0%,
-        hsl(202 100% 70%) 28%,
-        hsl(202 92% 85%) 52%,
-        hsl(211 44% 96%) 82%,
-        hsl(var(--background)) 100%
+        hsl(202 100% 58%) 0%,
+        hsl(201 100% 68%) 30%,
+        hsl(198 100% 78%) 58%,
+        hsl(199 92% 88%) 82%,
+        hsl(202 86% 92%) 100%
       );
     background-attachment: fixed;
   }
@@ -455,25 +465,25 @@
    APP CHROME / SKY HOME STYLE
 ═══════════════════════════════════════════ */
 .app-topbar {
-  border-color: hsl(0 0% 100% / 0.62);
+  border-color: hsl(0 0% 100% / 0.52);
   background: linear-gradient(
     180deg,
-    hsl(0 0% 100% / 0.68),
-    hsl(210 100% 96% / 0.48)
+    hsl(0 0% 100% / 0.24),
+    hsl(0 0% 100% / 0.14)
   );
   box-shadow:
-    inset 0 -1px 0 hsl(0 0% 100% / 0.7),
-    0 18px 46px hsl(205 72% 36% / 0.1);
+    inset 0 -1px 0 hsl(0 0% 100% / 0.38),
+    0 18px 46px hsl(202 90% 34% / 0.1);
 }
 
 .app-sidebar-shell {
-  border-color: hsl(0 0% 100% / 0.64);
+  border-color: hsl(0 0% 100% / 0.42);
   background:
-    linear-gradient(180deg, hsl(0 0% 100% / 0.82), hsl(210 100% 97% / 0.58)),
-    linear-gradient(180deg, hsl(203 100% 86% / 0.52), hsl(218 100% 97% / 0.72));
+    linear-gradient(180deg, hsl(0 0% 100% / 0.28), hsl(0 0% 100% / 0.16)),
+    linear-gradient(180deg, hsl(201 100% 85% / 0.32), hsl(210 100% 97% / 0.22));
   box-shadow:
-    1px 0 0 hsl(0 0% 100% / 0.5),
-    26px 0 70px hsl(205 72% 34% / 0.12);
+    1px 0 0 hsl(0 0% 100% / 0.42),
+    26px 0 70px hsl(202 80% 34% / 0.12);
 }
 
 .emergent-cloud-scene {
@@ -488,21 +498,31 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(hsl(0 0% 100% / 0.18) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(0 0% 100% / 0.14) 1px, transparent 1px);
-  background-size: 96px 96px;
-  mask-image: linear-gradient(to bottom, black 0%, transparent 58%);
-  opacity: 0.55;
+  background:
+    radial-gradient(circle at 18% 16%, hsl(0 0% 100% / 0.72), transparent 18%),
+    radial-gradient(circle at 34% 10%, hsl(0 0% 100% / 0.58), transparent 20%),
+    radial-gradient(circle at 78% 18%, hsl(0 0% 100% / 0.66), transparent 24%),
+    radial-gradient(circle at 91% 34%, hsl(0 0% 100% / 0.48), transparent 19%),
+    linear-gradient(hsl(0 0% 100% / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(0 0% 100% / 0.06) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    auto,
+    auto,
+    96px 96px,
+    96px 96px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 72%);
+  opacity: 0.58;
 }
 
 .cloud-shape {
   position: absolute;
   display: block;
   border-radius: 9999px;
-  background: hsl(0 0% 100% / 0.72);
-  filter: blur(24px);
-  box-shadow: 0 34px 90px hsl(202 70% 48% / 0.14);
+  background: hsl(0 0% 100% / 0.78);
+  filter: blur(28px);
+  box-shadow: 0 34px 100px hsl(202 70% 48% / 0.16);
   animation: cloudDrift 18s ease-in-out infinite alternate;
 }
 
@@ -564,15 +584,11 @@
 .premium-card {
   position: relative;
   overflow: hidden;
-  border-color: hsl(0 0% 100% / 0.88);
-  background: linear-gradient(
-    180deg,
-    hsl(0 0% 100% / 0.96),
-    hsl(211 100% 99% / 0.88)
-  );
+  border-color: hsl(210 28% 92% / 0.95);
+  background: hsl(0 0% 100% / 0.95);
   box-shadow:
-    0 20px 48px hsl(206 70% 36% / 0.1),
-    0 1px 0 hsl(0 0% 100% / 0.82) inset;
+    0 16px 46px hsl(204 54% 28% / 0.1),
+    0 1px 0 hsl(0 0% 100% / 0.94) inset;
   backdrop-filter: blur(18px) saturate(1.04);
 }
 
@@ -583,37 +599,38 @@
 }
 
 .premium-card-hover:hover {
-  transform: translateY(-1px);
-  border-color: hsl(0 0% 100% / 0.98);
+  transform: translateY(-2px) scale(1.01);
+  border-color: hsl(199 92% 80% / 0.9);
   background: hsl(0 0% 100% / 0.99);
   box-shadow:
-    0 24px 62px hsl(206 70% 36% / 0.14),
+    0 24px 70px hsl(202 74% 34% / 0.16),
     0 0 0 1px hsl(var(--primary) / 0.05),
     inset 0 1px 0 hsl(0 0% 100% / 0.98);
 }
 
 .premium-panel {
-  border-color: hsl(0 0% 100% / 0.9);
+  border-color: hsl(0 0% 100% / 0.7);
   background: linear-gradient(
     180deg,
-    hsl(0 0% 100% / 0.93),
-    hsl(210 100% 99% / 0.78)
+    hsl(0 0% 100% / 0.34),
+    hsl(0 0% 100% / 0.22)
   );
   box-shadow:
-    0 22px 58px hsl(206 70% 36% / 0.11),
-    inset 0 1px 0 hsl(0 0% 100% / 0.98);
-  backdrop-filter: blur(20px) saturate(1.05);
+    0 22px 64px hsl(202 74% 34% / 0.12),
+    inset 0 1px 0 hsl(0 0% 100% / 0.78);
+  backdrop-filter: blur(24px) saturate(1.08);
 }
 
 .premium-stat {
   position: relative;
   overflow: hidden;
+  border-color: hsl(210 28% 92% / 0.95);
   background:
-    linear-gradient(180deg, hsl(0 0% 100% / 0.96), hsl(205 100% 98% / 0.86)),
-    radial-gradient(circle at 12% 12%, currentColor 0%, transparent 38%);
+    linear-gradient(180deg, hsl(0 0% 100% / 0.95), hsl(205 100% 99% / 0.92)),
+    radial-gradient(circle at 12% 12%, currentColor 0%, transparent 42%);
   box-shadow:
-    inset 0 1px 0 hsl(0 0% 100% / 0.9),
-    0 16px 34px hsl(206 70% 36% / 0.1);
+    inset 0 1px 0 hsl(0 0% 100% / 0.96),
+    0 16px 46px hsl(204 54% 28% / 0.1);
 }
 
 .premium-stat::before {
@@ -685,6 +702,42 @@
   100% {
     background-position: -120% 0;
   }
+}
+
+/* Zo-space inspired dashboard surfaces */
+.hero-prompt-panel {
+  border-color: hsl(0 0% 100% / 0.68);
+  background:
+    linear-gradient(180deg, hsl(0 0% 100% / 0.28), hsl(0 0% 100% / 0.16)),
+    radial-gradient(circle at 50% 0%, hsl(0 0% 100% / 0.36), transparent 58%);
+  box-shadow:
+    0 24px 82px hsl(202 88% 32% / 0.16),
+    inset 0 1px 0 hsl(0 0% 100% / 0.58);
+  backdrop-filter: blur(18px) saturate(1.08);
+}
+
+.prompt-input-card {
+  transform: translateZ(0);
+}
+
+.prompt-input-card:hover {
+  box-shadow: 0 24px 76px rgb(15 23 42 / 0.18);
+}
+
+.suggestion-pill:hover span:first-child {
+  transform: scale(1.12) rotate(-8deg);
+}
+
+.suggestion-pill span:first-child {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deployed-panel {
+  border-color: hsl(210 28% 92% / 0.95);
+  background: hsl(0 0% 100% / 0.95);
+  box-shadow:
+    0 16px 46px hsl(204 54% 28% / 0.1),
+    inset 0 1px 0 hsl(0 0% 100% / 0.96);
 }
 
 /* ═══════════════════════════════════════════
