@@ -2,24 +2,34 @@ import { Link } from "wouter";
 import { mockAirdrops } from "@/lib/mockData";
 import type { Airdrop } from "@/lib/mockData";
 import {
-  TrendingUp,
-  Zap,
-  Clock,
+  ArrowUp,
   CheckCircle2,
   ChevronRight,
+  Clock,
   Gift,
-  Star,
+  Mic,
+  Plus,
+  Sparkles,
+  TrendingUp,
+  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AirdropLogo } from "@/components/AirdropLogo";
 import ScrollReveal from "@/components/ScrollReveal";
 
+const PROMPT_SUGGESTIONS = [
+  { label: "Find free tasks", tone: "from-cyan-400 to-blue-500" },
+  { label: "Show claim-ready", tone: "from-emerald-400 to-teal-500" },
+  { label: "Rank high potential", tone: "from-violet-400 to-fuchsia-500" },
+  { label: "Low time campaigns", tone: "from-amber-300 to-orange-500" },
+];
+
 function AirdropRow({ a, rank }: { a: Airdrop; rank: number }) {
   const task = a.tasks[0];
   return (
     <Link href={`/airdrops/${a.slug}`}>
-      <div className="group flex items-center gap-3 border-b border-border/30 px-4 py-3.5 transition-colors hover:bg-muted/40 cursor-pointer last:border-0">
-        <span className="w-5 shrink-0 text-center text-[11px] text-muted-foreground">
+      <div className="group flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200/70 bg-white px-3.5 py-3 shadow-[0_8px_24px_rgb(15,23,42,0.04)] transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:scale-[1.01] hover:border-sky-200 hover:bg-sky-50/60 hover:shadow-[0_16px_38px_rgb(14,116,144,0.10)]">
+        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-slate-50 text-[11px] font-bold text-slate-400 ring-1 ring-slate-200/80">
           {rank}
         </span>
         <AirdropLogo
@@ -27,30 +37,31 @@ function AirdropRow({ a, rank }: { a: Airdrop; rank: number }) {
           logoUrl={a.logoUrl}
           logoInitial={a.logoInitial}
           logoColor={a.logoColor}
-          size={34}
+          size={36}
         />
         <div className="min-w-0 flex-1">
           <div className="mb-0.5 flex items-center gap-1.5">
-            <span className="truncate text-[13px] font-semibold">{a.name}</span>
+            <span className="truncate text-[13px] font-bold text-slate-900">
+              {a.name}
+            </span>
             {a.ticker && (
-              <span className="shrink-0 text-[10px] text-muted-foreground">
+              <span className="shrink-0 text-[10px] font-semibold text-slate-400">
                 {a.ticker}
               </span>
             )}
             {a.isNew && (
-              <span className="shrink-0 rounded bg-emerald-500 px-1 py-0.5 text-[8px] text-white">
+              <span className="shrink-0 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[8px] font-black text-emerald-600 ring-1 ring-emerald-100">
                 NEW
               </span>
             )}
           </div>
           {task ? (
-            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500">
               <span
-                className={
-                  task.cost === 0
-                    ? "font-medium text-emerald-500"
-                    : "font-medium text-sky-500"
-                }
+                className={cn(
+                  "font-bold",
+                  task.cost === 0 ? "text-emerald-500" : "text-sky-500",
+                )}
               >
                 {task.cost === 0 ? "Free" : `$${task.cost}`}
               </span>
@@ -58,29 +69,14 @@ function AirdropRow({ a, rank }: { a: Airdrop; rank: number }) {
               <span className="truncate">{task.types[0]}</span>
             </div>
           ) : (
-            <span className="text-[11px] text-muted-foreground">
-              No active tasks
-            </span>
+            <span className="text-[11px] text-slate-500">No active tasks</span>
           )}
         </div>
         <div className="hidden shrink-0 text-right sm:block">
-          <div className="flex items-center justify-end gap-1 text-[11px]">
-            <span
-              className={cn(
-                "font-medium",
-                a.status === "Reward Available"
-                  ? "text-blue-400"
-                  : "text-foreground",
-              )}
-            >
-              {a.status}
-            </span>
-          </div>
-          <div className="text-[10px] text-muted-foreground">
-            {a.statusDate}
-          </div>
+          <div className="text-[11px] font-bold text-slate-700">{a.status}</div>
+          <div className="text-[10px] text-slate-400">{a.statusDate}</div>
         </div>
-        <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+        <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-sky-500" />
       </div>
     </Link>
   );
@@ -106,38 +102,67 @@ export default function DashboardPage() {
     .slice(0, 6);
 
   return (
-    <div className="premium-page space-y-6">
+    <div className="premium-page mx-auto flex w-full max-w-[1180px] flex-col gap-7 pb-8">
       <ScrollReveal>
-        <section className="premium-panel overflow-hidden rounded-3xl border p-5 sm:p-6">
-          <div className="max-w-5xl">
-            <div className="mb-3 inline-flex max-w-full items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-primary sm:text-[11px]">
-              <span className="premium-icon h-6 w-6 shrink-0 rounded-full">
-                <Star className="relative z-10 h-3 w-3" fill="currentColor" />
+        <section className="hero-prompt-panel mx-auto flex w-full max-w-5xl flex-col items-center gap-6 rounded-[2rem] border p-5 text-center sm:rounded-[2.5rem] sm:p-7 lg:p-9">
+          <div className="inline-flex rounded-full border border-white/35 bg-white/20 p-1.5 shadow-[0_10px_30px_rgb(14,116,144,0.12)] backdrop-blur-md">
+            <span className="rounded-full bg-white px-5 py-2 text-[12px] font-black text-slate-900 shadow-sm">
+              Web App
+            </span>
+            <span className="rounded-full px-5 py-2 text-[12px] font-bold text-white/85">
+              Mobile App
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/25 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-white shadow-sm backdrop-blur-md sm:text-[11px]">
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-white text-sky-500 shadow-sm">
+                <Sparkles className="h-3.5 w-3.5" fill="currentColor" />
               </span>
-              <span className="truncate">
-                Research-grade airdrop intelligence
-              </span>
+              Airdrop intelligence workspace
             </div>
-            <h1 className="premium-heading text-[28px] font-black leading-[1.08] text-foreground sm:text-4xl lg:text-5xl">
-              Ouwibo: professional airdrop intelligence workspace.
+            <h1 className="premium-heading text-balance text-[32px] font-semibold leading-[1.04] text-white drop-shadow-[0_10px_28px_rgb(14,116,144,0.22)] sm:text-5xl lg:text-[58px]">
+              Track your next high-signal airdrop.
             </h1>
-            <p className="mt-4 max-w-4xl text-sm leading-7 text-muted-foreground sm:text-[15px]">
-              Discover credible campaigns, compare time-to-reward signals, and
-              track claim-ready opportunities in one clean workspace without
-              noisy speculation or overlapping dashboard copy.
+            <p className="mx-auto max-w-2xl text-[14px] font-medium leading-7 text-white/85 sm:text-[15px]">
+              Compare campaign status, task cost, time, and claim readiness in a
+              clean cloud workspace.
             </p>
-            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-              <Link href="/airdrops" className="w-full sm:w-auto">
-                <button className="w-full shrink-0 rounded-2xl border border-blue-600/10 bg-gradient-to-b from-sky-400 to-primary px-5 py-3 text-[13px] font-black text-primary-foreground shadow-[0_10px_22px_hsl(var(--primary)/0.20)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_28px_hsl(var(--primary)/0.24)] sm:w-auto">
-                  Explore Airdrops →
-                </button>
-              </Link>
-              <Link href="/chat" className="w-full sm:w-auto">
-                <button className="w-full rounded-2xl border border-sky-200 bg-white/85 px-5 py-3 text-[13px] font-black text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:bg-sky-50 sm:w-auto">
-                  Ask AI Assistant
+          </div>
+
+          <div className="prompt-input-card w-full max-w-3xl rounded-[1.75rem] bg-white p-3 text-left shadow-[0_18px_60px_rgb(15,23,42,0.16)] ring-1 ring-white/80 transition-all duration-300 ease-in-out focus-within:ring-2 focus-within:ring-sky-300/70">
+            <div className="flex min-h-[72px] items-center gap-3 rounded-[1.35rem] bg-white px-2 sm:px-3">
+              <button className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-50 text-slate-500 transition-all duration-300 hover:scale-105 hover:bg-slate-100">
+                <Plus className="h-4 w-4" />
+              </button>
+              <div className="min-w-0 flex-1 text-[15px] font-medium text-slate-400 sm:text-base">
+                Ask Ouwibo to find low-cost, high-potential campaigns…
+              </div>
+              <button className="hidden h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-50 text-slate-500 transition-all duration-300 hover:scale-105 hover:bg-slate-100 sm:grid">
+                <Mic className="h-4 w-4" />
+              </button>
+              <Link href="/airdrops">
+                <button className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-900 transition-all duration-300 hover:scale-105 hover:bg-sky-100 hover:text-sky-700">
+                  <ArrowUp className="h-4 w-4" />
                 </button>
               </Link>
             </div>
+          </div>
+
+          <div className="flex max-w-3xl flex-wrap items-center justify-center gap-2">
+            {PROMPT_SUGGESTIONS.map((item) => (
+              <Link key={item.label} href="/airdrops">
+                <span className="suggestion-pill inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/80 px-3 py-2 text-[12px] font-bold text-slate-800 shadow-[0_10px_26px_rgb(15,23,42,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:bg-white">
+                  <span
+                    className={cn(
+                      "h-4 w-4 rounded-full bg-gradient-to-br shadow-sm",
+                      item.tone,
+                    )}
+                  />
+                  {item.label}
+                </span>
+              </Link>
+            ))}
           </div>
         </section>
       </ScrollReveal>
@@ -149,38 +174,44 @@ export default function DashboardPage() {
             detail: "Curated opportunities",
             value: total,
             icon: <Zap className="h-4 w-4" />,
-            cls: "text-primary border-primary/25 bg-primary/5",
+            cls: "text-sky-500",
           },
           {
             label: "Confirmed",
             detail: "Verified campaign signals",
             value: confirmed,
             icon: <CheckCircle2 className="h-4 w-4" />,
-            cls: "text-emerald-500 border-emerald-500/25 bg-emerald-500/5",
+            cls: "text-emerald-500",
           },
           {
             label: "Potential",
             detail: "Under review",
             value: potential,
             icon: <Clock className="h-4 w-4" />,
-            cls: "text-sky-500 border-sky-500/25 bg-sky-500/5",
+            cls: "text-blue-500",
           },
           {
             label: "Rewards Available",
             detail: "Claim-ready now",
             value: rewards,
             icon: <Gift className="h-4 w-4" />,
-            cls: "text-blue-400 border-blue-500/25 bg-blue-500/5",
+            cls: "text-violet-500",
           },
         ].map(({ label, detail, value, icon, cls }, index) => (
           <ScrollReveal key={label} delay={80 * index}>
-            <div className={cn("premium-stat rounded-2xl border p-3.5", cls)}>
-              <div className="premium-icon mb-2 h-8 w-8 rounded-xl">{icon}</div>
-              <div className="text-[22px] font-bold leading-none">{value}</div>
-              <div className="mt-1 text-[11px] font-black uppercase tracking-[0.14em] text-foreground/80">
+            <div
+              className={cn("premium-stat rounded-[1.5rem] border p-4", cls)}
+            >
+              <div className="premium-icon mb-3 h-9 w-9 rounded-full">
+                {icon}
+              </div>
+              <div className="text-[26px] font-black leading-none text-slate-900">
+                {value}
+              </div>
+              <div className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-slate-700">
                 {label}
               </div>
-              <div className="mt-0.5 text-[10px] text-muted-foreground">
+              <div className="mt-1 text-[11px] font-medium text-slate-400">
                 {detail}
               </div>
             </div>
@@ -190,20 +221,24 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <ScrollReveal className="lg:col-span-2" delay={120}>
-          <div className="premium-panel overflow-hidden rounded-2xl border">
-            <div className="flex items-center justify-between border-b border-border/50 bg-gradient-to-r from-primary/8 to-transparent px-4 py-3">
+          <div className="deployed-panel overflow-hidden rounded-t-[2rem] rounded-b-[1.5rem] border bg-white">
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                <span className="text-[13px] font-semibold">Top Ranked</span>
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-sky-50 text-sky-500">
+                  <TrendingUp className="h-4 w-4" />
+                </span>
+                <span className="text-[14px] font-black text-slate-900">
+                  Deployed Apps
+                </span>
               </div>
               <Link
                 href="/airdrops"
-                className="text-[11px] text-primary hover:underline"
+                className="rounded-full bg-slate-50 px-3 py-1.5 text-[11px] font-bold text-sky-600 transition-colors hover:bg-sky-50"
               >
                 See all →
               </Link>
             </div>
-            <div className="grid gap-3 p-4">
+            <div className="grid gap-2.5 p-3 sm:p-4">
               {top.map((a, i) => (
                 <AirdropRow key={a.id} a={a} rank={i + 1} />
               ))}
@@ -212,35 +247,37 @@ export default function DashboardPage() {
         </ScrollReveal>
 
         <ScrollReveal className="space-y-4" delay={220}>
-          <div className="premium-panel overflow-hidden rounded-2xl border">
-            <div className="flex items-center gap-2 border-b border-border/50 bg-gradient-to-r from-sky-500/8 to-transparent px-4 py-3">
-              <span className="text-[13px] font-semibold">Claim Now</span>
+          <div className="deployed-panel overflow-hidden rounded-t-[2rem] rounded-b-[1.5rem] border bg-white">
+            <div className="border-b border-slate-100 px-5 py-4">
+              <span className="text-[14px] font-black text-slate-900">
+                Claim Now
+              </span>
             </div>
             {rewardA.length === 0 ? (
-              <p className="py-6 text-center text-[12px] text-muted-foreground">
+              <p className="py-10 text-center text-[12px] font-medium text-slate-400">
                 None available
               </p>
             ) : (
               <div className="grid gap-2 p-3">
                 {rewardA.map((drop) => (
                   <Link key={drop.id} href={`/airdrops/${drop.slug}`}>
-                    <div className="premium-card-hover flex cursor-pointer items-center gap-2.5 rounded-xl border border-border/50 bg-background/45 px-3 py-2.5 hover:bg-muted/40">
+                    <div className="premium-card-hover flex cursor-pointer items-center gap-2.5 rounded-2xl border border-slate-100 bg-white px-3 py-2.5 hover:bg-sky-50/70">
                       <AirdropLogo
                         name={drop.name}
                         logoUrl={drop.logoUrl}
                         logoInitial={drop.logoInitial}
                         logoColor={drop.logoColor}
-                        size={28}
+                        size={30}
                       />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-[12px] font-medium">
+                        <p className="truncate text-[12px] font-bold text-slate-900">
                           {drop.name}
                         </p>
-                        <p className="text-[10px] text-blue-400">
+                        <p className="text-[10px] font-semibold text-sky-500">
                           Reward Available
                         </p>
                       </div>
-                      <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground" />
+                      <ChevronRight className="h-3 w-3 shrink-0 text-slate-300" />
                     </div>
                   </Link>
                 ))}
@@ -248,35 +285,37 @@ export default function DashboardPage() {
             )}
           </div>
 
-          <div className="premium-panel overflow-hidden rounded-2xl border">
-            <div className="flex items-center gap-2 border-b border-border/50 bg-gradient-to-r from-emerald-500/8 to-transparent px-4 py-3">
-              <span className="text-[13px] font-semibold">New This Week</span>
+          <div className="deployed-panel overflow-hidden rounded-t-[2rem] rounded-b-[1.5rem] border bg-white">
+            <div className="border-b border-slate-100 px-5 py-4">
+              <span className="text-[14px] font-black text-slate-900">
+                New This Week
+              </span>
             </div>
             {newest.length === 0 ? (
-              <p className="py-6 text-center text-[12px] text-muted-foreground">
+              <p className="py-10 text-center text-[12px] font-medium text-slate-400">
                 No new projects
               </p>
             ) : (
               <div className="grid gap-2 p-3">
                 {newest.map((a) => (
                   <Link key={a.id} href={`/airdrops/${a.slug}`}>
-                    <div className="premium-card-hover flex cursor-pointer items-center gap-2.5 rounded-xl border border-border/50 bg-background/45 px-3 py-2.5 hover:bg-muted/40">
+                    <div className="premium-card-hover flex cursor-pointer items-center gap-2.5 rounded-2xl border border-slate-100 bg-white px-3 py-2.5 hover:bg-sky-50/70">
                       <AirdropLogo
                         name={a.name}
                         logoUrl={a.logoUrl}
                         logoInitial={a.logoInitial}
                         logoColor={a.logoColor}
-                        size={28}
+                        size={30}
                       />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-[12px] font-medium">
+                        <p className="truncate text-[12px] font-bold text-slate-900">
                           {a.name}
                         </p>
-                        <p className="text-[10px] text-emerald-500">
+                        <p className="text-[10px] font-semibold text-emerald-500">
                           {a.status}
                         </p>
                       </div>
-                      <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground" />
+                      <ChevronRight className="h-3 w-3 shrink-0 text-slate-300" />
                     </div>
                   </Link>
                 ))}
