@@ -1,31 +1,28 @@
 {
   "name": "atlas-oak-storefront",
-  "version": "1.0.0",
-  "description": "ATLAS & OAK — slow-made artisan goods storefront built for the Zo Computer Build Challenge, June 2026.",
-  "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "clear-cache": "rm -rf node_modules/.vite",
+    "dev": "bun run clear-cache && NODE_ENV=development bun run --hot server.ts",
+    "build": "bun run clear-cache && vite build",
+    "prod": "bun run build && NODE_ENV=production bun run server.ts",
+    "preview": "bun run vite preview"
   },
   "dependencies": {
-    "lucide-react": "^0.511.0",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "hono": "^4.10.6",
+    "lucide-react": "^0.562.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "uuid": "^11.1.0",
-    "wouter": "^3.10.0"
+    "wouter": "^3.10.0",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@types/react": "^19.2.16",
-    "@types/react-dom": "^19.2.3",
+    "@types/bun": "1.2.21",
     "@types/uuid": "^10.0.0",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.7.0",
-    "typescript": "^5.9.3",
-    "vite": "^6.4.3"
-  },
-  "packageManager": "npm@10.9.0",
-  "engines": {
-    "node": "20.x"
+    "typescript": "^5.9.3"
   }
 }

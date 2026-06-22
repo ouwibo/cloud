@@ -1,44 +1,29 @@
 import { Link } from "wouter";
 import Navbar from "../components/Navbar";
-import { ArrowRight, MapPin, Users, Package, Leaf } from "lucide-react";
+import { ArrowRight, Globe, Users, Award, Leaf } from "lucide-react";
 
 const GOLD = "#B8860B";
 
 const team = [
-  {
-    name: "OUWIBO",
-    role: "Founder",
-    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
-    bio: "Solo founder building small tools for small teams. Ambassador for Zo Computer. Started Atlas & Oak out of a Portland garage in 2021.",
-  },
-  {
-    name: "Lena P.",
-    role: "Sourcing & Maker Relations",
-    img: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80",
-    bio: "Part-time collaborator who scouts independent makers across the Pacific Northwest. Keeps us honest about quality.",
-  },
-  {
-    name: "Tom K.",
-    role: "Creative & Photography",
-    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
-    bio: "Freelance photographer based in SE Portland. Shoots all product imagery and helps define the visual identity.",
-  },
+  { name: "Olivia Chen",    role: "Founder & Creative Director", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80", bio: "15 years in product design and craft. Built OUWIBO to bridge artisan tradition and modern living." },
+  { name: "Marcus Webb",   role: "Head of Sourcing",             img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80", bio: "Travels the globe to find the world's finest makers. Every OUWIBO partner passes his 22-point quality check." },
+  { name: "Ines Rossi",    role: "Brand & Marketing",           img: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80", bio: "Former luxury brand director. She ensures OUWIBO speaks to the people who care about beautiful things." },
 ];
 
 const milestones = [
-  { year: "2021", event: "OUWIBO quits their day job and starts making linen journals in a Portland garage." },
-  { year: "2022", event: "First 100 orders shipped. Partners with 2 local makers for ceramics and candles." },
-  { year: "2023", event: "Move into a 400 sq ft studio in SE Portland. Expand to 6 product lines." },
-  { year: "2024", event: "Launch the lifetime repair program. Plastic-free packaging adopted across all shipments." },
-  { year: "2025", event: "Six artisan partners across Oregon, Portugal, and Indonesia." },
-  { year: "2026", event: "Three product lines. Building this storefront for Zo Ambassador Build Challenge." },
+  { year: "2021", event: "OUWIBO founded in London, first 6 products hand-made by founders." },
+  { year: "2022", event: "Expanded to 3 artisan workshops across Japan, Portugal, and Kenya." },
+  { year: "2023", event: "Reached 10,000 customers globally. Launched sustainable packaging program." },
+  { year: "2024", event: "Opened pop-up stores in New York, Paris, and Singapore." },
+  { year: "2025", event: "Named 'Best Independent Lifestyle Brand' by Kinfolk Magazine." },
+  { year: "2026", event: "30+ artisan partners. 18,000+ subscribers. 60 countries served." },
 ];
 
 const stats = [
-  { Icon: MapPin,   value: "Portland",  label: "HQ, Oregon" },
-  { Icon: Users,    value: "3",         label: "Team Members" },
-  { Icon: Package,  value: "6+",        label: "Artisan Partners" },
-  { Icon: Leaf,     value: "100%",      label: "Plastic-free Ship" },
+  { Icon: Globe,  value: "60+",   label: "Countries" },
+  { Icon: Users,  value: "18K+",  label: "Customers" },
+  { Icon: Award,  value: "12",    label: "Awards" },
+  { Icon: Leaf,   value: "100%",  label: "Sustainable" },
 ];
 
 const glass = (op = 0.72) => ({
@@ -66,16 +51,16 @@ export default function About() {
                 We believe objects should outlive trends.
               </h1>
               <p style={{ fontSize: 15, color: "#555", lineHeight: 1.8, marginBottom: 18 }}>
-                Atlas &amp; Oak was born from a simple frustration: everything we bought felt disposable. Designed to last a season, built to be discarded. We wanted more.
+                OUWIBO was born from a simple frustration: everything we bought felt disposable. Designed to last a season, built to be discarded. We wanted more.
               </p>
               <p style={{ fontSize: 15, color: "#555", lineHeight: 1.8 }}>
-                So we set out to build a brand rooted in craft — working directly with independent artisan makers who take pride in their materials, their methods, and the objects they make.
+                So we set out to build a brand rooted in craft — working directly with independent artisan workshops who take pride in their materials, their methods, and the objects they make.
               </p>
             </div>
             <div style={{ overflow: "hidden" }}>
               <img
                 src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=800&q=85"
-                alt="Atlas & Oak workshop"
+                alt="OUWIBO workshop"
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             </div>
@@ -90,7 +75,7 @@ export default function About() {
                 <div style={{ width: 44, height: 44, background: "rgba(184,134,11,0.1)", border: "1px solid rgba(184,134,11,0.2)", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
                   <Icon size={18} color={GOLD} />
                 </div>
-                <div style={{ fontSize: 28, fontWeight: 900, color: "#1a1a1a", letterSpacing: "-0.04em" }}>{value}</div>
+                <div style={{ fontSize: 32, fontWeight: 900, color: "#1a1a1a", letterSpacing: "-0.04em" }}>{value}</div>
                 <div style={{ fontSize: 12.5, color: "#888", fontWeight: 500, marginTop: 4 }}>{label}</div>
               </div>
             ))}
@@ -100,8 +85,8 @@ export default function About() {
         {/* Timeline */}
         <section style={{ padding: "48px 40px 0", maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 44 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: GOLD, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Where We Are</div>
-            <h2 style={{ fontSize: "clamp(26px,3.5vw,40px)", fontWeight: 900, color: "#1a1a1a", letterSpacing: "-0.03em" }}>Our journey so far</h2>
+            <div style={{ fontSize: 11, fontWeight: 700, color: GOLD, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Our Journey</div>
+            <h2 style={{ fontSize: "clamp(26px,3.5vw,40px)", fontWeight: 900, color: "#1a1a1a", letterSpacing: "-0.03em" }}>Five years of craft</h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 16 }}>
             {milestones.map(({ year, event }) => (
@@ -137,13 +122,13 @@ export default function About() {
         <section style={{ padding: "48px 40px 0", maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ ...glass(0.68), padding: "52px 56px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: GOLD, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14 }}>Where We're Headed</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: GOLD, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14 }}>Sustainability</div>
               <h2 style={{ fontSize: "clamp(24px,3vw,36px)", fontWeight: 900, color: "#1a1a1a", letterSpacing: "-0.03em", marginBottom: 18, lineHeight: 1.2 }}>Good for you. Better for the planet.</h2>
-              <p style={{ fontSize: 14.5, color: "#555", lineHeight: 1.8, marginBottom: 14 }}>Every Atlas &amp; Oak product is made using natural, renewable, or recycled materials. We use plastic-free packaging exclusively and work only with makers we've met in person.</p>
-              <p style={{ fontSize: 14.5, color: "#555", lineHeight: 1.8 }}>Our Lifetime Repair Program means if any product breaks, we fix it — for free. Because the most sustainable product is one you never throw away.</p>
+              <p style={{ fontSize: 14.5, color: "#555", lineHeight: 1.8, marginBottom: 14 }}>Every OUWIBO product is made using natural, renewable, or recycled materials. We offset 100% of our shipping carbon footprint and use plastic-free packaging exclusively.</p>
+              <p style={{ fontSize: 14.5, color: "#555", lineHeight: 1.8 }}>Our Repair Program means if any product breaks, we fix it — for free, for life. Because the most sustainable product is one you never throw away.</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {["Natural & renewable materials only", "100% plastic-free packaging", "Carbon-offset shipping", "Lifetime repair program — free, always", "Six artisan partners fairly compensated", "Made in small batches — never overproduced"].map(item => (
+              {["Natural & renewable materials only", "100% plastic-free packaging", "Carbon-neutral global shipping", "Lifetime repair program", "30 artisan partners fairly compensated", "B-Corp certification in progress"].map(item => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 18px", background: "rgba(255,255,255,0.55)", borderRadius: 12, border: "1px solid rgba(255,255,255,0.8)", fontSize: 13.5, color: "#333" }}>
                   <Leaf size={14} color="#059669" style={{ flexShrink: 0 }} /> {item}
                 </div>
@@ -156,13 +141,10 @@ export default function About() {
         <section style={{ padding: "48px 40px 80px", maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ ...glass(0.68), padding: "48px", textAlign: "center" }}>
             <h2 style={{ fontSize: 30, fontWeight: 900, color: "#1a1a1a", marginBottom: 12, letterSpacing: "-0.03em" }}>Ready to explore the collection?</h2>
-            <p style={{ color: "#666", marginBottom: 28, fontSize: 15 }}>Every purchase supports an independent artisan maker. Slow-made, built to last.</p>
+            <p style={{ color: "#666", marginBottom: 28, fontSize: 15 }}>Every purchase supports an independent artisan workshop somewhere in the world.</p>
             <Link href="/shop" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 36px", background: `rgba(184,134,11,0.88)`, color: "white", borderRadius: 12, fontSize: 15, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 20px rgba(184,134,11,0.25)" }}>
               Shop the Collection <ArrowRight size={15} />
             </Link>
-            <p style={{ marginTop: 20, fontSize: 12, color: "#aaa" }}>
-              Built by OUWIBO · <a href="https://zocomputer.com" target="_blank" rel="noopener noreferrer" style={{ color: GOLD, textDecoration: "none" }}>Zo Ambassador Build Challenge, June 2026</a>
-            </p>
           </div>
         </section>
       </div>

@@ -13,10 +13,10 @@ const glass = (op = 0.72) => ({
 });
 
 const info = [
-  { Icon: Mail,          title: "Email Us",      value: "ouwibodev@zo.computer",  sub: "Reply within 24 hours" },
-  { Icon: MapPin,        title: "Headquarters",  value: "Portland, Oregon",        sub: "SE Portland studio" },
-  { Icon: Clock,         title: "Support Hours", value: "Mon–Fri, 9am–5pm PST",   sub: "Weekend inquiries answered Monday" },
-  { Icon: MessageCircle, title: "Live Chat",     value: "Available on site",       sub: "Average response under 5 minutes" },
+  { Icon: Mail,    title: "Email Us",          value: "hello@ouwibo.com",       sub: "Reply within 24 hours" },
+  { Icon: MapPin,  title: "Headquarters",      value: "London, United Kingdom",  sub: "Artisan partners across 5 continents" },
+  { Icon: Clock,   title: "Support Hours",     value: "Mon–Fri, 9am–6pm GMT",   sub: "Weekend inquiries answered Monday" },
+  { Icon: MessageCircle, title: "Live Chat",  value: "Available on site",       sub: "Average response under 5 minutes" },
 ];
 
 const topics = ["Product inquiry", "Order support", "Wholesale / B2B", "Press & media", "Artisan partnership", "Other"];
@@ -139,25 +139,25 @@ export default function Contact() {
               <div style={{ ...glass(0.70), overflow: "hidden" }}>
                 <img
                   src="https://images.unsplash.com/photo-1571624436279-b272aff752b5?w=700&q=80"
-                  alt="Atlas & Oak studio"
+                  alt="OUWIBO studio"
                   style={{ width: "100%", height: 220, objectFit: "cover", display: "block" }}
                 />
                 <div style={{ padding: "22px" }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1a1a1a", marginBottom: 6 }}>Visit our Portland Studio</div>
-                  <div style={{ fontSize: 13, color: "#666", lineHeight: 1.7 }}>We host occasional open studio days where you can meet the team, see products in person, and learn about our makers. Follow us on Instagram for dates.</div>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1a1a1a", marginBottom: 6 }}>Visit our London Studio</div>
+                  <div style={{ fontSize: 13, color: "#666", lineHeight: 1.7 }}>We host monthly open studio days where you can meet the team, see products in person, and learn about our makers. Check our Instagram for dates.</div>
                 </div>
               </div>
 
               <div style={{ ...glass(0.68), padding: "24px" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#333", marginBottom: 14 }}>Wholesale &amp; B2B</div>
-                <p style={{ fontSize: 13, color: "#666", lineHeight: 1.75, marginBottom: 14 }}>Interested in stocking Atlas &amp; Oak? We work with independent retailers, boutique hotels, and gift shops. Minimum orders start at 20 units per SKU.</p>
-                <div style={{ fontSize: 13, fontWeight: 700, color: GOLD }}>ouwibodev@zo.computer</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#333", marginBottom: 14 }}>Wholesale & B2B</div>
+                <p style={{ fontSize: 13, color: "#666", lineHeight: 1.75, marginBottom: 14 }}>Interested in stocking OUWIBO? We work with independent retailers, boutique hotels, and gift shops worldwide. Minimum orders start at 20 units per SKU.</p>
+                <div style={{ fontSize: 13, fontWeight: 700, color: GOLD }}>wholesale@ouwibo.com</div>
               </div>
 
               <div style={{ ...glass(0.68), padding: "24px" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#333", marginBottom: 14 }}>Press &amp; Media</div>
-                <p style={{ fontSize: 13, color: "#666", lineHeight: 1.75, marginBottom: 14 }}>For interviews, product samples, brand assets, or editorial features, reach out directly.</p>
-                <div style={{ fontSize: 13, fontWeight: 700, color: GOLD }}>ouwibodev@zo.computer</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#333", marginBottom: 14 }}>Press & Media</div>
+                <p style={{ fontSize: 13, color: "#666", lineHeight: 1.75, marginBottom: 14 }}>For interviews, product samples, brand assets, or editorial features, our press team is ready to help.</p>
+                <div style={{ fontSize: 13, fontWeight: 700, color: GOLD }}>press@ouwibo.com</div>
               </div>
             </div>
           </div>

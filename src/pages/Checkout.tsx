@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import Navbar from "../components/Navbar";
 import { useCart } from "../context/CartContext";
-import { saveOrder } from "../lib/orders";
-import { v4 as uuidv4 } from "uuid";
 import { CheckCircle2, Lock, CreditCard, Truck } from "lucide-react";
 
 const GOLD = "#B8860B";
@@ -25,8 +23,8 @@ const steps = ["Shipping", "Payment", "Review"];
 
 export default function Checkout() {
   const { items, subtotal, clear } = useCart();
-  const [, navigate] = useLocation();
   const [step, setStep] = useState(0);
+  const [done, setDone] = useState(false);
   const [form, setForm] = useState({
     firstName: "", lastName: "", email: "", phone: "",
     address: "", apt: "", city: "", state: "", zip: "", country: "United States",
@@ -38,39 +36,30 @@ export default function Checkout() {
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 
-  const handlePlaceOrder = () => {
-    const orderId = uuidv4();
-    saveOrder({
-      id: orderId,
-      createdAt: Date.now(),
-      items: [...items],
-      form: {
-        firstName: form.firstName,
-        lastName: form.lastName,
-        email: form.email,
-        phone: form.phone,
-        address: form.address,
-        apt: form.apt,
-        city: form.city,
-        state: form.state,
-        zip: form.zip,
-        country: form.country,
-        method: form.method,
-      },
-      subtotal,
-      shipping,
-      tax,
-      total,
-      status: "confirmed",
-    });
-    clear();
-    navigate(`/order-success/${orderId}`);
-  };
+  if (done) return (
+    <div style={{ minHeight: "100vh", fontFamily: "'Inter',system-ui,sans-serif", backgroundImage: "url(/sky-bg.webp)", backgroundSize: "cover", backgroundAttachment: "fixed" }}>
+      <div style={{ position: "fixed", inset: 0, background: "linear-gradient(180deg,rgba(180,220,250,0.08) 0%,rgba(245,250,255,0.55) 100%)", pointerEvents: "none", zIndex: 0 }} />
+      <Navbar />
+      <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
+        <div style={{ ...glass(0.82), padding: "72px 64px", textAlign: "center", maxWidth: 500 }}>
+          <CheckCircle2 size={64} color="#059669" style={{ marginBottom: 24 }} />
+          <div style={{ fontSize: 11, fontWeight: 700, color: GOLD, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>Order Confirmed</div>
+          <h1 style={{ fontSize: 30, fontWeight: 900, color: "#1a1a1a", letterSpacing: "-0.03em", marginBottom: 14 }}>Thank you, {form.firstName}!</h1>
+          <p style={{ color: "#666", fontSize: 15, lineHeight: 1.75, marginBottom: 12 }}>
+            Your order has been placed and is being prepared by our team. A confirmation has been sent to <strong>{form.email}</strong>.
+          </p>
+          <p style={{ color: "#888", fontSize: 13, marginBottom: 36 }}>Estimated delivery: 5–7 business days</p>
+          <Link href="/shop" onClick={clear} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 30px", background: "rgba(26,26,26,0.88)", color: "white", borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
+            Continue Shopping
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 
   if (items.length === 0) return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", backgroundImage: "url(/sky-bg.webp)", backgroundSize: "cover", fontFamily: "'Inter',system-ui,sans-serif" }}>
-      <Navbar />
-      <div style={{ ...glass(0.78), padding: "48px 56px", textAlign: "center", marginTop: 70 }}>
+      <div style={{ ...glass(0.78), padding: "48px 56px", textAlign: "center" }}>
         <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a1a", marginBottom: 12 }}>Your cart is empty</div>
         <Link href="/shop" style={{ color: GOLD, fontWeight: 700, textDecoration: "none", fontSize: 14 }}>Browse the shop</Link>
       </div>
@@ -119,9 +108,9 @@ export default function Checkout() {
                 <div style={{ marginBottom: 12 }}><label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>Street Address *</label><input required value={form.address} onChange={e => set("address", e.target.value)} placeholder="123 Main Street" style={inp} /></div>
                 <div style={{ marginBottom: 12 }}><label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>Apt / Suite</label><input value={form.apt} onChange={e => set("apt", e.target.value)} placeholder="Apartment, suite, etc. (optional)" style={inp} /></div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
-                  <div><label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>City *</label><input required value={form.city} onChange={e => set("city", e.target.value)} placeholder="Portland" style={inp} /></div>
-                  <div><label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>State</label><input value={form.state} onChange={e => set("state", e.target.value)} placeholder="OR" style={inp} /></div>
-                  <div><label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>ZIP *</label><input required value={form.zip} onChange={e => set("zip", e.target.value)} placeholder="97201" style={inp} /></div>
+                  <div><label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>City *</label><input required value={form.city} onChange={e => set("city", e.target.value)} placeholder="New York" style={inp} /></div>
+                  <div><label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>State</label><input value={form.state} onChange={e => set("state", e.target.value)} placeholder="NY" style={inp} /></div>
+                  <div><label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>ZIP *</label><input required value={form.zip} onChange={e => set("zip", e.target.value)} placeholder="10001" style={inp} /></div>
                 </div>
                 <div style={{ marginBottom: 24 }}>
                   <label style={{ fontSize: 12, fontWeight: 600, color: "#555", display: "block", marginBottom: 5 }}>Country *</label>
@@ -143,6 +132,7 @@ export default function Checkout() {
                   <Lock size={13} color="#059669" style={{ marginLeft: "auto" }} />
                   <span style={{ fontSize: 12, color: "#059669", fontWeight: 600 }}>Secure SSL</span>
                 </div>
+                {/* Method select */}
                 <div style={{ display: "flex", gap: 10, marginBottom: 22 }}>
                   {[{ id: "card", label: "Credit / Debit Card" }, { id: "paypal", label: "PayPal" }, { id: "apple", label: "Apple Pay" }].map(m => (
                     <button key={m.id} onClick={() => set("method", m.id)} style={{ flex: 1, padding: "10px 8px", borderRadius: 10, fontSize: 13, fontWeight: 600, background: form.method === m.id ? "rgba(26,26,26,0.88)" : "rgba(255,255,255,0.6)", color: form.method === m.id ? "white" : "#555", border: `1px solid ${form.method === m.id ? "transparent" : "rgba(200,210,230,0.7)"}`, cursor: "pointer" }}>
@@ -175,6 +165,7 @@ export default function Checkout() {
             {step === 2 && (
               <div style={{ ...glass(0.74), padding: "32px" }}>
                 <div style={{ fontSize: 16, fontWeight: 800, color: "#1a1a1a", marginBottom: 20 }}>Review Your Order</div>
+                {/* Shipping summary */}
                 <div style={{ padding: "14px 16px", background: "rgba(255,255,255,0.55)", borderRadius: 12, marginBottom: 14, border: "1px solid rgba(200,210,230,0.5)" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#999", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>Ship to</div>
                   <div style={{ fontSize: 14, fontWeight: 600, color: "#1a1a1a" }}>{form.firstName} {form.lastName}</div>
@@ -187,7 +178,7 @@ export default function Checkout() {
                 </div>
                 <div style={{ display: "flex", gap: 10 }}>
                   <button onClick={() => setStep(1)} style={{ flex: 1, padding: "13px", background: "rgba(255,255,255,0.6)", color: "#555", border: "1px solid rgba(200,210,230,0.7)", borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>← Back</button>
-                  <button onClick={handlePlaceOrder} style={{ flex: 2, padding: "13px", background: `rgba(184,134,11,0.9)`, color: "white", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 20px rgba(184,134,11,0.3)" }}>
+                  <button onClick={() => setDone(true)} style={{ flex: 2, padding: "13px", background: `rgba(184,134,11,0.9)`, color: "white", border: "none", borderRadius: 12, fontSize: 15, fontWeight: 700, cursor: "pointer", boxShadow: "0 4px 20px rgba(184,134,11,0.3)" }}>
                     Place Order — ${total.toFixed(2)}
                   </button>
                 </div>

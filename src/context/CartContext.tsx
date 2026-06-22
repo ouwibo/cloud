@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import type { Product } from "../data/products";
 
 export interface CartItem {
@@ -17,26 +17,9 @@ interface CartCtx {
 }
 
 const Ctx = createContext<CartCtx | null>(null);
-const CART_KEY = "atlas-oak-cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(CART_KEY);
-      if (raw) setItems(JSON.parse(raw) as CartItem[]);
-    } catch {
-      /* ignore */
-    }
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
-    localStorage.setItem(CART_KEY, JSON.stringify(items));
-  }, [items, hydrated]);
 
   const add = (p: Product) => {
     setItems(prev => {
